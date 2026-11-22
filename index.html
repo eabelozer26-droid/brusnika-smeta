@@ -572,12 +572,14 @@ button.ghost{padding:5px 10px;font-size:13px;color:var(--muted)}
 
   var seq = 0;
   function newId(){ seq++; return 'k' + Date.now().toString(36) + seq; }
+  var BASE_NAMES = {share:'Брусника', choir:'Хор', dance:'Танцевальный коллектив', ensemble:'Инструментальный ансамбль', other:'Коллектив'};
+  function kindOf(c){ return c.type === 'share' ? 'share' : (c.kind || 'other'); }
   function mk(type, name, o){ return Object.assign({id:newId(), type:type, name:name}, BASE, o || {}); }
   function defaults(){
     return {g:Object.assign({}, G_DEF), concert:Object.assign({}, C_DEF), list:[
       mk('share','Брусника',{refShare:20, n:30, price:18000, prepay:5000, meetings:4, mGuests:20, mPrice:500, mHours:2, mTreats:150, partners:2, lessonRate:800, concertRate:2000, lessons:12, lessonHours:2, rate:1000, songs:15, songPrice:1000, musicians:2, musReh:4, musRehFee:2500, musConcertFee:5000, instrTimes:0, instrPrice:3000, instrDel:1000, ads:30000, startup:10000, licence:0, wAds:8, wChat:8, wPrep:4, wInstr:1}),
-      mk('paid','Танцевальный коллектив',{n:0, price:18000, prepay:5000, meetings:4, mGuests:15, teachers:1, lessonRate:2500, pieces:5, pieceRate:2000, extra:0, lessons:12, lessonHours:2, rate:1000, ads:20000, startup:5000, licence:2000, wAds:6, wChat:6, wPrep:2, wInstr:0}),
-      mk('paid','Инструментальный ансамбль',{n:0, price:18000, prepay:5000, meetings:4, mGuests:12, teachers:1, lessonRate:3000, extra:0, lessons:12, lessonHours:2, rate:1000, instrTimes:0, instrPrice:3000, instrDel:1000, ads:15000, startup:5000, wAds:6, wChat:6, wPrep:2, wInstr:2})
+      mk('paid','Танцевальный коллектив',{kind:'dance', n:0, price:18000, prepay:5000, meetings:4, mGuests:15, teachers:1, lessonRate:2500, pieces:5, pieceRate:2000, extra:0, lessons:12, lessonHours:2, rate:1000, ads:20000, startup:5000, licence:2000, wAds:6, wChat:6, wPrep:2, wInstr:0}),
+      mk('paid','Инструментальный ансамбль',{kind:'ensemble', n:0, price:18000, prepay:5000, meetings:4, mGuests:12, teachers:1, lessonRate:3000, extra:0, lessons:12, lessonHours:2, rate:1000, instrTimes:0, instrPrice:3000, instrDel:1000, ads:15000, startup:5000, wAds:6, wChat:6, wPrep:2, wInstr:2})
     ]};
   }
   function load(){
@@ -586,7 +588,7 @@ button.ghost{padding:5px 10px;font-size:13px;color:var(--muted)}
       if (s && s.g && s.concert && Array.isArray(s.list)){
         s.g = Object.assign({}, G_DEF, s.g); s.concert = Object.assign({}, C_DEF, s.concert);
         s.list = s.list.filter(function(c){ return c && c.id && (c.type === 'share' || c.type === 'paid'); }).map(function(c){ return Object.assign({}, BASE, c); });
-        s.list.forEach(function(c){ if (c.type === 'share' && c.name === 'Хор') c.name = 'Брусника'; });
+        s.list.forEach(function(c){ if (c.type === 'share' && c.name === 'Хор') c.name = 'Брусника'; if (c.type === 'paid' && (!c.kind || c.kind === 'other')){ if (/^Танцевальн/.test(c.name || '')) c.kind = 'dance'; else if (/^Инструментальн/.test(c.name || '')) c.kind = 'ensemble'; } });
         s.ui = s.ui && typeof s.ui === 'object' ? s.ui : {};
         if (s.concert.photo === 8000 && s.concert.video === 15000){ s.concert.photo = 10000; s.concert.video = 10000; }
         return s;
@@ -649,7 +651,7 @@ button.ghost{padding:5px 10px;font-size:13px;color:var(--muted)}
       });
       html += '</div></div>';
     });
-    html += '<div class="add"><button type="button" data-add="share">+ Хор «Брусники»</button><button type="button" data-add="choir">+ Хор с оплатой за занятия</button><button type="button" data-add="paid">+ Другой коллектив</button></div><p class="hint" style="font-size:12px;color:var(--muted);margin:0">Хоры «Брусники» делят прибыль по 33% с теми же партнёрами, каждый хор считается отдельно и разучивает свои новые песни, чтобы на общих концертах репертуар был вдвое больше. Остальные хоры и коллективы работают с оплатой руководителям за занятия.</p>';
+    html += '<div class="add"><button type="button" data-add="share">+ Хор «Брусники»</button><button type="button" data-add="choir">+ Хор</button><button type="button" data-add="dance">+ Танцевальный коллектив</button><button type="button" data-add="ensemble">+ Инструментальный ансамбль</button><button type="button" data-add="other">+ Другой коллектив</button></div><p class="hint" style="font-size:12px;color:var(--muted);margin:0">Новый блок получает следующий номер в своём направлении и копирует условия последнего такого блока, дальше меняйте их как нужно. Хоры «Брусники» делят прибыль по 33% с теми же партнёрами, остальные работают с оплатой руководителям за занятия.</p>';
     inputsEl.innerHTML = html;
   }
   function onInput(e){
@@ -688,29 +690,29 @@ button.ghost{padding:5px 10px;font-size:13px;color:var(--muted)}
     }
     if (t.dataset.remove){ state.list = state.list.filter(function(c){ return c.id !== t.dataset.remove; }); }
     else if (t.dataset.add){
-      var nCount = state.list.filter(function(c){ return /^Хор/.test(c.name || ''); }).length + 2;
-      var bCount = state.list.filter(function(c){ return c.type === 'share'; }).length + 1;
-      // Новый блок повторяет условия последнего блока того же направления; если такого нет, берутся исходные
+      // Новый блок повторяет условия последнего блока того же направления и получает следующий номер в нём
       var addKind = t.dataset.add;
-      var same = state.list.filter(function(c){
-        if (addKind === 'share') return c.type === 'share';
-        if (addKind === 'choir') return c.type === 'paid' && c.kind === 'choir';
-        return c.type === 'paid' && c.kind !== 'choir';
+      var same = state.list.filter(function(c){ return kindOf(c) === addKind; });
+      var base = BASE_NAMES[addKind] || 'Коллектив';
+      var nums = same.map(function(c){
+        var nm = String(c.name || '').trim();
+        if (nm === base) return 1;
+        var mm = nm.match(/\s(\d+)$/); return mm ? Number(mm[1]) : 1;
       });
-      var last = same[same.length - 1];
+      var next = nums.length ? Math.max.apply(null, nums) + 1 : 1;
+      var last = same[same.length - 1], blk;
       if (last){
-        var copy = JSON.parse(JSON.stringify(last));
-        copy.id = newId(); copy.collapsed = false;
-        copy.name = addKind === 'share' ? 'Брусника ' + bCount : addKind === 'choir' ? 'Хор ' + nCount : (last.name || 'Коллектив') + ' 2';
-        if (addKind === 'share') state.list.splice(state.list.indexOf(last) + 1, 0, copy);
-        else state.list.push(copy);
-        save(); renderInputs(); renderResults();
-        return;
+        blk = JSON.parse(JSON.stringify(last));
+        blk.id = newId(); blk.collapsed = false;
+      } else {
+        var tmpl = defaults().list.filter(function(c){ return kindOf(c) === addKind; })[0];
+        if (addKind === 'choir') tmpl = mk('paid', base, {kind:'choir', n:20, teachers:2, lessonRate:2500, extra:0, songs:15, musicians:2, musReh:4, ads:20000, startup:10000});
+        blk = tmpl ? Object.assign({}, tmpl, {id:newId(), n: tmpl.n || 15}) : mk('paid', base, {kind:addKind, n:15});
       }
-      if (t.dataset.add === 'share') state.list.splice(bCount - 1, 0, mk('share', 'Брусника ' + bCount, {n:20, price:18000, prepay:5000, meetings:4, mGuests:15, partners:2, lessonRate:800, concertRate:2000, lessons:12, lessonHours:2, rate:1000, songs:15, songPrice:1000, musicians:2, musReh:4, instrTimes:0, ads:20000, startup:5000, refShare:20, wAds:6, wChat:6, wPrep:3, wInstr:1}));
-      else state.list.push(t.dataset.add === 'choir'
-        ? mk('paid', 'Хор ' + nCount, {kind:'choir', n:20, price:18000, meetings:4, mGuests:15, teachers:2, lessonRate:2500, extra:0, lessons:12, lessonHours:2, songs:15, musicians:2, musReh:4, instrTimes:0, ads:20000, startup:10000, wAds:6, wChat:6, wPrep:3, wInstr:1})
-        : mk('paid', 'Новый коллектив', {n:15}));
+      if (addKind !== 'share') blk.kind = addKind;
+      blk.name = next > 1 ? base + ' ' + next : base;
+      if (last) state.list.splice(state.list.indexOf(last) + 1, 0, blk);
+      else state.list.push(blk);
     } else return;
     save(); renderInputs(); renderResults();
   });
