@@ -163,7 +163,7 @@ tr.hl td{font-weight:700;background:var(--berry-soft)}
 
   <div class="card">
     <h2>Три сценария первого хора</h2>
-    <p class="note" style="margin:-6px 0 12px">30, 45 и 60 участников в одном хоре. Набор и концерт растут вместе с хором: на встречу приходят 25 гостей, записываются 27% пришедших, приходят 72% записавшихся, запись стоит 450 ₽, на концерт продаётся 5 билетов на участника. Остальные цифры берутся из полей выше. Для 45–60 человек нужен зал побольше: проверьте цену аренды.</p>
+    <p class="note" style="margin:-6px 0 12px">30, 45 и 60 участников в одном хоре. Набор и концерт растут вместе с хором: встреч набора всегда 4–6, при большом наборе на каждую приходит больше гостей; в хор записываются 27% пришедших, приходят 72% записавшихся, запись стоит 450 ₽; на концерт 5 билетов на участника, но не меньше 100 и не больше 250. Остальные цифры берутся из полей выше. Для 45–60 человек нужен зал побольше: проверьте цену аренды.</p>
     <div class="tbl"><table id="pScen"></table></div>
   </div>
 
@@ -599,7 +599,7 @@ tr.hl td{font-weight:700;background:var(--berry-soft)}
       var e = each3(st); if (!e) return '';
       return '<tr' + (nv === r.n ? ' class="hl"' : '') + '><td>' + ppl(nv) + '</td><td class="r">' + rub(e.rr.Is + e.rr.meetInc) + '</td><td class="r">' + rub(e.rr.pool + e.rr.mPool) + '</td><td class="r">' + rub(e.each) + '</td></tr>';
     }).join('') + '</tbody>';
-    var rowsT2 = [80, 100, 126, 150, 200].concat([cc.tix]).filter(function(v, i, a){ return a.indexOf(v) === i; }).sort(function(a, b){ return a - b; });
+    var rowsT2 = [100, 150, 200, 250].concat([cc.tix]).filter(function(v, i, a){ return a.indexOf(v) === i; }).sort(function(a, b){ return a - b; });
     document.getElementById('pTix').innerHTML = '<thead><tr><th>Билетов</th><th class="r">Итог концерта</th><th class="r">Каждому из троих</th></tr></thead><tbody>' + rowsT2.map(function(tv){
       var st = clone(); st.concert.tix = tv; var e = each3(st); if (!e) return '';
       return '<tr' + (tv === cc.tix ? ' class="hl"' : '') + '><td>' + tv + '</td><td class="r">' + rub(e.mm.concert.net) + '</td><td class="r">' + rub(e.each) + '</td></tr>';
@@ -607,15 +607,15 @@ tr.hl td{font-weight:700;background:var(--berry-soft)}
     var scen = [30, 45, 60].map(function(nv){
       var st = clone(), cx = st.list.filter(function(x){ return x.id === c.id; })[0];
       var guests = Math.ceil(nv / 0.27), regs = Math.ceil(guests / 0.72);
-      cx.n = nv; cx.mGuests = 25; cx.meetings = Math.ceil(guests / 25); cx.ads = Math.round(regs * 450 / 1000) * 1000; st.concert.tix = nv * 5;
+      cx.n = nv; cx.meetings = Math.min(6, Math.max(4, Math.ceil(guests / 25))); cx.mGuests = Math.max(25, Math.ceil(guests / cx.meetings)); cx.ads = Math.round(regs * 450 / 1000) * 1000; st.concert.tix = Math.min(250, Math.max(100, nv * 5));
       var e = each3(st);
-      return {n:nv, guests:guests, regs:regs, meetings:cx.meetings, ads:cx.ads, tix:st.concert.tix, e:e};
+      return {n:nv, guests:guests, regs:regs, meetings:cx.meetings, mGuests:cx.mGuests, ads:cx.ads, tix:st.concert.tix, e:e};
     });
     function sRow(t, f, sub){ return '<tr' + (sub ? ' class="hl"' : '') + '><td>' + t + '</td>' + scen.map(function(x){ return '<td class="r">' + f(x) + '</td>'; }).join('') + '</tr>'; }
     document.getElementById('pScen').innerHTML = '<thead><tr><th>За цикл (4 мес.)</th>' + scen.map(function(x){ return '<th class="r">' + x.n + ' участников</th>'; }).join('') + '</tr></thead><tbody>'
       + sRow('Записей на встречи', function(x){ return String(x.regs); })
       + sRow('Гостей на встречах', function(x){ return String(x.guests); })
-      + sRow('Встреч набора по 25 гостей', function(x){ return String(x.meetings); })
+      + sRow('Встреч набора', function(x){ return x.meetings + ' по ' + x.mGuests + ' гостей'; })
       + sRow('Реклама на набор', function(x){ return rub(x.ads); })
       + sRow('Билетов на концерт', function(x){ return String(x.tix); })
       + sRow('Доходы', function(x){ return rub(x.e.rr.Is + x.e.rr.meetInc); })
