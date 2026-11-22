@@ -216,6 +216,7 @@ button.ghost{padding:5px 10px;font-size:13px;color:var(--muted)}
 
       <div class="actions">
         <button type="button" id="shareBtn">Скопировать ссылку с этими цифрами</button>
+        <button type="button" id="shareBtnP">Страница для партнёров «Брусники»</button>
         <button type="button" id="reset">Вернуть исходные цифры</button>
       </div>
       <div class="card" id="shareOut" hidden>
@@ -447,16 +448,19 @@ button.ghost{padding:5px 10px;font-size:13px;color:var(--muted)}
   var G_DEF = {season:3, prep:1, tax:6, ipYear:57390, fee:3.5, contrib:30, injury:0.2, ndfl:13, netMode:'net',
     acct:10000, site:3000, bot:5000, otherServ:1000,
     myRate:1000, wSiteBuild:40, wSiteSup:4, wBotBuild:30, wBotSup:4, wAcct:12, wHire:10, wConcert:25, wPartners:4, gAds:8, gChat:8, gPrep:4,
-    mkSite:80000, mkBot:100000, mkSup:15000, mkSmm:30000, mkOffice:10000, mkAdminH:400, mkEvent:40000, wRef:8, mkRef:15000};
+    mkSite:30000, mkBot:50000, mkSup:5000, mkSmm:20000, mkOffice:10000, mkAdminH:400, mkEvent:40000, wRef:8, mkRef:10000, mkTeachH:1500, mkSong:7000, mkSongHours:3, mkVer:2};
   var MARKET_FIELDS = [
-    ['mkSite','Сайты под ключ','₽ разово',1000],
-    ['mkBot','Бот с ИИ-ассистентом под ключ','₽ разово',1000],
-    ['mkSup','Поддержка сайтов и бота','₽ в месяц',500],
-    ['mkSmm','Таргет и соцсети для всех коллективов','₽ в месяц',1000],
-    ['mkOffice','Кадры, документы, договоры','₽ в месяц',500,'бухгалтерия на аутсорсе уже в расходах'],
-    ['mkAdminH','Администратор','₽ в час',50,'занятия, встречи, переписка, закупки, концерт'],
-    ['mkRef','Партнёрский маркетинг и реферальная программа','₽ в месяц',1000],
-    ['mkEvent','Организация концерта','₽ за концерт',1000]
+    ['mkSite','Сайты под ключ','₽ разово',1000,'лендинг у фрилансера: обычно 10–40 тыс. ₽'],
+    ['mkBot','Бот с ИИ-ассистентом под ключ','₽ разово',1000,'готовый бот с настройкой: от 30–50 тыс. ₽'],
+    ['mkSup','Поддержка сайтов и бота','₽ в месяц',500,'поддержка бота: от 5 тыс. ₽ в месяц'],
+    ['mkSmm','Таргет и соцсети для всех коллективов','₽ в месяц',1000,'SMM: медиана около 20 тыс. ₽ в месяц'],
+    ['mkOffice','Юридические и финансовые вопросы','₽ в месяц',500,'договоры, кадры, налоги, отчёты, контроль бухгалтера: от 5–14 тыс. ₽ в месяц'],
+    ['mkAdminH','Администратор','₽ в час',50,'Екатеринбург: обычно 250–800 ₽ в час'],
+    ['mkRef','Партнёрский маркетинг и реферальная программа','₽ в месяц',1000,'обычно процент со сделок; здесь условная сумма'],
+    ['mkEvent','Организация концерта','₽ за концерт',1000,'концертный директор: 70 тыс. ₽ за 2 месяца работы'],
+    ['mkTeachH','Руководитель коллектива на рынке','₽ в час',100,'для оценки вклада руководителей; данных мало, проверьте'],
+    ['mkSong','Аранжировка и запись разбора на рынке','₽ за песню',500,'авторская аранжировка: от 7 тыс. ₽ за песню'],
+    ['mkSongHours','Часов на одну песню','ч',0.5,'аранжировка и запись разбора']
   ];
   var C_DEF = {tix:150, tixPrice:700, cHours:6, hall:40000, sound:10000, photo:10000, video:10000, instr:0, instrDel:0, ads:10000, rao:5};
   var BASE = {n:0, price:18000, prepay:5000, meetings:4, mGuests:15, mPrice:500, mHours:2, mTreats:150,
@@ -487,7 +491,7 @@ button.ghost{padding:5px 10px;font-size:13px;color:var(--muted)}
     ['wSiteSup','Сайты: поддержка и обновления','ч в месяц',1],
     ['wBotBuild','Бот с ИИ-ассистентом: создание','часов разово',1],
     ['wBotSup','Бот: поддержка и настройка ответов','ч в месяц',1],
-    ['wAcct','Учёт, кадры, договоры, отчёты','ч в месяц',1],
+    ['wAcct','Юридические и финансовые вопросы','ч в месяц',1,'ИП, договоры, кадры, налоги, отчёты, касса, бухгалтер'],
     ['wHire','Поиск специалистов и залов','ч за сезон',1],
     ['wConcert','Организация концерта','ч за сезон',1,'площадка, билеты, РАО, подрядчики'],
     ['wRef','Партнёры: поиск, рефералка, реклама у них','ч в месяц',1,'договоры с партнёрами, ссылки, отчёты по выплатам'],
@@ -586,11 +590,13 @@ button.ghost{padding:5px 10px;font-size:13px;color:var(--muted)}
     try {
       var s = JSON.parse(localStorage.getItem(KEY) || 'null');
       if (s && s.g && s.concert && Array.isArray(s.list)){
+        var oldMk = s.g.mkVer;
         s.g = Object.assign({}, G_DEF, s.g); s.concert = Object.assign({}, C_DEF, s.concert);
         s.list = s.list.filter(function(c){ return c && c.id && (c.type === 'share' || c.type === 'paid'); }).map(function(c){ return Object.assign({}, BASE, c); });
         s.list.forEach(function(c){ if (c.type === 'share' && c.name === 'Хор') c.name = 'Брусника'; if (c.type === 'paid' && (!c.kind || c.kind === 'other')){ if (/^Танцевальн/.test(c.name || '')) c.kind = 'dance'; else if (/^Инструментальн/.test(c.name || '')) c.kind = 'ensemble'; } });
         s.ui = s.ui && typeof s.ui === 'object' ? s.ui : {};
         if (s.concert.photo === 8000 && s.concert.video === 15000){ s.concert.photo = 10000; s.concert.video = 10000; }
+        if (!(oldMk >= 2)) ['mkSite','mkBot','mkSup','mkSmm','mkOffice','mkAdminH','mkRef','mkEvent','mkTeachH','mkSong','mkSongHours','mkVer'].forEach(function(k){ s.g[k] = G_DEF[k]; });
         return s;
       }
     } catch(e){}
@@ -1030,7 +1036,7 @@ button.ghost{padding:5px 10px;font-size:13px;color:var(--muted)}
       {t:'Сайты: поддержка', h:g.wSiteSup * S},
       {t:'Бот с ИИ-ассистентом: создание', h:g.wBotBuild},
       {t:'Бот: поддержка и настройка ответов', h:g.wBotSup * S},
-      {t:'Учёт, кадры, договоры, отчёты', h:g.wAcct * S},
+      {t:'Юридические и финансовые вопросы', h:g.wAcct * S},
       {t:'Поиск специалистов и залов', h:g.wHire},
       {t:'Организация концерта', h:g.wConcert},
       {t:'Концертный день', h:m.totalN > 0 ? cc.cHours : 0},
@@ -1051,7 +1057,7 @@ button.ghost{padding:5px 10px;font-size:13px;color:var(--muted)}
       {t:'Поддержка сайтов и бота', s: rub(g.mkSup) + ' × ' + pct(S) + ' мес', v: rub(g.mkSup * S)},
       {t:'Таргет и соцсети', s: rub(g.mkSmm) + ' × ' + pct(S) + ' мес', v: rub(g.mkSmm * S)},
       {t:'Партнёрский маркетинг и рефералка', s: rub(g.mkRef) + ' × ' + pct(S) + ' мес', v: rub(g.mkRef * S)},
-      {t:'Кадры, документы, договоры', s: rub(g.mkOffice) + ' × ' + pct(S) + ' мес', v: rub(g.mkOffice * S)},
+      {t:'Юридические и финансовые вопросы', s: rub(g.mkOffice) + ' × ' + pct(S) + ' мес', v: rub(g.mkOffice * S)},
       {t:'Администратор', s: hrs(adminHrs) + ' × ' + rub(g.mkAdminH) + ': занятия, встречи, переписка, закупки, концерт', v: rub(adminHrs * g.mkAdminH)},
       {t:'Организация концерта', v: rub(m.totalN > 0 ? g.mkEvent : 0)}
     ];
@@ -1158,16 +1164,18 @@ button.ghost{padding:5px 10px;font-size:13px;color:var(--muted)}
   function clearHash(){ try { history.replaceState(null, '', location.pathname + location.search); } catch(e){} }
   document.getElementById('keepLink').addEventListener('click', function(){ viewingLink = false; save(); banner.hidden = true; clearHash(); });
   document.getElementById('backMine').addEventListener('click', function(){ viewingLink = false; state = load(); banner.hidden = true; clearHash(); renderInputs(); renderResults(); });
-  document.getElementById('shareBtn').addEventListener('click', function(){
+  function shareLink(page, okText){
     var out = document.getElementById('shareOut'), inp = document.getElementById('shareUrl'), msg = document.getElementById('shareMsg');
     encodeState(state).then(function(code){
-      var url = SITE + '#d=' + code;
+      var url = SITE + page + '#d=' + code;
       inp.value = url; out.hidden = false;
-      var done = function(){ msg.textContent = 'Ссылка скопирована. Отправьте её партнёрам: у них откроются ровно эти цифры, а их собственные не затрутся.'; };
+      var done = function(){ msg.textContent = okText; };
       var manual = function(){ inp.focus(); inp.select(); msg.textContent = 'Скопируйте ссылку из поля ниже и отправьте партнёрам.'; };
       if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(done, manual); else manual();
     });
-  });
+  }
+  document.getElementById('shareBtn').addEventListener('click', function(){ shareLink('', 'Ссылка скопирована. По ней откроется полная смета ровно с этими цифрами, чужие цифры не затрутся.'); });
+  document.getElementById('shareBtnP').addEventListener('click', function(){ shareLink('partners.html', 'Ссылка на страницу для партнёров скопирована. Там только «Брусника»: деньги сезона, встречи и кто что делает, с вашими цифрами.'); });
   (function(){
     var mm = /^#d=(.+)$/.exec(location.hash || '');
     if (!mm) return;
@@ -1189,4 +1197,5 @@ button.ghost{padding:5px 10px;font-size:13px;color:var(--muted)}
   window.__choirModel = function(){ return model(state); };
 })();
 </script>
+
 </html>
