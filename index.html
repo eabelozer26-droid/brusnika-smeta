@@ -202,7 +202,7 @@ button.ghost{padding:5px 10px;font-size:13px;color:var(--muted)}
           <li>Ваши взносы ИП за себя в расходы «Брусники» не входят: они вычитаются из вашей доли вместе с экономией на УСН, которую они дают. В остальных коллективах прибыль ваша, поэтому взносы считаются там как расход.</li>
           <li>Реферальные выплаты партнёрам — процент с абонементов участников, которые пришли по их ссылкам. Это расход коллектива.</li>
           <li>Остальные хоры и коллективы, как в частной творческой студии: руководителям платится сдельно за каждое занятие, встречу набора и постановку. Прибыль ваша. Репертуар (аранжировки) есть только у хоров: танцы работают на общем репертуаре с вокалистами.</li>
-          <li>Все специалисты (руководители, музыканты, аранжировщик, звукорежиссёр, фото, видео) по срочным трудовым договорам. К их оплате добавляются взносы 30,2% и компенсация за неиспользованный отпуск, около 8%. Переключатель вверху задаёт, указаны ставки на руки или до НДФЛ.</li>
+          <li>Руководители, музыканты и аранжировщик работают по срочным трудовым договорам. Звукорежиссёр, фотограф и видеограф самозанятые: платите разово за концерт по чеку, налогов с вашей стороны нет. К их оплате добавляются взносы 30,2% и компенсация за неиспользованный отпуск, около 8%. Переключатель вверху задаёт, указаны ставки на руки или до НДФЛ.</li>
           <li>Компенсация отпуска посчитана для всех. У разового договора на один концертный день её может не быть: это зависит от срока, уточните у бухгалтера.</li>
           <li>Встречи набора платные, по умолчанию 4 за месяц до старта. Предоплата при записи засчитывается в абонемент и в доход отдельно не добавляется.</li>
           <li>В «Бруснике» деньги за встречи считаются отдельно и делятся поровну на троих сразу после встреч: билеты минус аренда, чай с печеньем, комиссия и налоги. Реклама вычитается только из прибыли сезона.</li>
@@ -295,9 +295,9 @@ button.ghost{padding:5px 10px;font-size:13px;color:var(--muted)}
           <p class="where">Продление: если следующий сезон идёт сразу, заключите дополнительное соглашение о новом сроке до окончания текущего. Много срочных договоров подряд на ту же работу суд может признать бессрочными. Обсудите это с юристом.</p>
         </div></li>
         <li><div class="date">к концерту</div><div class="what">
-          <p><span class="tag ip">вы</span><span class="tag emp">специалисты</span><b>Звукорежиссёр, фотограф, видеограф: срочный договор на день концерта.</b></p>
-          <p>Приём, ЕФС-1 на следующий рабочий день, расчёт в последний день договора, ЕФС-1 об увольнении. Это много бумаг на один день.</p>
-          <p class="where">Если захотите упростить: разовую услугу без графика и подчинения можно законно купить у ИП или самозанятого по договору услуг. Руководителей это не касается.</p>
+          <p><span class="tag ip">вы</span><span class="tag emp">специалисты</span><b>Звукорежиссёр, фотограф, видеограф: самозанятые, разово за каждый концерт.</b></p>
+          <p>Перед первой оплатой проверьте статус самозанятого на сайте ФНС (npd.nalog.ru/check-status). Договор оказания услуг на конкретный концерт: дата, площадка, что входит (звук; фото; видео и сроки сдачи материалов), сумма. После оплаты берите чек из «Моего налога». Налогов и отчётов с вашей стороны нет.</p>
+          <p class="where">Это законно, потому что работа разовая, без графика и подчинения, на каждой площадке отдельно. Руководителей и музыкантов коллективов это не касается: у них график, они по срочным трудовым договорам.</p>
         </div></li>
       </ol>
     </section>
@@ -458,7 +458,7 @@ button.ghost{padding:5px 10px;font-size:13px;color:var(--muted)}
     ['mkRef','Партнёрский маркетинг и реферальная программа','₽ в месяц',1000],
     ['mkEvent','Организация концерта','₽ за концерт',1000]
   ];
-  var C_DEF = {tix:150, tixPrice:700, cHours:6, hall:40000, sound:10000, photo:8000, video:15000, instr:5000, instrDel:2000, ads:10000, rao:5};
+  var C_DEF = {tix:150, tixPrice:700, cHours:6, hall:40000, sound:10000, photo:10000, video:10000, instr:5000, instrDel:2000, ads:10000, rao:5};
   var BASE = {n:0, price:18000, prepay:5000, meetings:4, mGuests:15, mPrice:500, mHours:2, mTreats:150,
     kind:'other', partners:2, concertRate:2000, pieces:0, pieceRate:2000, teachers:1, lessonRate:2500, extra:0, lessons:12, lessonHours:2, rate:1000, mRate:1000,
     songs:0, songPrice:1000, musicians:0, musReh:0, musRehFee:2500, musConcertFee:5000,
@@ -494,13 +494,13 @@ button.ghost{padding:5px 10px;font-size:13px;color:var(--muted)}
     ['wPartners','Расчёт и отчёт для партнёров «Брусники»','ч за сезон',1,'делёж прибыли']
   ];
   var CONCERT_FIELDS = [
-    ['tix','Продано билетов','шт',10],
+    ['tix','Продано билетов','шт на концерт',10],
     ['tixPrice','Цена билета','₽',50],
     ['cHours','Длительность концертного дня','ч',0.5,'с саундчеком; для учёта работы'],
-    ['hall','Аренда зала','₽',1000],
-    ['sound','Звукорежиссёр','₽',500,'свет отдельно не оплачивается'],
-    ['photo','Фотограф','₽',500],
-    ['video','Видеограф','₽',500],
+    ['hall','Аренда зала','₽ за концерт',1000],
+    ['sound','Звукорежиссёр','₽ за концерт',500,'самозанятый; свет отдельно не оплачивается'],
+    ['photo','Фотограф','₽ за концерт',500,'самозанятый'],
+    ['video','Видеограф','₽ за концерт',500,'самозанятый'],
     ['instr','Аренда инструментов','₽',500,'арендуете вы'],
     ['instrDel','Доставка инструментов','₽',500],
     ['ads','Доп. реклама концерта','₽',500],
@@ -591,6 +591,7 @@ button.ghost{padding:5px 10px;font-size:13px;color:var(--muted)}
         s.list = s.list.filter(function(c){ return c && c.id && (c.type === 'share' || c.type === 'paid'); }).map(function(c){ return Object.assign({}, BASE, c); });
         s.list.forEach(function(c){ if (c.type === 'share' && c.name === 'Хор') c.name = 'Брусника'; });
         s.ui = s.ui && typeof s.ui === 'object' ? s.ui : {};
+        if (s.concert.photo === 8000 && s.concert.video === 15000){ s.concert.photo = 10000; s.concert.video = 10000; }
         return s;
       }
     } catch(e){}
@@ -636,7 +637,7 @@ button.ghost{padding:5px 10px;font-size:13px;color:var(--muted)}
       + boxHtml('Общие расходы ИП', 'g', SERV_FIELDS, g, 'Делятся между коллективами по их доходам.', '', 'in_serv')
       + boxHtml('Ваша общая работа', 'g', ME_FIELDS, g, 'Считается в часах, в расходы не идёт.', '', 'in_me')
       + boxHtml('Ваша работа по рыночным ценам', 'g', MARKET_FIELDS, g, 'Сколько стоило бы заказать это на стороне. Это ориентиры, впишите цены, которые знаете. В расходы не идёт.', '', 'in_market')
-      + boxHtml('Общий отчётный концерт', 'concert', CONCERT_FIELDS, state.concert, 'Итог концерта делится между коллективами по числу участников. Специалисты по срочному договору на день концерта.', '', 'in_concert')
+      + boxHtml('Общий отчётный концерт', 'concert', CONCERT_FIELDS, state.concert, 'Итог концерта делится между коллективами по числу участников. На одном концерте до 2 хоров и до 2 других коллективов: если коллективов больше, концертов станет несколько. Звукорежиссёр, фотограф и видеограф самозанятые, оплата разово за концерт.', '', 'in_concert')
       + '<div class="part">Коллективы</div>'
       + '<div class="add"><button type="button" class="ghost" data-fold="1">Свернуть все</button><button type="button" class="ghost" data-fold="0">Развернуть все</button></div>';
     state.list.forEach(function(c){
@@ -734,12 +735,16 @@ button.ghost{padding:5px 10px;font-size:13px;color:var(--muted)}
     var items = st.list.map(function(c){ var n = c.id === oid ? on : c.n; return {c:c, n:Math.max(0, Math.round(n || 0))}; });
     var totalN = 0, totalRev = 0;
     items.forEach(function(x){ if (x.n > 0){ totalN += x.n; totalRev += revOf(x.c, x.n); } });
-    var box = cc.tix * cc.tixPrice;
-    var cSound = emp(cc.sound, g), cPhoto = emp(cc.photo, g), cVideo = emp(cc.video, g);
-    var cStaff = sumEmp([cSound, cPhoto, cVideo]);
+    // Концертов в сезоне: на одной площадке до 2 хоров и до 2 других коллективов
+    var nCh = 0, nOt = 0;
+    items.forEach(function(x){ if (x.n > 0){ if (x.c.type === 'share' || x.c.kind === 'choir') nCh++; else nOt++; } });
+    var nC = Math.max(1, Math.ceil(nCh / 2), Math.ceil(nOt / 2));
+    var box = cc.tix * cc.tixPrice * nC;
+    // Звукорежиссёр, фотограф, видеограф самозанятые: разовая оплата за концерт, налогов с вашей стороны нет
+    var cStaff = {contrib:0, ndfl:0, cost:(cc.sound + cc.photo + cc.video) * nC};
     var cRao = box * cc.rao / 100, cFee = box * g.fee / 100;
-    var cCost = cc.hall + cc.instr + cc.instrDel + cc.ads + cRao + cFee + cStaff.cost;
-    var concert = {box:box, sound:cSound, photo:cPhoto, video:cVideo, staff:cStaff, rao:cRao, fee:cFee, cost:cCost, net:box - cCost, on:totalN > 0};
+    var cCost = (cc.hall + cc.instr + cc.instrDel + cc.ads) * nC + cRao + cFee + cStaff.cost;
+    var concert = {n:nC, nCh:nCh, nOt:nOt, box:box, staff:cStaff, rao:cRao, fee:cFee, cost:cCost, net:box - cCost, on:totalN > 0};
     var Itot = totalRev + (totalN > 0 ? box : 0);
     var ipAll = g.ipYear * S / 12 + 0.01 * Math.max(0, Itot - 300000 * S / 12);
     var acctAll = g.acct * S, servAll = (g.site + g.bot + g.otherServ) * S;
@@ -827,7 +832,7 @@ button.ghost{padding:5px 10px;font-size:13px;color:var(--muted)}
     var res = items.map(function(x){ return calcOne(x.c, x.n); });
     var you = 0, taxes = 0, meColl = 0;
     res.forEach(function(r){ you += r.you; taxes += r.taxes; meColl += r.meTotal; });
-    var meGeneral = g.wSiteBuild + g.wBotBuild + (g.wSiteSup + g.wBotSup + g.wAcct + g.wRef) * S + g.wHire + g.wConcert + g.wPartners + (totalN > 0 ? cc.cHours : 0);
+    var meGeneral = g.wSiteBuild + g.wBotBuild + (g.wSiteSup + g.wBotSup + g.wAcct + g.wRef) * S + g.wHire + g.wConcert + g.wPartners + (totalN > 0 ? cc.cHours * nC : 0);
     var start = g.acct + g.site + g.bot + g.otherServ;
     items.forEach(function(x){ if (x.n > 0) start += x.c.ads + x.c.startup; });
     return {res:res, concert:concert, you:you, taxes:taxes, meGeneral:meGeneral, meColl:meColl, meAll:meGeneral + meColl, start:start, S:S, totalN:totalN, ipAll:ipAll, acctAll:acctAll, servAll:servAll};
@@ -956,7 +961,7 @@ button.ghost{padding:5px 10px;font-size:13px;color:var(--muted)}
     var S = m.S, cc = state.concert, isS = c.type === 'share', nk = 1 - g.ndfl / 100;
     var rows = [], hAll = 0, mAll = 0, hMe = 0, mMe = 0;
     function add(t, s, h, mv, ph){ rows.push({t:t, s:s, h:h, m:mv, ph:ph}); if (h) hAll += h; if (mv) mAll += mv; }
-    var concDay = m.totalN > 0 ? cc.cHours : 0;
+    var concDay = m.totalN > 0 ? cc.cHours * m.concert.n : 0;
     var genH = Math.max(0, m.meGeneral - concDay - g.wConcert) * r.s;
     var meItems = [
       ['Занятия: оплаты, отметки, атмосфера', Math.round(r.lessons) + ' занятий', r.lessonHrs],
@@ -997,9 +1002,9 @@ button.ghost{padding:5px 10px;font-size:13px;color:var(--muted)}
     }
     var co = m.concert;
     rows.push({group:'Концерт: специалисты, доля коллектива ' + pct(r.w * 100) + '%'});
-    add('Звукорежиссёр', '', cc.cHours * r.w, cc.sound * r.w);
-    add('Фотограф', '', cc.cHours * r.w, cc.photo * r.w);
-    add('Видеограф', '', cc.cHours * r.w, cc.video * r.w);
+    add('Звукорежиссёр', 'самозанятый', cc.cHours * m.concert.n * r.w, cc.sound * m.concert.n * r.w);
+    add('Фотограф', 'самозанятый', cc.cHours * m.concert.n * r.w, cc.photo * m.concert.n * r.w);
+    add('Видеограф', 'самозанятый', cc.cHours * m.concert.n * r.w, cc.video * m.concert.n * r.w);
     rows.push({t:'Всего работ за сезон', s:'вы, руководители, музыканты, специалисты', h:hAll, m:mAll, sub:true});
     var tiles = '<div class="split four" style="margin-top:14px">'
       + '<div class="person"><span>Часов работы всех</span><b>' + hrs(hAll) + '</b><em>за сезон</em></div>'
@@ -1066,14 +1071,15 @@ button.ghost{padding:5px 10px;font-size:13px;color:var(--muted)}
     // Концерт
     var co = m.concert, act = m.res.filter(function(r){ return r.active; });
     var cRows = [
-      {t:'Билеты', s: cc.tix + ' × ' + rub(cc.tixPrice), v: rub(co.box)},
+      {t:'Концертов в сезоне', s: co.nCh + ' ' + plural(co.nCh, ['хор','хора','хоров']) + ' и ' + co.nOt + ' других коллективов; на концерт до 2 хоров и до 2 других', v: String(co.n)},
+      {t:'Билеты', s: co.n + ' × ' + cc.tix + ' × ' + rub(cc.tixPrice), v: rub(co.box)},
       {group:'Расходы'},
-      {t:'Аренда зала', v: rub(cc.hall)},
-      {t:'Звукорежиссёр', s:'на руки ' + rub(co.sound.net) + ', с налогами и отпуском', v: rub(co.sound.cost)},
-      {t:'Фотограф', s:'на руки ' + rub(co.photo.net), v: rub(co.photo.cost)},
-      {t:'Видеограф', s:'на руки ' + rub(co.video.net), v: rub(co.video.cost)},
-      {t:'Аренда и доставка инструментов', v: rub(cc.instr + cc.instrDel)},
-      {t:'Доп. реклама концерта', v: rub(cc.ads)},
+      {t:'Аренда зала', s: co.n + ' × ' + rub(cc.hall), v: rub(cc.hall * co.n)},
+      {t:'Звукорежиссёр', s:'самозанятый, ' + co.n + ' × ' + rub(cc.sound), v: rub(cc.sound * co.n)},
+      {t:'Фотограф', s:'самозанятый, ' + co.n + ' × ' + rub(cc.photo), v: rub(cc.photo * co.n)},
+      {t:'Видеограф', s:'самозанятый, ' + co.n + ' × ' + rub(cc.video), v: rub(cc.video * co.n)},
+      {t:'Аренда и доставка инструментов', s: co.n + ' × ' + rub(cc.instr + cc.instrDel), v: rub((cc.instr + cc.instrDel) * co.n)},
+      {t:'Доп. реклама концерта', s: co.n + ' × ' + rub(cc.ads), v: rub(cc.ads * co.n)},
       {t:'РАО ' + pct(cc.rao) + '% билетов', v: rub(co.rao)},
       {t:'Комиссия Продамуса', v: rub(co.fee)},
       {t:'Итог концерта', v: rub(co.net), sub:true}
@@ -1086,11 +1092,11 @@ button.ghost{padding:5px 10px;font-size:13px;color:var(--muted)}
       + '<div class="fbody">' + (co.on ? '' : '<span class="status off">Пока нет запущенных коллективов, итог концерта не распределён</span>')
       + '<div class="tbl"><table>' + rows2(cRows) + '</table></div>'
       + det('concert_work', 'Кто сколько работает на концерте', '<div class="tbl"><table>' + rows4([
-          {t:'Звукорежиссёр', h:cc.cHours, m:co.sound.net},
-          {t:'Фотограф', h:cc.cHours, m:co.photo.net},
-          {t:'Видеограф', h:cc.cHours, m:co.video.net},
-          {t:'Вы', s:'плюс подготовка, она в вашей общей работе', h:cc.cHours, m:null, mt:'—'}
-        ]) + '</table></div>') + '</div>';
+          {t:'Звукорежиссёр', s:'самозанятый', h:cc.cHours * co.n, m:cc.sound * co.n},
+          {t:'Фотограф', s:'самозанятый', h:cc.cHours * co.n, m:cc.photo * co.n},
+          {t:'Видеограф', s:'самозанятый', h:cc.cHours * co.n, m:cc.video * co.n},
+          {t:'Вы', s:'плюс подготовка, она в вашей общей работе', h:cc.cHours * co.n, m:null, mt:'—'}
+        ], 'Оплата') + '</table></div>') + '</div>';
     ['meCard:r_me', 'concertCard:r_concert', 'taxCard:r_taxes', 'notesCard:r_notes'].forEach(function(p){
       var a = p.split(':'), el = document.getElementById(a[0]); el.classList.toggle('folded', isF(a[1]));
       var b = el.querySelector && el.querySelector('[data-fold-key="' + a[1] + '"]'); if (b) b.setAttribute('aria-expanded', String(!isF(a[1])));
