@@ -104,7 +104,7 @@ td.r,th.r{text-align:right}
     <div class="nums">
       <div class="num"><span>Участников «Малины»</span><b><span data-p="n">30</span></b><em>цель набора к 16 января</em></div>
       <div class="num"><span>Абонемент на сезон</span><b><span data-p="price">18 000 ₽</span></b><em>от <span data-p="priceM">6 000 ₽</span> в месяц, оплата частями</em></div>
-      <div class="num"><span>Окупаемость</span><b><span data-p="be">19</span></b><em>участников при текущих расходах</em></div>
+      <div class="num"><span>Окупаемость</span><b><span data-p="be">19</span></b><em><span data-p="beWord">участников</span> при текущих расходах</em></div>
       <div class="num"><span>Каждому <span data-p="of">из троих</span></span><b>≈ <span data-p="eachK">72 тыс. ₽</span></b><em>за цикл при <span data-p="nPpl">30 участниках</span>, ≈ <span data-p="eachMK">18 тыс.</span> в месяц</em></div>
       <div class="num"><span>Встреч набора</span><b><span data-p="meetings">5</span></b><em>всегда <span data-p="mRange">4–6</span>, по <span data-p="mGuests">25</span> гостей, билет <span data-p="mPrice">500 ₽</span></em></div>
       <div class="num"><span>Гостей на встречах</span><b>≈ <span data-p="guests">112</span></b><em>запись в хор <span data-p="conv">27%</span></em></div>
@@ -214,7 +214,7 @@ td.r,th.r{text-align:right}
   <section class="card">
     <h2>Риски и что с ними делаем</h2>
     <ul class="risks">
-      <li><b>Набор ниже плана.</b> Окупаемость с <span data-p="be">19</span> участников при цели <span data-p="n">30</span>. Еженедельный контроль воронки, дополнительные встречи, мероприятия как второй вход.</li>
+      <li><b>Набор ниже плана.</b> Окупаемость с <span data-p="beFrom">19 участников</span> при цели <span data-p="n">30</span>. Еженедельный контроль воронки, дополнительные встречи, мероприятия как второй вход.</li>
       <li><b>Отток и возвраты.</b> Оплата сезона целиком или частями, понятные условия возврата в оферте, сообщество и мероприятия для удержания.</li>
       <li><b>Продажи билетов на концерт.</b> Со всеми расходами (зал, генеральная репетиция, звук, фото, видео, реклама, печать, оформление, помощники, транспорт, РАО) концерт окупается с <span data-p="tixBe">164</span> билетов. Ранняя продажа участникам и их близким, совместный концерт двух коллективов.</li>
       <li><b>Юридические вопросы.</b> Формат без обучения, срочные договоры, тариф на травматизм, туры: проверка у юриста и бухгалтера в фонде.</li>
@@ -452,6 +452,7 @@ td.r,th.r{text-align:right}
   function plural(n, f){ n = Math.abs(n) % 100; var n1 = n % 10; if (n > 10 && n < 20) return f[2]; if (n1 > 1 && n1 < 5) return f[1]; if (n1 === 1) return f[0]; return f[2]; }
   var PEOPLE = ['участник','участника','участников'];
   function ppl(n){ return isFinite(n) ? n + ' ' + plural(n, PEOPLE) : 'больше 400'; }
+  function pplFrom(n){ return isFinite(n) ? n + ' ' + (n % 10 === 1 && n % 100 !== 11 ? 'участника' : 'участников') : 'больше 400 участников'; }
   function rows2(rows){
     return rows.map(function(rw){
       if (rw.group) return '<tr class="group"><td colspan="2">' + rw.group + '</td></tr>';
@@ -510,7 +511,7 @@ td.r,th.r{text-align:right}
       Sm: mon(Sx), Mm: mon(M), Pm: P === 1 ? 'месяц' : mon(P),
       src: fromLink ? 'Цифры из присланной ссылки.' : 'Цифры из сметы на этом устройстве.',
       n: String(r.n), nPpl: r.n + ' ' + plural(r.n, ['участнике','участниках','участниках']),
-      price: rub(c.price), priceM: rub(c.price / M), be: String(beOf(c.id)),
+      price: rub(c.price), priceM: rub(c.price / M), be: String(beOf(c.id)), beWord: plural(beOf(c.id), PEOPLE), beFrom: pplFrom(beOf(c.id)),
       of: 'из ' + ofWord(k + 1), eachK: tys(each) + ' ₽', eachMK: tys(each / Sx),
       meetings: String(c.meetings), mRange: g.scMMin + '–' + g.scMMax, mGuests: String(c.mGuests), mPrice: rub(c.mPrice),
       guests: String(guests), conv: pct(guests > 0 ? r.n / guests * 100 : 0) + '%',

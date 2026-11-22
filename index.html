@@ -887,6 +887,7 @@ button.ghost{padding:5px 10px;font-size:13px;color:var(--muted)}
   function plural(n, f){ n = Math.abs(n) % 100; var n1 = n % 10; if (n > 10 && n < 20) return f[2]; if (n1 > 1 && n1 < 5) return f[1]; if (n1 === 1) return f[0]; return f[2]; }
   var PEOPLE = ['участник','участника','участников'];
   function ppl(n){ return isFinite(n) ? n + ' ' + plural(n, PEOPLE) : 'больше 400'; }
+  function pplFrom(n){ return isFinite(n) ? n + ' ' + (n % 10 === 1 && n % 100 !== 11 ? 'участника' : 'участников') : 'больше 400 участников'; }
   function rows2(rows){
     return rows.map(function(rw){
       if (rw.group) return '<tr class="group"><td colspan="2">' + rw.group + '</td></tr>';
@@ -942,7 +943,7 @@ button.ghost{padding:5px 10px;font-size:13px;color:var(--muted)}
       var k = r.k;
       html += '<div class="split"><div class="person you"><span>Вам</span><b class="' + (r.you < 0 ? 'neg' : '') + '">' + rub(r.you) + '</b><em>сезон ' + rub(r.shareYou) + ' + встречи ' + rub(r.mYou) + ', минус ваши взносы ИП</em></div>'
         + (k > 0 ? '<div class="person t"><span>Каждому руководителю-партнёру</span><b>' + rub(r.tNet) + '</b><em>встречи ' + rub(r.mTNet) + ' сразу; сдельно по актам ' + rub(r.adv.net) + '; бонус после концерта ' + rub(r.bonus * nk) + '</em></div>' : '<div class="person"></div>')
-        + '<div class="person"><span>Окупается с</span><b>' + ppl(be) + '</b></div></div>';
+        + '<div class="person"><span>Окупается с</span><b>' + pplFrom(be) + '</b></div></div>';
       html += '<span class="status ' + (r.equal && r.shareYou >= 0 ? 'ok' : 'no') + '">' + (r.equal ? 'По 33%: ' + rub(r.tNet / S) + ' в месяц каждому' : (r.shareYou >= 0 ? 'Сдельные авансы партнёров больше их 33%: вам остаётся меньше' : 'Убыток сезона: сдельная оплата партнёров покрывается из ваших средств, недостаёт ' + rub(-r.shareYou))) + '</span>';
       var pool = common.concat([
         {group:'Налоги'},
@@ -971,7 +972,7 @@ button.ghost{padding:5px 10px;font-size:13px;color:var(--muted)}
     } else {
       html += '<div class="split"><div class="person you"><span>Ваша прибыль</span><b class="' + (r.you < 0 ? 'neg' : '') + '">' + rub(r.you) + '</b><em>' + rub(r.you / S) + ' в месяц</em></div>'
         + '<div class="person t"><span>Руководителям на руки</span><b>' + rub(r.team.net) + '</b><em>с налогами вам стоит ' + rub(r.team.cost) + '</em></div>'
-        + '<div class="person"><span>Окупается с</span><b>' + ppl(be) + '</b></div></div>';
+        + '<div class="person"><span>Окупается с</span><b>' + pplFrom(be) + '</b></div></div>';
       html += '<span class="status ' + (r.you >= 0 ? 'ok' : 'no') + '">' + (r.you >= 0 ? 'Прибыль ваша: ' + rub(r.you / S) + ' в месяц' : 'Убыток ' + rub(-r.you) + ' за сезон') + '</span>';
       var tbl = common.concat([
         {group:'Руководители'},
