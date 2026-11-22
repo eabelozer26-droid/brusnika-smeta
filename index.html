@@ -443,10 +443,10 @@ button.ghost{padding:5px 10px;font-size:13px;color:var(--muted)}
 
 <script>
 (function(){
-  var VAC = 28 / 12 / 29.3, WK = 4.33, KEY = 'choir-budget-v9';
+  var VAC = 28 / 12 / 29.3, WK = 4.33, KEY = 'choir-budget-v10';
   var G_DEF = {season:3, prep:1, tax:6, ipYear:57390, fee:3.5, contrib:30, injury:0.2, ndfl:13, netMode:'net',
     acct:10000, site:3000, bot:5000, otherServ:1000,
-    myRate:1000, wSiteBuild:40, wSiteSup:4, wBotBuild:30, wBotSup:4, wAcct:12, wHire:10, wConcert:25, wPartners:4,
+    myRate:1000, wSiteBuild:40, wSiteSup:4, wBotBuild:30, wBotSup:4, wAcct:12, wHire:10, wConcert:25, wPartners:4, gAds:8, gChat:8, gPrep:4,
     mkSite:80000, mkBot:100000, mkSup:15000, mkSmm:30000, mkOffice:10000, mkAdminH:400, mkEvent:40000, wRef:8, mkRef:15000};
   var MARKET_FIELDS = [
     ['mkSite','Сайты под ключ','₽ разово',1000],
@@ -458,7 +458,7 @@ button.ghost{padding:5px 10px;font-size:13px;color:var(--muted)}
     ['mkRef','Партнёрский маркетинг и реферальная программа','₽ в месяц',1000],
     ['mkEvent','Организация концерта','₽ за концерт',1000]
   ];
-  var C_DEF = {tix:150, tixPrice:700, cHours:6, hall:40000, sound:10000, photo:10000, video:10000, instr:5000, instrDel:2000, ads:10000, rao:5};
+  var C_DEF = {tix:150, tixPrice:700, cHours:6, hall:40000, sound:10000, photo:10000, video:10000, instr:0, instrDel:0, ads:10000, rao:5};
   var BASE = {n:0, price:18000, prepay:5000, meetings:4, mGuests:15, mPrice:500, mHours:2, mTreats:150,
     kind:'other', partners:2, concertRate:2000, pieces:0, pieceRate:2000, teachers:1, lessonRate:2500, extra:0, lessons:12, lessonHours:2, rate:1000, mRate:1000,
     songs:0, songPrice:1000, musicians:0, musReh:0, musRehFee:2500, musConcertFee:5000,
@@ -491,6 +491,9 @@ button.ghost{padding:5px 10px;font-size:13px;color:var(--muted)}
     ['wHire','Поиск специалистов и залов','ч за сезон',1],
     ['wConcert','Организация концерта','ч за сезон',1,'площадка, билеты, РАО, подрядчики'],
     ['wRef','Партнёры: поиск, рефералка, реклама у них','ч в месяц',1,'договоры с партнёрами, ссылки, отчёты по выплатам'],
+    ['gAds','Реклама: площадки, создание, размещение','ч в месяц',1,'для всех коллективов, и соцсети'],
+    ['gChat','Переписка, запись, напоминания','ч в месяц',1,'для всех коллективов'],
+    ['gPrep','Закупки, подготовка встреч и занятий','ч в месяц',1,'для всех коллективов'],
     ['wPartners','Расчёт и отчёт для партнёров «Брусники»','ч за сезон',1,'делёж прибыли']
   ];
   var CONCERT_FIELDS = [
@@ -562,12 +565,6 @@ button.ghost{padding:5px 10px;font-size:13px;color:var(--muted)}
         ['refPct','Вознаграждение партнёру','% с абонемента',1],
         ['startup','Расходники на старте','₽',500],
         ['licence','Музыка в записи: РАО и ВОИС','₽ в месяц',500,'0, если музыка живая']
-      ]},
-      {t:'Ваша работа в коллективе, в расходы не идёт', f:[
-        ['wAds','Реклама: площадки, создание, размещение','ч в месяц',1,'и соцсети'],
-        ['wChat','Переписка, запись, напоминания','ч в месяц',1],
-        ['wPrep','Закупки, подготовка встреч и занятий','ч в месяц',1],
-        ['wInstr','Аренда и доставка инструментов','ч в месяц',0.5]
       ]}
     );
     return s;
@@ -578,9 +575,9 @@ button.ghost{padding:5px 10px;font-size:13px;color:var(--muted)}
   function mk(type, name, o){ return Object.assign({id:newId(), type:type, name:name}, BASE, o || {}); }
   function defaults(){
     return {g:Object.assign({}, G_DEF), concert:Object.assign({}, C_DEF), list:[
-      mk('share','Брусника',{refShare:20, n:30, price:18000, prepay:5000, meetings:4, mGuests:20, mPrice:500, mHours:2, mTreats:150, partners:2, lessonRate:800, concertRate:2000, lessons:12, lessonHours:2, rate:1000, songs:15, songPrice:1000, musicians:2, musReh:4, musRehFee:2500, musConcertFee:5000, instrTimes:4, instrPrice:3000, instrDel:1000, ads:30000, startup:10000, licence:0, wAds:8, wChat:8, wPrep:4, wInstr:1}),
+      mk('share','Брусника',{refShare:20, n:30, price:18000, prepay:5000, meetings:4, mGuests:20, mPrice:500, mHours:2, mTreats:150, partners:2, lessonRate:800, concertRate:2000, lessons:12, lessonHours:2, rate:1000, songs:15, songPrice:1000, musicians:2, musReh:4, musRehFee:2500, musConcertFee:5000, instrTimes:0, instrPrice:3000, instrDel:1000, ads:30000, startup:10000, licence:0, wAds:8, wChat:8, wPrep:4, wInstr:1}),
       mk('paid','Танцевальный коллектив',{n:0, price:18000, prepay:5000, meetings:4, mGuests:15, teachers:1, lessonRate:2500, pieces:5, pieceRate:2000, extra:0, lessons:12, lessonHours:2, rate:1000, ads:20000, startup:5000, licence:2000, wAds:6, wChat:6, wPrep:2, wInstr:0}),
-      mk('paid','Инструментальный ансамбль',{n:0, price:18000, prepay:5000, meetings:4, mGuests:12, teachers:1, lessonRate:3000, extra:0, lessons:12, lessonHours:2, rate:1000, instrTimes:6, instrPrice:3000, instrDel:1000, ads:15000, startup:5000, wAds:6, wChat:6, wPrep:2, wInstr:2})
+      mk('paid','Инструментальный ансамбль',{n:0, price:18000, prepay:5000, meetings:4, mGuests:12, teachers:1, lessonRate:3000, extra:0, lessons:12, lessonHours:2, rate:1000, instrTimes:0, instrPrice:3000, instrDel:1000, ads:15000, startup:5000, wAds:6, wChat:6, wPrep:2, wInstr:2})
     ]};
   }
   function load(){
@@ -710,9 +707,9 @@ button.ghost{padding:5px 10px;font-size:13px;color:var(--muted)}
         save(); renderInputs(); renderResults();
         return;
       }
-      if (t.dataset.add === 'share') state.list.splice(bCount - 1, 0, mk('share', 'Брусника ' + bCount, {n:20, price:18000, prepay:5000, meetings:4, mGuests:15, partners:2, lessonRate:800, concertRate:2000, lessons:12, lessonHours:2, rate:1000, songs:15, songPrice:1000, musicians:2, musReh:4, instrTimes:4, ads:20000, startup:5000, refShare:20, wAds:6, wChat:6, wPrep:3, wInstr:1}));
+      if (t.dataset.add === 'share') state.list.splice(bCount - 1, 0, mk('share', 'Брусника ' + bCount, {n:20, price:18000, prepay:5000, meetings:4, mGuests:15, partners:2, lessonRate:800, concertRate:2000, lessons:12, lessonHours:2, rate:1000, songs:15, songPrice:1000, musicians:2, musReh:4, instrTimes:0, ads:20000, startup:5000, refShare:20, wAds:6, wChat:6, wPrep:3, wInstr:1}));
       else state.list.push(t.dataset.add === 'choir'
-        ? mk('paid', 'Хор ' + nCount, {kind:'choir', n:20, price:18000, meetings:4, mGuests:15, teachers:2, lessonRate:2500, extra:0, lessons:12, lessonHours:2, songs:15, musicians:2, musReh:4, instrTimes:4, ads:20000, startup:10000, wAds:6, wChat:6, wPrep:3, wInstr:1})
+        ? mk('paid', 'Хор ' + nCount, {kind:'choir', n:20, price:18000, meetings:4, mGuests:15, teachers:2, lessonRate:2500, extra:0, lessons:12, lessonHours:2, songs:15, musicians:2, musReh:4, instrTimes:0, ads:20000, startup:10000, wAds:6, wChat:6, wPrep:3, wInstr:1})
         : mk('paid', 'Новый коллектив', {n:15}));
     } else return;
     save(); renderInputs(); renderResults();
@@ -822,7 +819,7 @@ button.ghost{padding:5px 10px;font-size:13px;color:var(--muted)}
         r.teachHrs = c.teachers * (lessonHrs + meetHrs + cc.cHours);
       }
       r.musHrs = c.musicians * (c.musReh * c.lessonHours + cc.cHours);
-      r.meTasks = (c.wAds + c.wChat + c.wPrep + c.wInstr) * S;
+      r.meTasks = 0;
       r.meTotal = lessonHrs + meetHrs + r.meTasks;
       r.empContrib = empC + r.teamContrib;
       r.taxes = r.usn + empC + r.teamContrib + ndflO + r.teamNdfl + ipS;
@@ -832,7 +829,7 @@ button.ghost{padding:5px 10px;font-size:13px;color:var(--muted)}
     var res = items.map(function(x){ return calcOne(x.c, x.n); });
     var you = 0, taxes = 0, meColl = 0;
     res.forEach(function(r){ you += r.you; taxes += r.taxes; meColl += r.meTotal; });
-    var meGeneral = g.wSiteBuild + g.wBotBuild + (g.wSiteSup + g.wBotSup + g.wAcct + g.wRef) * S + g.wHire + g.wConcert + g.wPartners + (totalN > 0 ? cc.cHours * nC : 0);
+    var meGeneral = g.wSiteBuild + g.wBotBuild + (g.wSiteSup + g.wBotSup + g.wAcct + g.wRef + g.gAds + g.gChat + g.gPrep) * S + g.wHire + g.wConcert + g.wPartners + (totalN > 0 ? cc.cHours * nC : 0);
     var start = g.acct + g.site + g.bot + g.otherServ;
     items.forEach(function(x){ if (x.n > 0) start += x.c.ads + x.c.startup; });
     return {res:res, concert:concert, you:you, taxes:taxes, meGeneral:meGeneral, meColl:meColl, meAll:meGeneral + meColl, start:start, S:S, totalN:totalN, ipAll:ipAll, acctAll:acctAll, servAll:servAll};
@@ -962,16 +959,16 @@ button.ghost{padding:5px 10px;font-size:13px;color:var(--muted)}
     var rows = [], hAll = 0, mAll = 0, hMe = 0, mMe = 0;
     function add(t, s, h, mv, ph){ rows.push({t:t, s:s, h:h, m:mv, ph:ph}); if (h) hAll += h; if (mv) mAll += mv; }
     var concDay = m.totalN > 0 ? cc.cHours * m.concert.n : 0;
-    var genH = Math.max(0, m.meGeneral - concDay - g.wConcert) * r.s;
+    var tasksAll = (g.gAds + g.gChat + g.gPrep) * S;
+    var genH = Math.max(0, m.meGeneral - concDay - g.wConcert - tasksAll) * r.s;
     var meItems = [
       ['Занятия: оплаты, отметки, атмосфера', Math.round(r.lessons) + ' занятий', r.lessonHrs],
       ['Встречи набора: проведение, запись, оплаты', c.meetings + ' встреч', r.meetHrs],
       ['Концерт: организация', 'площадка, билеты, РАО, подрядчики; доля коллектива ' + pct(r.w * 100) + '%', g.wConcert * r.w],
       ['Концерт: концертный день', 'доля коллектива ' + pct(r.w * 100) + '%', concDay * r.w],
-      ['Реклама: площадки, создание, размещение', 'и соцсети', c.wAds * S],
-      ['Переписка, запись, напоминания', '', c.wChat * S],
-      ['Закупки, подготовка встреч и занятий', '', c.wPrep * S],
-      ['Аренда и доставка инструментов', '', c.wInstr * S],
+      ['Реклама: площадки, создание, размещение', 'и соцсети; доля коллектива ' + pct(r.s * 100) + '% по доходам', g.gAds * S * r.s],
+      ['Переписка, запись, напоминания', 'доля коллектива', g.gChat * S * r.s],
+      ['Закупки, подготовка встреч и занятий', 'доля коллектива', g.gPrep * S * r.s],
       ['Общая работа ИП, доля коллектива', 'сайты, бот, учёт, кадры, партнёры; ' + pct(r.s * 100) + '% по доходам', genH]
     ];
     rows.push({group:'Вы: маркетинг, продажи, администрирование'});
@@ -1037,12 +1034,15 @@ button.ghost{padding:5px 10px;font-size:13px;color:var(--muted)}
       {t:'Концертный день', h:m.totalN > 0 ? cc.cHours : 0},
       {t:'Партнёры: поиск, рефералка, реклама у них', h:g.wRef * S},
       {t:'Расчёт и отчёт для партнёров «Брусники»', h:g.wPartners},
+      {t:'Реклама: площадки, создание, размещение', h:g.gAds * S},
+      {t:'Переписка, запись, напоминания', h:g.gChat * S},
+      {t:'Закупки, подготовка встреч и занятий', h:g.gPrep * S},
       {group:'По коллективам'}
     ];
-    m.res.forEach(function(r){ if (r.active) meRows.push({t:esc(r.c.name || 'без названия'), s:'занятия, встречи, реклама, переписка, подготовка', h:r.meTotal}); });
+    m.res.forEach(function(r){ if (r.active) meRows.push({t:esc(r.c.name || 'без названия'), s:'присутствие на занятиях и встречах', h:r.meTotal}); });
     meRows.push({t:'Всего ваших часов', h:m.meAll, sub:true, mt:rub(m.meAll * g.myRate), ph:'оценка'});
     var adminHrs = (m.totalN > 0 ? cc.cHours : 0);
-    m.res.forEach(function(r){ if (r.active) adminHrs += r.lessonHrs + r.meetHrs + (r.c.wChat + r.c.wPrep + r.c.wInstr) * S; });
+    m.res.forEach(function(r){ if (r.active) adminHrs += r.lessonHrs + r.meetHrs ; }); adminHrs += (g.gChat + g.gPrep) * S;
     var mkRows = [
       {t:'Сайты под ключ', v: rub(g.mkSite)},
       {t:'Бот с ИИ-ассистентом под ключ', v: rub(g.mkBot)},
