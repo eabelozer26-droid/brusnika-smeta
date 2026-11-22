@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Брусника: план проекта</title>
-<meta name="description" content="Музыкальные коллективы и хор «Брусника»: этапы, цифры, продвижение и контрольные точки.">
+<title>Малина: план проекта</title>
+<meta name="description" content="Музыкальные коллективы и хор «Малина»: этапы, цифры, продвижение и контрольные точки.">
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -78,6 +78,8 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--ink);outline-offset
 table{width:100%;border-collapse:collapse;font-size:14px;font-variant-numeric:tabular-nums}
 th,td{padding:7px 8px 7px 0;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
 th{font-size:12px;color:var(--muted);font-weight:600}
+.scen td:not(:first-child),.scen th{text-align:right;white-space:nowrap}
+.scen tr.hl td{font-weight:700;color:var(--berry)}
 td.r,th.r{text-align:right}
 .risks{margin:0;padding-left:18px;display:grid;gap:5px;font-size:14px}
 </style>
@@ -86,28 +88,48 @@ td.r,th.r{text-align:right}
 <div class="wrap">
   <header>
     <div class="eyebrow">Екатеринбург · музыкальные коллективы · план на 2026–2027</div>
-    <h1>Брусника: план проекта</h1>
-    <p>Любительские творческие коллективы для взрослых: хоры, танцы, инструментальный ансамбль. Участники репетируют раз в неделю и через три месяца выступают на общем концерте с живой музыкой. Первый коллектив — хор «Брусника».</p>
+    <h1>Малина: план проекта</h1>
+    <p>Любительские творческие коллективы для взрослых: хоры, танцы, инструментальный ансамбль. Участники репетируют раз в неделю и через три месяца выступают на общем концерте с живой музыкой. Первый коллектив — хор «Малина».</p>
     <div class="links">
-      <a href="https://eabelozer26-droid.github.io/brusnika-smeta/partners.html">Расчёт сезона «Брусники»</a>
-      <a href="https://eabelozer26-droid.github.io/brusnika-smeta/">Полная смета</a>
+      <a href="https://eabelozer26-droid.github.io/malina-smeta/partners.html">Расчёт сезона «Малины»</a>
+      <a href="https://eabelozer26-droid.github.io/malina-smeta/">Полная смета</a>
     </div>
   </header>
 
   <div class="fold-all"><button type="button" id="foldAll">Свернуть все блоки</button><button type="button" id="unfoldAll">Развернуть все</button></div>
 
   <section class="card">
-    <h2>Главные цифры первого сезона</h2>
+    <h2>Главные цифры первого цикла</h2>
+    <p style="margin:0 0 12px;color:var(--muted)">Цикл — 4 месяца: месяц набора с платными встречами и 3 месяца занятий, которые заканчиваются отчётным концертом. Все суммы ниже считаются за весь цикл.</p>
     <div class="nums">
-      <div class="num"><span>Участников «Брусники»</span><b>30</b><em>цель набора к 16 января</em></div>
+      <div class="num"><span>Участников «Малины»</span><b>30</b><em>цель набора к 16 января</em></div>
       <div class="num"><span>Абонемент на сезон</span><b>18 000 ₽</b><em>от 6 000 ₽ в месяц, оплата частями</em></div>
-      <div class="num"><span>Окупаемость</span><b>15–23</b><em>участника, в зависимости от расходов</em></div>
-      <div class="num"><span>Каждому из троих</span><b>≈ 84 тыс. ₽</b><em>за сезон при 30 участниках</em></div>
-      <div class="num"><span>Встреч набора</span><b>5–6</b><em>по 2 часа, билет 500 ₽</em></div>
-      <div class="num"><span>Гостей на встречах</span><b>100–120</b><em>запись в хор 25–30%</em></div>
-      <div class="num"><span>Реклама на набор</span><b>60–90 тыс. ₽</b><em>50–60 тыс. возвращают билеты встреч</em></div>
+      <div class="num"><span>Окупаемость</span><b>19</b><em>участников при текущих расходах</em></div>
+      <div class="num"><span>Каждому из троих</span><b>≈ 72 тыс. ₽</b><em>за цикл при 30 участниках, ≈ 18 тыс. в месяц</em></div>
+      <div class="num"><span>Встреч набора</span><b>5</b><em>по 25 гостей, билет 500 ₽</em></div>
+      <div class="num"><span>Гостей на встречах</span><b>≈ 112</b><em>запись в хор 27%</em></div>
+      <div class="num"><span>Реклама на набор</span><b>70 тыс. ₽</b><em>около 56 тыс. возвращают билеты встреч</em></div>
       <div class="num"><span>Отчётный концерт</span><b>150</b><em>билетов по 700 ₽, 17 апреля</em></div>
     </div>
+  </section>
+
+  <section class="card">
+    <h2>Три сценария первого хора</h2>
+    <p style="margin:0 0 12px;color:var(--muted)">Суммы за цикл 4 месяца. Набор растёт вместе с хором: 25 гостей на встрече, в хор записываются 27% пришедших, приходят 72% записавшихся, запись стоит 450 ₽, на концерт продаётся 5 билетов на участника. Для 45–60 человек нужен зал побольше, его цену проверить. Живой пересчёт — на странице для партнёров.</p>
+    <div style="overflow-x:auto"><table class="scen">
+      <thead><tr><th></th><th>30 участников</th><th>45 участников</th><th>60 участников</th></tr></thead>
+      <tbody>
+        <tr><td>Встреч набора</td><td>5</td><td>7</td><td>9</td></tr>
+        <tr><td>Гостей на встречах</td><td>112</td><td>167</td><td>223</td></tr>
+        <tr><td>Реклама на набор</td><td>70 000 ₽</td><td>104 000 ₽</td><td>140 000 ₽</td></tr>
+        <tr><td>Билетов на концерт</td><td>150</td><td>225</td><td>300</td></tr>
+        <tr><td>Доходы</td><td>707 500 ₽</td><td>1 055 000 ₽</td><td>1 402 500 ₽</td></tr>
+        <tr><td>Расходы и налоги</td><td>491 885 ₽</td><td>634 366 ₽</td><td>778 350 ₽</td></tr>
+        <tr><td>Прибыль к распределению</td><td>215 615 ₽</td><td>420 634 ₽</td><td>624 150 ₽</td></tr>
+        <tr class="hl"><td>Каждому из троих</td><td>71 872 ₽</td><td>140 211 ₽</td><td>208 050 ₽</td></tr>
+        <tr><td>В среднем в месяц</td><td>17 968 ₽</td><td>35 053 ₽</td><td>52 013 ₽</td></tr>
+      </tbody>
+    </table></div>
   </section>
 
   <section class="card">
@@ -121,7 +143,7 @@ td.r,th.r{text-align:right}
           <li>Демо-видео: руководители поют припев на три голоса</li>
           <li>Карточки в 2ГИС и Яндекс Картах, события в Яндекс Афише и Timepad</li>
           <li>Встреча в фонде поддержки предпринимательства, письма караоке-барам, площадкам и клубам</li>
-          <li>11.12: срочные трудовые договоры с партнёрами «Брусники»</li>
+          <li>11.12: срочные трудовые договоры с партнёрами «Малины»</li>
         </ul>
         <div class="result">Итог: всё готово к приёму заявок и оплат</div>
       </div></li>
@@ -132,7 +154,7 @@ td.r,th.r{text-align:right}
           <li>Новогодний караоке-баттл в партнёрском баре, сертификаты на сезон к Новому году</li>
           <li>Мастер-классы и хоровые вечера в деловых и женских клубах</li>
         </ul>
-        <div class="result">Итог: 100–120 гостей, 30 оплативших абонемент</div>
+        <div class="result">Итог: около 112 гостей, 30 оплативших абонемент</div>
       </div></li>
       <li class="stage"><div class="when"><span class="badge b3">Этап 3</span><b>18.01 – 17.04.2027</b><span>Первый сезон</span></div><div>
         <ul>
@@ -147,19 +169,19 @@ td.r,th.r{text-align:right}
         <ul>
           <li>18–20.04: подсчёт прибыли и распределение по 33%</li>
           <li>Решение по договорам: продление на новый сезон</li>
-          <li>Старт второго сезона «Брусники», цель продления 70% и больше</li>
+          <li>Старт второго сезона «Малины», цель продления 70% и больше</li>
           <li>Загородный тур на майские праздники вместе с туроператором</li>
         </ul>
         <div class="result">Итог: второй сезон с меньшими затратами на набор</div>
       </div></li>
       <li class="stage"><div class="when"><span class="badge b2">Этап 5</span><b>Июнь – декабрь 2027</b><span>Рост</span></div><div>
         <ul>
-          <li>Второй хор «Брусники», танцевальный коллектив, инструментальный ансамбль</li>
+          <li>Второй хор «Малины», танцевальный коллектив, инструментальный ансамбль</li>
           <li>Корпоративные хоровые программы и мастер-классы для компаний</li>
           <li>Собственная CRM и дашборд «Рука на пульсе», личные кабинеты участников и руководителей</li>
           <li>Креативные индустрии и статус социального предприятия: по итогам консультаций в фонде</li>
         </ul>
-        <div class="result">Итог: несколько коллективов на общей инфраструктуре. Второй хор «Брусники» с такими же цифрами примерно удваивает доход каждого из троих</div>
+        <div class="result">Итог: несколько коллективов на общей инфраструктуре. Второй хор «Малины» с такими же цифрами примерно удваивает доход каждого из троих</div>
       </div></li>
     </ol>
   </section>
@@ -207,7 +229,7 @@ td.r,th.r{text-align:right}
     <ul class="risks">
       <li><b>Набор ниже плана.</b> Запас между окупаемостью и целью небольшой. Еженедельный контроль воронки, дополнительные встречи, мероприятия как второй вход.</li>
       <li><b>Отток и возвраты.</b> Оплата сезона целиком или частями, понятные условия возврата в оферте, сообщество и мероприятия для удержания.</li>
-      <li><b>Продажи билетов на концерт.</b> Безубыточность около 126 билетов. Ранняя продажа участникам и их близким, совместный концерт двух коллективов.</li>
+      <li><b>Продажи билетов на концерт.</b> Со всеми расходами (зал, генеральная репетиция, звук, фото, видео, реклама, печать, оформление, помощники, транспорт, РАО) концерт окупается со 164 билетов. Ранняя продажа участникам и их близким, совместный концерт двух коллективов.</li>
       <li><b>Юридические вопросы.</b> Формат без обучения, срочные договоры, тариф на травматизм, туры: проверка у юриста и бухгалтера в фонде.</li>
       <li><b>Договорённости партнёров.</b> Соглашение о распределении прибыли, общих расходах, правах на аранжировки и выходе из проекта.</li>
     </ul>
@@ -217,7 +239,7 @@ td.r,th.r{text-align:right}
 </div>
 <script>
 (function(){
-  var FKEY = 'brusnika-plan-folds', folds = {};
+  var FKEY = 'malina-plan-folds', folds = {};
   try { folds = JSON.parse(localStorage.getItem(FKEY) || '{}') || {}; } catch(e){}
   function save(){ try { localStorage.setItem(FKEY, JSON.stringify(folds)); } catch(e){} }
   var cards = Array.prototype.slice.call(document.querySelectorAll('.card'));

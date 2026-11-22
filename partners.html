@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Брусника: расчёт сезона</title>
-<meta name="description" content="Хор «Брусника»: деньги сезона, распределение на троих и кто что делает.">
+<title>Малина: расчёт сезона</title>
+<meta name="description" content="Хор «Малина»: деньги сезона, распределение на троих и кто что делает.">
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -101,20 +101,21 @@ tr.hl td{font-weight:700;background:var(--berry-soft)}
 <body>
 <div class="wrap">
   <header>
-    <div class="eyebrow">Хор «Брусника» · сезон 18 января – 17 апреля 2027</div>
-    <h1>Брусника: расчёт сезона</h1>
+    <div class="eyebrow">Хор «Малина» · сезон 18 января – 17 апреля 2027</div>
+    <h1>Малина: расчёт сезона</h1>
     <p>Прибыль хора распределяется на троих по 33%: организатор и два руководителя-партнёра. Из доходов вычитаются только объективные расходы и налоги. Ниже деньги сезона, платные встречи набора и кто что делает.</p>
   </header>
 
   <div class="fold-all"><button type="button" id="foldAll">Свернуть все блоки</button><button type="button" id="unfoldAll">Развернуть все</button></div>
 
   <div class="card hero">
-    <h2>Каждому из троих за сезон</h2>
+    <h2>Каждому из троих за цикл</h2>
     <div class="hero-grid">
       <div class="big" id="each"></div>
       <div class="side" id="eachSide"></div>
     </div>
     <span class="pill" id="pill"></span>
+    <p class="note" style="margin:10px 0 0">Цикл — 4 месяца: месяц набора с платными встречами и 3 месяца занятий, которые заканчиваются отчётным концертом. Все суммы на странице считаются за весь цикл.</p>
   </div>
 
   <div class="card">
@@ -161,12 +162,18 @@ tr.hl td{font-weight:700;background:var(--berry-soft)}
   </div>
 
   <div class="card">
+    <h2>Три сценария первого хора</h2>
+    <p class="note" style="margin:-6px 0 12px">30, 45 и 60 участников в одном хоре. Набор и концерт растут вместе с хором: на встречу приходят 25 гостей, записываются 27% пришедших, приходят 72% записавшихся, запись стоит 450 ₽, на концерт продаётся 5 билетов на участника. Остальные цифры берутся из полей выше. Для 45–60 человек нужен зал побольше: проверьте цену аренды.</p>
+    <div class="tbl"><table id="pScen"></table></div>
+  </div>
+
+  <div class="card">
     <h2>Подробный расчёт хора</h2>
     <div class="two-in">
       <div><h3>Занятия</h3><div class="tbl"><table id="dLessons"></table></div></div>
       <div><h3>Отчётный концерт</h3><div class="tbl"><table id="dConcert"></table></div></div>
     </div>
-    <h3 style="margin-top:18px">Общие расходы, доля «Брусники»</h3>
+    <h3 style="margin-top:18px">Общие расходы, доля «Малины»</h3>
     <div class="tbl"><table id="dShared"></table></div>
   </div>
 
@@ -177,7 +184,7 @@ tr.hl td{font-weight:700;background:var(--berry-soft)}
       <div><h3>Сколько участников</h3><div class="tbl"><table id="pN"></table></div></div>
       <div><h3>Сколько билетов на концерт</h3><div class="tbl"><table id="pTix"></table></div></div>
     </div>
-    <h3 style="margin-top:18px">Два хора «Брусники» на общей инфраструктуре</h3>
+    <h3 style="margin-top:18px">Два хора «Малины» на общей инфраструктуре</h3>
     <div class="tbl"><table id="pTwo"></table></div>
   </div>
 
@@ -207,7 +214,7 @@ tr.hl td{font-weight:700;background:var(--berry-soft)}
     </ul>
   </div>
 
-  <p class="note">Это расчёт по плану набора и продаж, а не гарантия. Итог зависит от числа участников и фактических расходов. Рыночные цены взяты из открытых данных о стоимости услуг в России и Екатеринбурге в 2026 году и округлены вниз.</p>
+  <p class="note">«Цикл» — месяц набора и 3 месяца занятий с концертом, всего 4 месяца. Это расчёт по плану набора и продаж, а не гарантия. Итог зависит от числа участников и фактических расходов. Рыночные цены взяты из открытых данных о стоимости услуг в России и Екатеринбурге в 2026 году и округлены вниз.</p>
 </div>
 
 <script>
@@ -216,7 +223,7 @@ tr.hl td{font-weight:700;background:var(--berry-soft)}
   var G_DEF = {season:3, prep:1, tax:6, ipYear:57390, fee:3.5, contrib:30, injury:0.2, ndfl:13, netMode:'net',
     acct:10000, site:3000, bot:5000, otherServ:1000,
     myRate:1000, wSiteBuild:40, wSiteSup:4, wBotBuild:30, wBotSup:4, wAcct:12, wHire:10, wConcert:25, wPartners:4, gAds:8, gChat:8, gPrep:4,
-    mkSite:30000, mkBot:50000, mkSup:5000, mkSmm:20000, mkOffice:10000, mkAdminH:400, mkEvent:40000, wRef:8, mkRef:10000, mkTeachH:2500, mkSong:1000, mkSongHours:3, mkVer:3, songsVer:1, treatsVer:1};
+    mkSite:30000, mkBot:50000, mkSup:5000, mkSmm:20000, mkOffice:10000, mkAdminH:400, mkEvent:40000, wRef:8, mkRef:10000, mkTeachH:2500, mkSong:1000, mkSongHours:3, mkVer:3, songsVer:1, treatsVer:1, baseVer:2};
   var MARKET_FIELDS = [
     ['mkSite','Сайты под ключ','₽ разово',1000,'лендинг у фрилансера: обычно 10–40 тыс. ₽'],
     ['mkBot','Бот с ИИ-ассистентом под ключ','₽ разово',1000,'готовый бот с настройкой: от 30–50 тыс. ₽'],
@@ -230,7 +237,7 @@ tr.hl td{font-weight:700;background:var(--berry-soft)}
     ['mkSong','Аранжировка и запись разбора на рынке','₽ за песню',500,'с помощью ИИ, как у вас в работе'],
     ['mkSongHours','Часов на одну песню','ч',0.5,'аранжировка и запись разбора']
   ];
-  var C_DEF = {tix:150, tixPrice:700, cHours:6, hall:40000, sound:10000, photo:10000, video:10000, instr:0, instrDel:0, ads:10000, rao:5};
+  var C_DEF = {tix:150, tixPrice:700, cHours:6, hall:40000, sound:10000, photo:10000, video:10000, instr:0, instrDel:0, ads:10000, rao:5, genRep:10000, gear:0, print:3000, decor:3000, food:3000, helpers:4000, transport:2000};
   var BASE = {n:0, price:18000, prepay:5000, meetings:4, mGuests:15, mPrice:500, mHours:2, mTreats:3000,
     kind:'other', partners:2, concertRate:2000, pieces:0, pieceRate:2000, teachers:1, lessonRate:2500, extra:0, lessons:12, lessonHours:2, rate:1000, mRate:1000,
     songs:0, songPrice:1000, musicians:0, musReh:0, musRehFee:2500, musConcertFee:5000,
@@ -240,12 +247,12 @@ tr.hl td{font-weight:700;background:var(--berry-soft)}
 
   var seq = 0;
   function newId(){ seq++; return 'k' + Date.now().toString(36) + seq; }
-  var BASE_NAMES = {share:'Брусника', choir:'Хор', dance:'Танцевальный коллектив', ensemble:'Инструментальный ансамбль', other:'Коллектив'};
+  var BASE_NAMES = {share:'Малина', choir:'Хор', dance:'Танцевальный коллектив', ensemble:'Инструментальный ансамбль', other:'Коллектив'};
   function kindOf(c){ return c.type === 'share' ? 'share' : (c.kind || 'other'); }
   function mk(type, name, o){ return Object.assign({id:newId(), type:type, name:name}, BASE, o || {}); }
   function defaults(){
     return {g:Object.assign({}, G_DEF), concert:Object.assign({}, C_DEF), list:[
-      mk('share','Брусника',{refShare:20, n:30, price:18000, prepay:5000, meetings:4, mGuests:20, mPrice:500, mHours:2, mTreats:3000, partners:2, lessonRate:800, concertRate:2000, lessons:12, lessonHours:2, rate:1000, songs:15, songPrice:1000, musicians:2, musReh:4, musRehFee:2500, musConcertFee:5000, instrTimes:0, instrPrice:3000, instrDel:1000, ads:30000, startup:10000, licence:0, wAds:8, wChat:8, wPrep:4, wInstr:1}),
+      mk('share','Малина',{refShare:20, n:30, price:18000, prepay:5000, meetings:5, mGuests:25, mPrice:500, mHours:2, mTreats:3000, partners:2, lessonRate:800, concertRate:2000, lessons:12, lessonHours:2, rate:1000, songs:15, songPrice:1000, musicians:2, musReh:4, musRehFee:2500, musConcertFee:5000, instrTimes:0, instrPrice:3000, instrDel:1000, ads:70000, startup:10000, licence:0, wAds:8, wChat:8, wPrep:4, wInstr:1}),
       mk('paid','Танцевальный коллектив',{kind:'dance', n:0, price:18000, prepay:5000, meetings:4, mGuests:15, teachers:1, lessonRate:2500, pieces:5, pieceRate:2000, extra:0, lessons:12, lessonHours:2, rate:1000, ads:20000, startup:5000, licence:2000, wAds:6, wChat:6, wPrep:2, wInstr:0}),
       mk('paid','Инструментальный ансамбль',{kind:'ensemble', n:0, price:18000, prepay:5000, meetings:4, mGuests:12, teachers:1, lessonRate:3000, extra:0, lessons:12, lessonHours:2, rate:1000, instrTimes:0, instrPrice:3000, instrDel:1000, ads:15000, startup:5000, wAds:6, wChat:6, wPrep:2, wInstr:2})
     ]};
@@ -254,13 +261,14 @@ tr.hl td{font-weight:700;background:var(--berry-soft)}
     try {
       var s = JSON.parse(localStorage.getItem(KEY) || 'null');
       if (s && s.g && s.concert && Array.isArray(s.list)){
-        var oldMk = s.g.mkVer, oldSongs = s.g.songsVer, oldTreats = s.g.treatsVer;
+        var oldMk = s.g.mkVer, oldSongs = s.g.songsVer, oldTreats = s.g.treatsVer, oldBase = s.g.baseVer;
         s.g = Object.assign({}, G_DEF, s.g); s.concert = Object.assign({}, C_DEF, s.concert);
         s.list = s.list.filter(function(c){ return c && c.id && (c.type === 'share' || c.type === 'paid'); }).map(function(c){ return Object.assign({}, BASE, c); });
-        s.list.forEach(function(c){ if (c.type === 'share' && c.name === 'Хор') c.name = 'Брусника'; if (c.type === 'paid' && (!c.kind || c.kind === 'other')){ if (/^Танцевальн/.test(c.name || '')) c.kind = 'dance'; else if (/^Инструментальн/.test(c.name || '')) c.kind = 'ensemble'; } });
+        s.list.forEach(function(c){ if (c.type === 'share' && c.name === 'Хор') c.name = 'Малина'; if (typeof c.name === 'string' && c.name.indexOf('Брусника') === 0) c.name = 'Малина' + c.name.slice(8); if (c.type === 'paid' && (!c.kind || c.kind === 'other')){ if (/^Танцевальн/.test(c.name || '')) c.kind = 'dance'; else if (/^Инструментальн/.test(c.name || '')) c.kind = 'ensemble'; } });
         s.ui = s.ui && typeof s.ui === 'object' ? s.ui : {};
         if (s.concert.photo === 8000 && s.concert.video === 15000){ s.concert.photo = 10000; s.concert.video = 10000; }
         if (!(oldTreats >= 1)) s.list.forEach(function(c){ c.mTreats = Math.round(c.mTreats * (c.mGuests || 0)); });
+        if (!(oldBase >= 2)) s.list.forEach(function(c){ if (c.type === 'share'){ if (c.meetings === 4 && c.mGuests === 20){ c.meetings = 5; c.mGuests = 25; } if (c.ads === 30000) c.ads = 70000; } });
         if (!(oldSongs >= 1)) s.list.forEach(function(c){ if (c.type === 'share' || c.kind === 'choir') c.songs = 15; });
         if (!(oldMk >= 3)) ['mkSite','mkBot','mkSup','mkSmm','mkOffice','mkAdminH','mkRef','mkEvent','mkTeachH','mkSong','mkSongHours','mkVer'].forEach(function(k){ s.g[k] = G_DEF[k]; });
         return s;
@@ -294,7 +302,8 @@ tr.hl td{font-weight:700;background:var(--berry-soft)}
     // Звукорежиссёр, фотограф, видеограф самозанятые: разовая оплата за концерт, налогов с вашей стороны нет
     var cStaff = {contrib:0, ndfl:0, cost:(cc.sound + cc.photo + cc.video) * nC};
     var cRao = box * cc.rao / 100, cFee = box * g.fee / 100;
-    var cCost = (cc.hall + cc.instr + cc.instrDel + cc.ads) * nC + cRao + cFee + cStaff.cost;
+    var cOther = cc.genRep + cc.gear + cc.print + cc.decor + cc.food + cc.helpers + cc.transport;
+    var cCost = (cc.hall + cc.instr + cc.instrDel + cc.ads + cOther) * nC + cRao + cFee + cStaff.cost;
     var concert = {n:nC, nCh:nCh, nOt:nOt, box:box, staff:cStaff, rao:cRao, fee:cFee, cost:cCost, net:box - cCost, on:totalN > 0};
     var Itot = totalRev + (totalN > 0 ? box : 0);
     var ipAll = g.ipYear * S / 12 + 0.01 * Math.max(0, Itot - 300000 * S / 12);
@@ -316,9 +325,9 @@ tr.hl td{font-weight:700;background:var(--berry-soft)}
       var arr = emp(c.songs * c.songPrice, g);
       var ipS = ipAll * s, acctS = acctAll * s, servS = servAll * s, cS = cCost * w;
       var ref = sales * c.refShare / 100 * c.refPct / 100;
-      // У «Брусники» взносы ИП за себя не входят в расходы коллектива: они лично ваши
+      // У «Малины» взносы ИП за себя не входят в расходы коллектива: они лично ваши
       var ipIn = c.type === 'share' ? 0 : ipS;
-      // У «Брусники» аранжировки делают партнёры: это их вклад в 33%, не расход коллектива
+      // У «Малины» аранжировки делают партнёры: это их вклад в 33%, не расход коллектива
       var arrIn = c.type === 'share' ? emp(0, g) : arr;
       var np = fee + rent + treats + lic + mus.cost + instr + arrIn.cost + c.ads + ref + c.startup + cS + acctS + servS + ipIn;
       var empC = mus.contrib + arrIn.contrib + cStaff.contrib * w;
@@ -459,7 +468,7 @@ tr.hl td{font-weight:700;background:var(--berry-soft)}
     document.getElementById('eachSide').innerHTML =
       '<span>из прибыли сезона <b>' + rub(seasonEach) + '</b></span>' +
       '<span>со встреч набора <b>' + rub(meetEach) + '</b></span>' +
-      '<span>в среднем в месяц <b>' + rub(each / S) + '</b></span>' +
+      '<span>в среднем в месяц (цикл 4 мес.) <b>' + rub(each / S) + '</b></span>' +
       '<span>окупается с <b>' + ppl(beOf(c.id)) + '</b></span>';
     var pill = document.getElementById('pill');
     pill.className = 'pill' + (r.equal ? '' : ' no');
@@ -510,7 +519,7 @@ tr.hl td{font-weight:700;background:var(--berry-soft)}
     var rows = [
       {group:'Доходы'},
       {t:'Абонементы', s: ppl(r.n) + ' × ' + rub(c.price), v: rub(r.sales)},
-      {t:'Билеты отчётного концерта', s:'доля «Брусники»', v: rub(r.boxShare)},
+      {t:'Билеты отчётного концерта', s:'доля «Малины»', v: rub(r.boxShare)},
       {t:'Всего доходов', v: rub(r.Is), sub:true},
       {group:'Объективные расходы'},
       {t:'Аренда зала на занятиях', s: hrs(r.lessonHrs) + ' × ' + rub(c.rate), v: rub(r.lessonHrs * c.rate)}
@@ -522,9 +531,9 @@ tr.hl td{font-weight:700;background:var(--berry-soft)}
     if (r.ref > 0) rows.push({t:'Вознаграждение за приведённых участников', s: pct(c.refShare) + '% участников × ' + pct(c.refPct) + '%', v: rub(r.ref)});
     rows.push(
       {t:'Расходники', v: rub(c.startup)},
-      {t:'Отчётный концерт', s:'зал, звук, фото, видео, реклама, РАО; доля «Брусники»', v: rub(r.cS)},
+      {t:'Отчётный концерт', s:'зал, звук, фото, видео, реклама, РАО; доля «Малины»', v: rub(r.cS)},
       {t:'Комиссия за приём оплат', v: rub(r.fee - r.mFee)},
-      {t:'Бухгалтер, сайт и бот', s:'доля «Брусники»', v: rub(r.acctS + r.servS)},
+      {t:'Бухгалтер, сайт и бот', s:'доля «Малины»', v: rub(r.acctS + r.servS)},
       {group:'Налоги'},
       {t:'УСН 6%', s:'уменьшен на взносы', v: rub(r.usnPool)},
       {t:'Взносы и НДФЛ с оплаты партнёров', v: rub(r.sContrib + r.sNdfl)},
@@ -563,10 +572,15 @@ tr.hl td{font-weight:700;background:var(--berry-soft)}
       {t:'Звукорежиссёр, фото, видео', s:'самозанятые', v: '−' + rub((cc.sound + cc.photo + cc.video) * nC)},
       {t:'Аренда и доставка инструментов', v: ((cc.instr + cc.instrDel) > 0 ? '−' : '') + rub((cc.instr + cc.instrDel) * nC)},
       {t:'Реклама концерта', v: '−' + rub(cc.ads * nC)},
+      {t:'Генеральная репетиция на площадке', v: '−' + rub(cc.genRep * nC)},
+      {t:'Звуковая аппаратура', v: ((cc.gear > 0) ? '−' : '') + rub(cc.gear * nC)},
+      {t:'Печать, оформление сцены, цветы', v: '−' + rub((cc.print + cc.decor) * nC)},
+      {t:'Вода и перекус для участников', v: '−' + rub(cc.food * nC)},
+      {t:'Помощники и транспорт', v: '−' + rub((cc.helpers + cc.transport) * nC)},
       {t:'РАО ' + pct(cc.rao) + '% и комиссия', v: '−' + rub(co.rao + co.fee)},
       {t:'Итог концерта', v: rub(co.net), sub:true},
-      {t:'Доля «Брусники»', s: pct(r.w * 100) + '% по числу участников', v: rub(r.boxShare - r.cS), sub:true},
-      {t:'Безубыточность концерта', s:'при текущих расходах', v: Math.ceil((cc.hall + cc.sound + cc.photo + cc.video + cc.instr + cc.instrDel + cc.ads) / Math.max(1, cc.tixPrice * (1 - (cc.rao + g.fee) / 100))) + ' билетов'}
+      {t:'Доля «Малины»', s: pct(r.w * 100) + '% по числу участников', v: rub(r.boxShare - r.cS), sub:true},
+      {t:'Безубыточность концерта', s:'при текущих расходах', v: Math.ceil((cc.hall + cc.sound + cc.photo + cc.video + cc.instr + cc.instrDel + cc.ads + cc.genRep + cc.gear + cc.print + cc.decor + cc.food + cc.helpers + cc.transport) / Math.max(1, cc.tixPrice * (1 - (cc.rao + g.fee) / 100))) + ' билетов'}
     ]);
     document.getElementById('dShared').innerHTML = rowsT([
       {t:'Бухгалтер', s: pct(r.s * 100) + '% по доходам', v: rub(g.acct * m.S * r.s)},
@@ -590,7 +604,28 @@ tr.hl td{font-weight:700;background:var(--berry-soft)}
       var st = clone(); st.concert.tix = tv; var e = each3(st); if (!e) return '';
       return '<tr' + (tv === cc.tix ? ' class="hl"' : '') + '><td>' + tv + '</td><td class="r">' + rub(e.mm.concert.net) + '</td><td class="r">' + rub(e.each) + '</td></tr>';
     }).join('') + '</tbody>';
-    var st2 = clone(); var c2 = JSON.parse(JSON.stringify(c)); c2.id = c.id + '_2'; c2.name = 'Брусника 2'; st2.list.push(c2);
+    var scen = [30, 45, 60].map(function(nv){
+      var st = clone(), cx = st.list.filter(function(x){ return x.id === c.id; })[0];
+      var guests = Math.ceil(nv / 0.27), regs = Math.ceil(guests / 0.72);
+      cx.n = nv; cx.mGuests = 25; cx.meetings = Math.ceil(guests / 25); cx.ads = Math.round(regs * 450 / 1000) * 1000; st.concert.tix = nv * 5;
+      var e = each3(st);
+      return {n:nv, guests:guests, regs:regs, meetings:cx.meetings, ads:cx.ads, tix:st.concert.tix, e:e};
+    });
+    function sRow(t, f, sub){ return '<tr' + (sub ? ' class="hl"' : '') + '><td>' + t + '</td>' + scen.map(function(x){ return '<td class="r">' + f(x) + '</td>'; }).join('') + '</tr>'; }
+    document.getElementById('pScen').innerHTML = '<thead><tr><th>За цикл (4 мес.)</th>' + scen.map(function(x){ return '<th class="r">' + x.n + ' участников</th>'; }).join('') + '</tr></thead><tbody>'
+      + sRow('Записей на встречи', function(x){ return String(x.regs); })
+      + sRow('Гостей на встречах', function(x){ return String(x.guests); })
+      + sRow('Встреч набора по 25 гостей', function(x){ return String(x.meetings); })
+      + sRow('Реклама на набор', function(x){ return rub(x.ads); })
+      + sRow('Билетов на концерт', function(x){ return String(x.tix); })
+      + sRow('Доходы', function(x){ return rub(x.e.rr.Is + x.e.rr.meetInc); })
+      + sRow('Расходы и налоги', function(x){ return rub(x.e.rr.Is + x.e.rr.meetInc - x.e.rr.pool - x.e.rr.mPool); })
+      + sRow('Прибыль к распределению', function(x){ return rub(x.e.rr.pool + x.e.rr.mPool); })
+      + sRow('Каждому из троих', function(x){ return rub(x.e.each); }, true)
+      + sRow('В среднем в месяц', function(x){ return rub(x.e.each / x.e.mm.S); })
+      + '</tbody>';
+
+    var st2 = clone(); var c2 = JSON.parse(JSON.stringify(c)); c2.id = c.id + '_2'; c2.name = 'Малина 2'; st2.list.push(c2);
     var mm2 = model(st2), r1 = mm2.res.filter(function(x){ return x.c.id === c.id; })[0], r2 = mm2.res.filter(function(x){ return x.c.id === c2.id; })[0];
     var e1 = (r1.pool + r1.mPool) / (r1.k + 1), e2 = (r2.pool + r2.mPool) / (r2.k + 1);
     document.getElementById('pTwo').innerHTML = rowsT([
@@ -625,7 +660,7 @@ tr.hl td{font-weight:700;background:var(--berry-soft)}
     return s;
   }
   // Сворачивание любых блоков: кнопка у заголовка каждой карточки, состояние запоминается в браузере
-  var FKEY = 'brusnika-partners-folds';
+  var FKEY = 'malina-partners-folds';
   var folds = {}; try { folds = JSON.parse(localStorage.getItem(FKEY) || '{}') || {}; } catch(e){}
   function saveFolds(){ try { localStorage.setItem(FKEY, JSON.stringify(folds)); } catch(e){} }
   var cards = Array.prototype.slice.call(document.querySelectorAll('.card'));
