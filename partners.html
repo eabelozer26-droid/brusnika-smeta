@@ -80,6 +80,15 @@ tr.sub td{font-weight:700;border-bottom:2px solid var(--line)}
 tr.group td{padding-top:14px;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);border-bottom:none}
 .steps{margin:0;padding-left:18px;display:grid;gap:6px;font-size:14px}
 .note{font-size:12px;color:var(--muted);margin:0}
+.calc td{vertical-align:middle}
+.calc td.in{width:118px;padding-left:10px}
+.calc td.in input{font:inherit;font-size:15px;font-weight:600;font-variant-numeric:tabular-nums;padding:5px 8px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg);width:100%;min-width:0;text-align:right}
+.calc td.in input:focus{outline:2px solid var(--berry);outline-offset:1px}
+.calc td.v{text-align:right;white-space:nowrap;padding-left:12px;width:1%}
+.calc td small{display:block;color:var(--muted);font-size:12px}
+details.more{margin-top:16px}
+details.more summary{cursor:pointer;font-weight:600;font-size:14px}
+@media (max-width:520px){.calc td.in{width:92px}}
 .two-in{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
 @media (max-width:820px){.two-in{grid-template-columns:minmax(0,1fr)}}
 th{font-size:12px;color:var(--muted);font-weight:600}
@@ -103,53 +112,26 @@ tr.hl td{font-weight:700;background:var(--berry-soft)}
   <header>
     <div class="eyebrow">Хор «Малина» · сезон 18 января – 17 апреля 2027</div>
     <h1>Малина: расчёт сезона</h1>
-    <p>Прибыль хора распределяется на троих по 33%: организатор и два руководителя-партнёра. Из доходов вычитаются только объективные расходы и налоги. Ниже деньги сезона, платные встречи набора и кто что делает.</p>
+    <p>Прибыль хора распределяется <span data-x="on">на троих</span> по <span data-x="share">33%</span>: организатор и <span data-x="partners">два руководителя-партнёра</span>. Из доходов вычитаются только объективные расходы и налоги. Ниже деньги сезона, платные встречи набора и кто что делает.</p>
   </header>
 
   <div class="fold-all"><button type="button" id="foldAll">Свернуть все блоки</button><button type="button" id="unfoldAll">Развернуть все</button></div>
 
   <div class="card hero">
-    <h2>Каждому из троих за цикл</h2>
+    <h2>Каждому <span data-x="of">из троих</span> за цикл</h2>
     <div class="hero-grid">
       <div class="big" id="each"></div>
       <div class="side" id="eachSide"></div>
     </div>
     <span class="pill" id="pill"></span>
-    <p class="note" style="margin:10px 0 0">Цикл — 4 месяца: месяц набора с платными встречами и 3 месяца занятий, которые заканчиваются отчётным концертом. Все суммы на странице считаются за весь цикл.</p>
+    <p class="note" style="margin:10px 0 0">Цикл — <span data-x="Sm">4 месяца</span>: <span data-x="Pm">месяц</span> набора с платными встречами и <span data-x="Mm">3 месяца</span> занятий, которые заканчиваются отчётным концертом. Все суммы на странице считаются за весь цикл.</p>
   </div>
 
   <div class="card">
-    <h2>Попробовать другие цифры</h2>
-    <p class="note" style="margin:-6px 0 12px">Меняйте цифры: все расчёты на странице, включая перспективы, пересчитываются сразу.</p>
-    <h3 class="grp">Участники и цена</h3>
-    <div class="try">
-      <label>Участников<input type="number" data-t="c" data-k="n" min="0" step="1" inputmode="numeric"></label>
-      <label>Абонемент на сезон, ₽<input type="number" data-t="c" data-k="price" min="0" step="500" inputmode="numeric"></label>
-      <label>Реклама набора, ₽<input type="number" data-t="c" data-k="ads" min="0" step="1000" inputmode="numeric"></label>
-      <label>Расходники, ₽<input type="number" data-t="c" data-k="startup" min="0" step="500" inputmode="numeric"></label>
-    </div>
-    <h3 class="grp">Встречи набора</h3>
-    <div class="try">
-      <label>Встреч<input type="number" data-t="c" data-k="meetings" min="0" step="1" inputmode="numeric"></label>
-      <label>Гостей на встрече<input type="number" data-t="c" data-k="mGuests" min="0" step="1" inputmode="numeric"></label>
-      <label>Билет на встречу, ₽<input type="number" data-t="c" data-k="mPrice" min="0" step="50" inputmode="numeric"></label>
-      <label>Чай и печенье за встречу, ₽<input type="number" data-t="c" data-k="mTreats" min="0" step="500" inputmode="numeric"></label>
-    </div>
-    <h3 class="grp">Занятия</h3>
-    <div class="try">
-      <label>Занятий за сезон<input type="number" data-t="c" data-k="lessons" min="0" step="1" inputmode="numeric"></label>
-      <label>Часов на занятие<input type="number" data-t="c" data-k="lessonHours" min="0" step="0.5" inputmode="decimal"></label>
-      <label>Аренда зала, ₽ в час<input type="number" data-t="c" data-k="rate" min="0" step="100" inputmode="numeric"></label>
-      <label>Музыкантов<input type="number" data-t="c" data-k="musicians" min="0" step="1" inputmode="numeric"></label>
-    </div>
-    <h3 class="grp">Отчётный концерт</h3>
-    <div class="try">
-      <label>Билетов продано<input type="number" data-t="cc" data-k="tix" min="0" step="10" inputmode="numeric"></label>
-      <label>Цена билета, ₽<input type="number" data-t="cc" data-k="tixPrice" min="0" step="50" inputmode="numeric"></label>
-      <label>Аренда зала, ₽<input type="number" data-t="cc" data-k="hall" min="0" step="1000" inputmode="numeric"></label>
-      <label>Реклама концерта, ₽<input type="number" data-t="cc" data-k="ads" min="0" step="1000" inputmode="numeric"></label>
-    </div>
-    <button type="button" id="resetTry">Вернуть цифры из расчёта</button>
+    <h2>Подробный расчёт хора</h2>
+    <p class="note" style="margin:-6px 0 12px">Калькулятор: меняйте любую цифру в полях, и все суммы на странице пересчитываются сразу. Справа сумма строки за цикл, минус — расход.</p>
+    <div class="tbl"><table class="calc" id="dCalc"></table></div>
+    <button type="button" id="resetTry" style="margin-top:12px">Вернуть цифры из расчёта</button>
   </div>
 
   <div class="card">
@@ -159,22 +141,14 @@ tr.hl td{font-weight:700;background:var(--berry-soft)}
     <h3 style="margin:22px 0 10px">Вклад в рынке и что получает каждый</h3>
     <div class="legend"><span><i style="background:var(--berry)"></i>работа организатора в рынке</span><span><i style="background:var(--ink)"></i>работа партнёра в рынке</span><span><i style="background:var(--leaf)"></i>получает за сезон</span></div>
     <div class="bars" id="bars"></div>
+    <details class="more"><summary>Цены и часы для оценки работы в рынке</summary><div class="tbl"><table class="calc" id="mkCalc"></table></div></details>
   </div>
 
   <div class="card">
     <h2>Три сценария первого хора</h2>
-    <p class="note" style="margin:-6px 0 12px">30, 45 и 60 участников в одном хоре. Набор и концерт растут вместе с хором: встреч набора всегда 4–6, при большом наборе на каждую приходит больше гостей; в хор записываются 27% пришедших, приходят 72% записавшихся, запись стоит 450 ₽; на концерт 5 билетов на участника, но не меньше 100 и не больше 250. Остальные цифры берутся из полей выше. Для 45–60 человек нужен зал побольше: проверьте цену аренды.</p>
+    <p class="note" style="margin:-6px 0 12px" id="scNote"></p>
     <div class="tbl"><table id="pScen"></table></div>
-  </div>
-
-  <div class="card">
-    <h2>Подробный расчёт хора</h2>
-    <div class="two-in">
-      <div><h3>Занятия</h3><div class="tbl"><table id="dLessons"></table></div></div>
-      <div><h3>Отчётный концерт</h3><div class="tbl"><table id="dConcert"></table></div></div>
-    </div>
-    <h3 style="margin-top:18px">Общие расходы, доля «Малины»</h3>
-    <div class="tbl"><table id="dShared"></table></div>
+    <details class="more" open><summary>Допущения сценариев</summary><div class="tbl"><table class="calc" id="scCalc"></table></div></details>
   </div>
 
   <div class="card">
@@ -195,7 +169,7 @@ tr.hl td{font-weight:700;background:var(--berry-soft)}
     </div>
     <div class="card">
       <h2>Платные встречи набора</h2>
-      <p class="note" style="margin:-6px 0 10px">Считаются отдельно и распределяются на троих сразу после встреч. Реклама из этих денег не вычитается.</p>
+      <p class="note" style="margin:-6px 0 10px">Считаются отдельно и распределяются <span data-x="on">на троих</span> сразу после встреч. Реклама из этих денег не вычитается.</p>
       <div class="tbl"><table id="meet"></table></div>
     </div>
   </div>
@@ -210,11 +184,11 @@ tr.hl td{font-weight:700;background:var(--berry-soft)}
       <li>18 января: старт сезона, занятия раз в неделю.</li>
       <li>с 17 марта: набор в следующий сезон.</li>
       <li>17 апреля: отчётный концерт.</li>
-      <li>20 апреля: подсчёт прибыли и бонус до 33%.</li>
+      <li>20 апреля: подсчёт прибыли и бонус до <span data-x="share">33%</span>.</li>
     </ul>
   </div>
 
-  <p class="note">«Цикл» — месяц набора и 3 месяца занятий с концертом, всего 4 месяца. Это расчёт по плану набора и продаж, а не гарантия. Итог зависит от числа участников и фактических расходов. Рыночные цены взяты из открытых данных о стоимости услуг в России и Екатеринбурге в 2026 году и округлены вниз.</p>
+  <p class="note">«Цикл» — <span data-x="Pm">месяц</span> набора и <span data-x="Mm">3 месяца</span> занятий с концертом, всего <span data-x="Sm">4 месяца</span>. Это расчёт по плану набора и продаж, а не гарантия. Итог зависит от числа участников и фактических расходов. Рыночные цены взяты из открытых данных о стоимости услуг в России и Екатеринбурге в 2026 году и округлены вниз.</p>
 </div>
 
 <script>
@@ -445,7 +419,9 @@ tr.hl td{font-weight:700;background:var(--berry-soft)}
     return p.then(function(b){ return JSON.parse(new TextDecoder().decode(b)); });
   }
 
+  var SC_DEF = {scS1:30, scS2:45, scS3:60, scConv:27, scShow:72, scCpl:450, scMMin:4, scMMax:6, scGuests:25, scTpp:5, scTMin:100, scTMax:250};
   var state = load();
+  state.g = Object.assign({}, SC_DEF, state.g);
   var saved = null;
   function esc(s){ return String(s).replace(/[&<>"]/g, function(ch){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch]; }); }
   function bru(){ return state.list.filter(function(c){ return c.type === 'share'; })[0]; }
@@ -455,7 +431,7 @@ tr.hl td{font-weight:700;background:var(--berry-soft)}
   function render(){
     var g = state.g, cc = state.concert, c = bru();
     if (!c){ document.getElementById('each').textContent = '—'; return; }
-    Array.prototype.forEach.call(document.querySelectorAll('input[data-k]'), function(el){ var src = el.dataset.t === 'cc' ? cc : c; if (document.activeElement !== el) el.value = src[el.dataset.k]; });
+    Array.prototype.forEach.call(document.querySelectorAll('input[data-k]'), function(el){ var src = el.dataset.t === 'cc' ? cc : el.dataset.t === 'g' ? g : c; if (document.activeElement !== el) el.value = +(+src[el.dataset.k] || 0).toFixed(2); });
     var m = model(state), r = m.res.filter(function(x){ return x.c.id === c.id; })[0];
     if (!r || !r.active){
       document.getElementById('each').textContent = '—';
@@ -464,15 +440,20 @@ tr.hl td{font-weight:700;background:var(--berry-soft)}
     }
     var S = m.S, k = r.k, nk = 1 - g.ndfl / 100, w = r.w, s = r.s, nC = m.concert.n;
     var seasonEach = r.pool / (k + 1), meetEach = r.mPool / (k + 1), each = seasonEach + meetEach;
+    var M = Math.max(1, g.season), P = Math.max(0, g.prep);
+    var SH = pct(100 / (k + 1)) + '%', OF = ofWord(k + 1);
+    var mon = function(x){ return pct(x) + ' ' + plural(Math.round(x), ['месяц','месяца','месяцев']); };
+    var X = {on: 'на ' + OF, of: 'из ' + OF, share: SH, partners: partnersWord(k), Sm: mon(S), Mm: mon(M), Pm: P === 1 ? 'месяц' : mon(P)};
+    Array.prototype.forEach.call(document.querySelectorAll('[data-x]'), function(el){ if (X[el.dataset.x] != null) el.textContent = X[el.dataset.x]; });
     document.getElementById('each').textContent = rub(each);
     document.getElementById('eachSide').innerHTML =
       '<span>из прибыли сезона <b>' + rub(seasonEach) + '</b></span>' +
       '<span>со встреч набора <b>' + rub(meetEach) + '</b></span>' +
-      '<span>в среднем в месяц (цикл 4 мес.) <b>' + rub(each / S) + '</b></span>' +
+      '<span>в среднем в месяц (цикл ' + pct(S) + ' мес.) <b>' + rub(each / S) + '</b></span>' +
       '<span>окупается с <b>' + ppl(beOf(c.id)) + '</b></span>';
     var pill = document.getElementById('pill');
     pill.className = 'pill' + (r.equal ? '' : ' no');
-    pill.textContent = r.equal ? ppl(r.n) + ' по ' + rub(c.price) + ': распределение поровну, по 33%' : 'Прибыли не хватает на равное распределение: сдельная оплата партнёров больше 33%';
+    pill.textContent = r.equal ? ppl(r.n) + ' по ' + rub(c.price) + ': распределение поровну, по ' + SH : 'Прибыли не хватает на равное распределение: сдельная оплата партнёров больше ' + SH + '';
 
     // Кто что делает
     var me = [
@@ -535,10 +516,10 @@ tr.hl td{font-weight:700;background:var(--berry-soft)}
       {t:'Комиссия за приём оплат', v: rub(r.fee - r.mFee)},
       {t:'Бухгалтер, сайт и бот', s:'доля «Малины»', v: rub(r.acctS + r.servS)},
       {group:'Налоги'},
-      {t:'УСН 6%', s:'уменьшен на взносы', v: rub(r.usnPool)},
+      {t:'УСН ' + pct(g.tax) + '%', s:'уменьшен на взносы', v: rub(r.usnPool)},
       {t:'Взносы и НДФЛ с оплаты партнёров', v: rub(r.sContrib + r.sNdfl)},
       {t:'Чистая прибыль сезона', v: rub(r.pool), sub:true},
-      {t:'Каждому из троих, 33%', v: rub(seasonEach), sub:true}
+      {t:'Каждому ' + X.of + ', ' + SH, v: rub(seasonEach), sub:true}
     );
     document.getElementById('season').innerHTML = rowsT(rows);
 
@@ -549,70 +530,41 @@ tr.hl td{font-weight:700;background:var(--berry-soft)}
       {t:'Комиссия за приём оплат', v: '−' + rub(r.mFee)},
       {t:'УСН', v: '−' + rub(r.mUsn)},
       {t:'Взносы и НДФЛ с оплаты партнёров', v: '−' + rub(r.mContribNdfl)},
-      {t:'Каждому из троих', v: rub(meetEach), sub:true},
+      {t:'Каждому ' + X.of, v: rub(meetEach), sub:true},
       {t:'Записываются в хор', s:'доля гостей встреч', v: pct(r.guests > 0 ? r.n / r.guests * 100 : 0) + '%'}
     ]);
 
-    // Подробный расчёт
-    var musCost = r.mus.cost, lessonRent = r.lessonHrs * c.rate;
-    document.getElementById('dLessons').innerHTML = rowsT([
-      {t:'Занятий за сезон', s: pct(c.lessonHours) + ' ч каждое', v: String(Math.round(r.lessons))},
-      {t:'Аренда зала', s: hrs(r.lessonHrs) + ' × ' + rub(c.rate), v: rub(lessonRent)},
-      {t:'Музыканты', s: c.musicians + ' чел.: ' + c.musReh + ' ' + plural(c.musReh, ['репетиция','репетиции','репетиций']) + ' и концерт, с налогами', v: rub(musCost)},
-      {t:'Аренда инструментов', v: rub(r.instr)},
-      {t:'Песен в репертуаре', s:'аранжировки и запись разбора делают партнёры', v: String(Math.round(c.songs))},
-      {t:'Расходы на занятия', v: rub(lessonRent + musCost + r.instr), sub:true},
-      {t:'На одного участника', v: rub((lessonRent + musCost + r.instr) / Math.max(1, r.n))},
-      {t:'Абонемент участника', v: rub(c.price)}
-    ]);
-    var co = m.concert, nC = co.n;
-    document.getElementById('dConcert').innerHTML = rowsT([
-      {t:'Билеты', s: nC + ' × ' + cc.tix + ' × ' + rub(cc.tixPrice), v: rub(co.box)},
-      {t:'Аренда зала', v: '−' + rub(cc.hall * nC)},
-      {t:'Звукорежиссёр, фото, видео', s:'самозанятые', v: '−' + rub((cc.sound + cc.photo + cc.video) * nC)},
-      {t:'Аренда и доставка инструментов', v: ((cc.instr + cc.instrDel) > 0 ? '−' : '') + rub((cc.instr + cc.instrDel) * nC)},
-      {t:'Реклама концерта', v: '−' + rub(cc.ads * nC)},
-      {t:'Генеральная репетиция на площадке', v: '−' + rub(cc.genRep * nC)},
-      {t:'Звуковая аппаратура', v: ((cc.gear > 0) ? '−' : '') + rub(cc.gear * nC)},
-      {t:'Печать, оформление сцены, цветы', v: '−' + rub((cc.print + cc.decor) * nC)},
-      {t:'Вода и перекус для участников', v: '−' + rub(cc.food * nC)},
-      {t:'Помощники и транспорт', v: '−' + rub((cc.helpers + cc.transport) * nC)},
-      {t:'РАО ' + pct(cc.rao) + '% и комиссия', v: '−' + rub(co.rao + co.fee)},
-      {t:'Итог концерта', v: rub(co.net), sub:true},
-      {t:'Доля «Малины»', s: pct(r.w * 100) + '% по числу участников', v: rub(r.boxShare - r.cS), sub:true},
-      {t:'Безубыточность концерта', s:'при текущих расходах', v: Math.ceil((cc.hall + cc.sound + cc.photo + cc.video + cc.instr + cc.instrDel + cc.ads + cc.genRep + cc.gear + cc.print + cc.decor + cc.food + cc.helpers + cc.transport) / Math.max(1, cc.tixPrice * (1 - (cc.rao + g.fee) / 100))) + ' билетов'}
-    ]);
-    document.getElementById('dShared').innerHTML = rowsT([
-      {t:'Бухгалтер', s: pct(r.s * 100) + '% по доходам', v: rub(g.acct * m.S * r.s)},
-      {t:'Сайт, бот, сервисы', v: rub((g.site + g.bot + g.otherServ) * m.S * r.s)},
-      {t:'Комиссия за приём оплат абонементов', v: rub(r.fee - r.mFee)},
-      {t:'Реферальные выплаты', v: rub(r.ref)}
-    ]);
+    // Калькулятор: суммы строк
+    var co = m.concert, er = (g.contrib + g.injury) / 100, nd = g.ndfl / 100;
+    var CX = {r:r, m:m, c:c, cc:cc, g:g, co:co, nC:nC, S:S, s:s, w:w, k:k, er:er, nd:nd, each:each, seasonEach:seasonEach, meetEach:meetEach, be:beOf(c.id)};
+    CALC_ROWS.forEach(function(row, i){ if (row.v){ var el = document.getElementById('cv' + i); if (el) el.innerHTML = row.v(CX); } });
 
     // Перспективы
     function each3(st){ var mm = model(st), rr = mm.res.filter(function(x){ return x.c.id === c.id; })[0]; if (!rr || !rr.active) return null; return {rr:rr, mm:mm, each:(rr.pool + rr.mPool) / (rr.k + 1)}; }
     function clone(){ return JSON.parse(JSON.stringify(state)); }
     var head3 = '<thead><tr><th>Вариант</th><th class="r">Доход</th><th class="r">Прибыль к распределению</th><th class="r">Каждому</th></tr></thead>';
-    var rowsN = [15, 20, 25, 30, 35, 40].concat([r.n]).filter(function(v, i, a){ return a.indexOf(v) === i; }).sort(function(a, b){ return a - b; });
+    var rowsN = [Math.max(1, beOf(c.id)), Math.round(r.n / 2), g.scS1, g.scS2, g.scS3].concat([r.n]).filter(function(v){ return v > 0; }).filter(function(v, i, a){ return a.indexOf(v) === i; }).sort(function(a, b){ return a - b; });
     document.getElementById('pN').innerHTML = head3 + '<tbody>' + rowsN.map(function(nv){
       var st = clone(); st.list.forEach(function(x){ if (x.id === c.id){ x.n = nv; } });
       var e = each3(st); if (!e) return '';
       return '<tr' + (nv === r.n ? ' class="hl"' : '') + '><td>' + ppl(nv) + '</td><td class="r">' + rub(e.rr.Is + e.rr.meetInc) + '</td><td class="r">' + rub(e.rr.pool + e.rr.mPool) + '</td><td class="r">' + rub(e.each) + '</td></tr>';
     }).join('') + '</tbody>';
-    var rowsT2 = [100, 150, 200, 250].concat([cc.tix]).filter(function(v, i, a){ return a.indexOf(v) === i; }).sort(function(a, b){ return a - b; });
-    document.getElementById('pTix').innerHTML = '<thead><tr><th>Билетов</th><th class="r">Итог концерта</th><th class="r">Каждому из троих</th></tr></thead><tbody>' + rowsT2.map(function(tv){
+    var tStep = (g.scTMax - g.scTMin) / 3, rowsT2 = [g.scTMin, g.scTMin + tStep, g.scTMin + 2 * tStep, g.scTMax].map(function(v){ return Math.round(v / 10) * 10; }).concat([cc.tix]).filter(function(v, i, a){ return a.indexOf(v) === i; }).sort(function(a, b){ return a - b; });
+    document.getElementById('pTix').innerHTML = '<thead><tr><th>Билетов</th><th class="r">Итог концерта</th><th class="r">Каждому ' + X.of + '</th></tr></thead><tbody>' + rowsT2.map(function(tv){
       var st = clone(); st.concert.tix = tv; var e = each3(st); if (!e) return '';
       return '<tr' + (tv === cc.tix ? ' class="hl"' : '') + '><td>' + tv + '</td><td class="r">' + rub(e.mm.concert.net) + '</td><td class="r">' + rub(e.each) + '</td></tr>';
     }).join('') + '</tbody>';
-    var scen = [30, 45, 60].map(function(nv){
+    var conv = Math.max(1, g.scConv) / 100, show = Math.max(1, g.scShow) / 100, mMin = Math.max(1, Math.min(g.scMMin, g.scMMax)), mMax = Math.max(mMin, g.scMMax);
+    var scen = [g.scS1, g.scS2, g.scS3].map(function(nv){
       var st = clone(), cx = st.list.filter(function(x){ return x.id === c.id; })[0];
-      var guests = Math.ceil(nv / 0.27), regs = Math.ceil(guests / 0.72);
-      cx.n = nv; cx.meetings = Math.min(6, Math.max(4, Math.ceil(guests / 25))); cx.mGuests = Math.max(25, Math.ceil(guests / cx.meetings)); cx.ads = Math.round(regs * 450 / 1000) * 1000; st.concert.tix = Math.min(250, Math.max(100, nv * 5));
+      var guests = Math.ceil(nv / conv), regs = Math.ceil(guests / show);
+      cx.n = nv; cx.meetings = Math.min(mMax, Math.max(mMin, Math.ceil(guests / Math.max(1, g.scGuests)))); cx.mGuests = Math.max(g.scGuests, Math.ceil(guests / cx.meetings)); cx.ads = Math.round(regs * g.scCpl / 1000) * 1000; st.concert.tix = Math.min(g.scTMax, Math.max(g.scTMin, nv * g.scTpp));
       var e = each3(st);
       return {n:nv, guests:guests, regs:regs, meetings:cx.meetings, mGuests:cx.mGuests, ads:cx.ads, tix:st.concert.tix, e:e};
     });
     function sRow(t, f, sub){ return '<tr' + (sub ? ' class="hl"' : '') + '><td>' + t + '</td>' + scen.map(function(x){ return '<td class="r">' + f(x) + '</td>'; }).join('') + '</tr>'; }
-    document.getElementById('pScen').innerHTML = '<thead><tr><th>За цикл (4 мес.)</th>' + scen.map(function(x){ return '<th class="r">' + x.n + ' участников</th>'; }).join('') + '</tr></thead><tbody>'
+    document.getElementById('scNote').textContent = 'Три размера одного хора: ' + [g.scS1, g.scS2, g.scS3].join(', ') + ' участников. Встреч набора от ' + mMin + ' до ' + mMax + ', на встречу не меньше ' + g.scGuests + ' гостей, при большом наборе гостей на встрече больше. В хор записываются ' + pct(g.scConv) + '% пришедших, приходят ' + pct(g.scShow) + '% записавшихся, запись стоит ' + rub(g.scCpl) + '. На концерт ' + pct(g.scTpp) + ' ' + (g.scTpp % 1 ? 'билета' : plural(g.scTpp, ['билет','билета','билетов'])) + ' на участника, от ' + g.scTMin + ' до ' + g.scTMax + '. Остальные цифры из калькулятора. Для большого хора проверьте цену зала.';
+    document.getElementById('pScen').innerHTML = '<thead><tr><th>За цикл (' + pct(S) + ' мес.)</th>' + scen.map(function(x){ return '<th class="r">' + x.n + ' участников</th>'; }).join('') + '</tr></thead><tbody>'
       + sRow('Записей на встречи', function(x){ return String(x.regs); })
       + sRow('Гостей на встречах', function(x){ return String(x.guests); })
       + sRow('Встреч набора', function(x){ return x.meetings + ' по ' + x.mGuests + ' гостей'; })
@@ -621,7 +573,7 @@ tr.hl td{font-weight:700;background:var(--berry-soft)}
       + sRow('Доходы', function(x){ return rub(x.e.rr.Is + x.e.rr.meetInc); })
       + sRow('Расходы и налоги', function(x){ return rub(x.e.rr.Is + x.e.rr.meetInc - x.e.rr.pool - x.e.rr.mPool); })
       + sRow('Прибыль к распределению', function(x){ return rub(x.e.rr.pool + x.e.rr.mPool); })
-      + sRow('Каждому из троих', function(x){ return rub(x.e.each); }, true)
+      + sRow('Каждому ' + X.of, function(x){ return rub(x.e.each); }, true)
       + sRow('В среднем в месяц', function(x){ return rub(x.e.each / x.e.mm.S); })
       + '</tbody>';
 
@@ -630,32 +582,166 @@ tr.hl td{font-weight:700;background:var(--berry-soft)}
     var e1 = (r1.pool + r1.mPool) / (r1.k + 1), e2 = (r2.pool + r2.mPool) / (r2.k + 1);
     document.getElementById('pTwo').innerHTML = rowsT([
       {t:'Один хор', s: ppl(r.n), v: rub(each) + ' каждому'},
-      {t:'Два хора с такими же цифрами', s:'бухгалтер, сайт, бот и концерт общие, у второго хора свои 15 песен', v: rub(e1 + e2) + ' каждому'},
+      {t:'Два хора с такими же цифрами', s:'бухгалтер, сайт, бот и концерт общие, у второго хора свои ' + Math.round(c.songs) + ' ' + plural(Math.round(c.songs), ['песня','песни','песен']), v: rub(e1 + e2) + ' каждому'},
       {t:'Прирост', v: '+' + rub(e1 + e2 - each), sub:true}
     ]);
 
     document.getElementById('howPay').innerHTML = [
       'Партнёры работают по срочному трудовому договору со сдельной оплатой. Каждый месяц акт выполненных работ под подпись: занятия, встречи, концерт, песни.',
-      'По актам за сезон каждому партнёру на руки около ' + rub(r.adv.net) + ': это аванс в счёт 33%.',
+      'По актам за сезон каждому партнёру на руки около ' + rub(r.adv.net) + ': это аванс в счёт доли ' + SH + '.',
       'Со встреч набора каждому ' + rub(r.mTNet) + ' на руки, сразу после встреч.',
       'После концерта бонус до полной доли: около ' + rub(r.bonus * nk) + ' на руки.',
       'Итого каждому партнёру около ' + rub(r.tNet) + ' на руки за сезон. НДФЛ и взносы платит организатор, они уже учтены в расчёте.'
     ].map(function(t){ return '<li>' + t + '</li>'; }).join('');
   }
 
+  function ofWord(n){ return {2:'двоих', 3:'троих', 4:'четверых', 5:'пятерых', 6:'шестерых'}[n] || (n + ' человек'); }
+  function partnersWord(k){ return {1:'один руководитель-партнёр', 2:'два руководителя-партнёра', 3:'три руководителя-партнёра', 4:'четыре руководителя-партнёра'}[k] || (k + ' руководителей-партнёров'); }
+  var INT_KEYS = ['n','meetings','mGuests','lessons','musicians','tix','musReh','instrTimes','songs','partners','scS1','scS2','scS3','scMMin','scMMax','scGuests','scTMin','scTMax'];
+  function minus(x){ return (x > 0.5 ? '−' : '') + rub(x); }
+  function cRow(t, k, u, st, hint){ return {t:t, src:'cc', k:k, u:u, st:st, s:hint, v: function(x){ return minus(x.cc[k] * x.nC); }}; }
+  function sRow2(t, k, hint){ return {t:t, src:'g', k:k, u:'₽ в месяц', st:500, s:hint, v: function(x){ return minus(x.g[k] * x.S * x.s); }}; }
+  var CALC = {dCalc: [
+    {group:'Абонементы'},
+    {t:'Участников', src:'c', k:'n', u:'чел', st:1},
+    {t:'Абонемент на сезон', src:'c', k:'price', u:'₽', st:500, s:'сумма — все абонементы', v: function(x){ return rub(x.r.sales); }},
+    {t:'Участников через партнёров', src:'c', k:'refShare', u:'%', st:5},
+    {t:'Вознаграждение партнёру', src:'c', k:'refPct', u:'% с абонемента', st:1, v: function(x){ return minus(x.r.ref); }},
+    {group:'Набор: платные встречи'},
+    {t:'Встреч', src:'c', k:'meetings', u:'шт', st:1},
+    {t:'Гостей на встрече', src:'c', k:'mGuests', u:'чел', st:1},
+    {t:'Билет на встречу', src:'c', k:'mPrice', u:'₽', st:50, s:'сумма — все билеты встреч', v: function(x){ return rub(x.r.meetInc); }},
+    {t:'Длительность встречи', src:'c', k:'mHours', u:'ч', st:0.5},
+    {t:'Аренда зала на встречах', src:'c', k:'mRate', u:'₽ в час', st:100, v: function(x){ return minus(x.r.mRent); }},
+    {t:'Чай и печенье', src:'c', k:'mTreats', u:'₽ за встречу', st:100, v: function(x){ return minus(x.r.treats); }},
+    {t:'Реклама набора', src:'c', k:'ads', u:'₽', st:1000, v: function(x){ return minus(x.c.ads); }},
+    {t:'Расходники на старте', src:'c', k:'startup', u:'₽', st:500, v: function(x){ return minus(x.c.startup); }},
+    {group:'Занятия'},
+    {t:'Занятий за сезон', src:'c', k:'lessons', u:'шт', st:1},
+    {t:'Длительность занятия', src:'c', k:'lessonHours', u:'ч', st:0.25},
+    {t:'Аренда зала на занятиях', src:'c', k:'rate', u:'₽ в час', st:100, v: function(x){ return minus(x.r.rent - x.r.mRent); }},
+    {t:'Музыкантов', src:'c', k:'musicians', u:'чел', st:1},
+    {t:'Репетиций с музыкантами', src:'c', k:'musReh', u:'шт', st:1},
+    {t:'Оплата музыканту за репетицию', src:'c', k:'musRehFee', u:'₽', st:500},
+    {t:'Оплата музыканту за концерт', src:'c', k:'musConcertFee', u:'₽', st:500, s:'сумма — все музыканты с взносами и компенсацией отпуска', v: function(x){ return minus(x.r.mus.cost); }},
+    {t:'Аренда инструментов, раз', src:'c', k:'instrTimes', u:'раз', st:1},
+    {t:'Аренда инструментов за раз', src:'c', k:'instrPrice', u:'₽', st:100},
+    {t:'Доставка инструментов за раз', src:'c', k:'instrDel', u:'₽', st:100, v: function(x){ return minus(x.r.instr); }},
+    {group:'Партнёры: сдельный аванс в счёт доли'},
+    {t:'Руководителей-партнёров', src:'c', k:'partners', u:'чел', st:1},
+    {t:'Расценка за занятие', src:'c', k:'lessonRate', u:'₽', st:100},
+    {t:'Расценка за концерт', src:'c', k:'concertRate', u:'₽', st:100},
+    {t:'Новых песен за сезон', src:'c', k:'songs', u:'шт', st:1},
+    {t:'Цена песни', src:'c', k:'songPrice', u:'₽', st:100, s:'сумма — аванс каждому до НДФЛ; это часть доли, а не расход', v: function(x){ return rub(x.r.adv.base); }},
+    {group:'Отчётный концерт'},
+    {t:'Продано билетов', src:'cc', k:'tix', u:'шт', st:10},
+    {t:'Цена билета', src:'cc', k:'tixPrice', u:'₽', st:50, s:'сумма — все билеты концерта', v: function(x){ return rub(x.co.box); }},
+    {t:'Длительность концертного дня', src:'cc', k:'cHours', u:'ч', st:0.5, s:'для оценки работы'},
+    cRow('Аренда зала', 'hall', '₽', 1000),
+    cRow('Генеральная репетиция на площадке', 'genRep', '₽', 500),
+    cRow('Звукорежиссёр', 'sound', '₽', 500, 'самозанятый'),
+    cRow('Фотограф', 'photo', '₽', 500, 'самозанятый'),
+    cRow('Видеограф', 'video', '₽', 500, 'самозанятый'),
+    cRow('Аренда инструментов', 'instr', '₽', 500),
+    cRow('Доставка инструментов', 'instrDel', '₽', 500),
+    cRow('Звуковая аппаратура', 'gear', '₽', 500),
+    cRow('Реклама концерта', 'ads', '₽', 500),
+    cRow('Печать: афиши, программки', 'print', '₽', 500),
+    cRow('Оформление сцены, цветы', 'decor', '₽', 500),
+    cRow('Вода и перекус для участников', 'food', '₽', 500),
+    cRow('Помощники: билетёр, гардероб', 'helpers', '₽', 500),
+    cRow('Транспорт и логистика', 'transport', '₽', 500),
+    {t:'РАО', src:'cc', k:'rao', u:'% билетов', st:0.5, v: function(x){ return minus(x.co.rao); }},
+    {t:'Комиссия за билеты', s:'по ставке комиссии ниже', v: function(x){ return minus(x.co.fee); }},
+    {t:'Итог концерта', sub:true, v: function(x){ return rub(x.co.net); }},
+    {t:'Доля «Малины»', sub:true, v: function(x){ return rub(x.r.boxShare - x.r.cS) + '<small>' + pct(x.w * 100) + '% по числу участников</small>'; }},
+    {t:'Безубыточность концерта', v: function(x){ var cc = x.cc, fix = cc.hall + cc.sound + cc.photo + cc.video + cc.instr + cc.instrDel + cc.ads + cc.genRep + cc.gear + cc.print + cc.decor + cc.food + cc.helpers + cc.transport; return Math.ceil(fix / Math.max(1, cc.tixPrice * (1 - (cc.rao + x.g.fee) / 100))) + ' билетов'; }},
+    {group:'Общие расходы, доля «Малины»'},
+    sRow2('Бухгалтер', 'acct'),
+    sRow2('Сайты: подписки и хостинг', 'site'),
+    sRow2('Бот: платформа, ИИ, рассылки', 'bot'),
+    sRow2('Прочие сервисы', 'otherServ'),
+    {t:'Комиссия за приём оплат', src:'g', k:'fee', u:'%', st:0.1, s:'абонементы и встречи', v: function(x){ return minus(x.r.fee); }},
+    {group:'Сроки и налоги'},
+    {t:'Месяцев набора', src:'g', k:'prep', u:'мес', st:0.5, s:'общие расходы идут и в этот месяц'},
+    {t:'Месяцев занятий', src:'g', k:'season', u:'мес', st:1},
+    {t:'УСН «доходы»', src:'g', k:'tax', u:'%', st:0.5, s:'уменьшен на взносы', v: function(x){ return minus(x.r.usnPool + x.r.mUsn); }},
+    {t:'Страховые взносы', src:'g', k:'contrib', u:'%', st:0.1},
+    {t:'Взносы на травматизм', src:'g', k:'injury', u:'%', st:0.1, s:'сумма — все взносы с оплаты партнёров', v: function(x){ return minus(x.r.sContrib + x.k * x.r.mG * x.er); }},
+    {t:'НДФЛ', src:'g', k:'ndfl', u:'%', st:1, s:'удерживается из оплаты партнёров', v: function(x){ return minus(x.r.sNdfl + x.k * x.r.mG * x.nd); }},
+    {group:'Итог цикла'},
+    {t:'Доходы', v: function(x){ return rub(x.r.Is + x.r.meetInc); }},
+    {t:'Расходы и налоги', v: function(x){ return minus(x.r.Is + x.r.meetInc - x.r.pool - x.r.mPool); }},
+    {t:'Прибыль к распределению', sub:true, v: function(x){ return rub(x.r.pool + x.r.mPool); }},
+    {t:'Из прибыли сезона каждому', v: function(x){ return rub(x.seasonEach); }},
+    {t:'Со встреч набора каждому', v: function(x){ return rub(x.meetEach); }},
+    {t:'Каждому', sub:true, v: function(x){ return rub(x.each); }},
+    {t:'В среднем в месяц', v: function(x){ return rub(x.each / x.S); }},
+    {t:'Окупается с', v: function(x){ return ppl(x.be); }}
+  ], scCalc: [
+    {t:'Первый вариант', src:'g', k:'scS1', u:'участников', st:5},
+    {t:'Второй вариант', src:'g', k:'scS2', u:'участников', st:5},
+    {t:'Третий вариант', src:'g', k:'scS3', u:'участников', st:5},
+    {t:'Записываются в хор', src:'g', k:'scConv', u:'% пришедших', st:1},
+    {t:'Приходят на встречу', src:'g', k:'scShow', u:'% записавшихся', st:1},
+    {t:'Стоимость записи на встречу', src:'g', k:'scCpl', u:'₽', st:50},
+    {t:'Встреч набора не меньше', src:'g', k:'scMMin', u:'шт', st:1},
+    {t:'Встреч набора не больше', src:'g', k:'scMMax', u:'шт', st:1},
+    {t:'Гостей на встрече не меньше', src:'g', k:'scGuests', u:'чел', st:1},
+    {t:'Билетов на участника', src:'g', k:'scTpp', u:'шт', st:0.5},
+    {t:'Билетов на концерт не меньше', src:'g', k:'scTMin', u:'шт', st:10},
+    {t:'Билетов на концерт не больше', src:'g', k:'scTMax', u:'шт', st:10}
+  ], mkCalc: [
+    {group:'Цены в рынке'},
+    {t:'Руководитель коллектива', src:'g', k:'mkTeachH', u:'₽ в час', st:100},
+    {t:'Аранжировка и запись разбора', src:'g', k:'mkSong', u:'₽ за песню', st:500},
+    {t:'Часов на одну песню', src:'g', k:'mkSongHours', u:'ч', st:0.5},
+    {t:'Администратор', src:'g', k:'mkAdminH', u:'₽ в час', st:50},
+    {t:'Таргет и соцсети', src:'g', k:'mkSmm', u:'₽ в месяц', st:1000},
+    {t:'Сайты под ключ', src:'g', k:'mkSite', u:'₽ разово', st:1000},
+    {t:'Бот с ИИ-ассистентом под ключ', src:'g', k:'mkBot', u:'₽ разово', st:1000},
+    {t:'Поддержка сайтов и бота', src:'g', k:'mkSup', u:'₽ в месяц', st:500},
+    {t:'Партнёрский маркетинг', src:'g', k:'mkRef', u:'₽ в месяц', st:1000},
+    {t:'Юридические и финансовые вопросы', src:'g', k:'mkOffice', u:'₽ в месяц', st:500},
+    {t:'Организация концерта', src:'g', k:'mkEvent', u:'₽ за концерт', st:1000},
+    {group:'Часы организатора'},
+    {t:'Реклама', src:'g', k:'gAds', u:'ч в месяц', st:1},
+    {t:'Переписка, запись, напоминания', src:'g', k:'gChat', u:'ч в месяц', st:1},
+    {t:'Закупки, подготовка встреч и занятий', src:'g', k:'gPrep', u:'ч в месяц', st:1},
+    {t:'Сайты: создание', src:'g', k:'wSiteBuild', u:'ч разово', st:1},
+    {t:'Сайты: поддержка', src:'g', k:'wSiteSup', u:'ч в месяц', st:1},
+    {t:'Бот: создание', src:'g', k:'wBotBuild', u:'ч разово', st:1},
+    {t:'Бот: поддержка', src:'g', k:'wBotSup', u:'ч в месяц', st:1},
+    {t:'Партнёры и реферальная программа', src:'g', k:'wRef', u:'ч в месяц', st:1},
+    {t:'Юридические и финансовые вопросы', src:'g', k:'wAcct', u:'ч в месяц', st:1},
+    {t:'Поиск специалистов и залов', src:'g', k:'wHire', u:'ч за сезон', st:1},
+    {t:'Организация концерта', src:'g', k:'wConcert', u:'ч за сезон', st:1},
+    {t:'Расчёт и отчёт для партнёров', src:'g', k:'wPartners', u:'ч за сезон', st:1}
+  ]};
+  var CALC_ROWS = [];
+  Object.keys(CALC).forEach(function(id){
+    var html = CALC[id].map(function(row){
+      if (row.group) return '<tr class="group"><td colspan="3">' + row.group + '</td></tr>';
+      var i = CALC_ROWS.length; CALC_ROWS.push(row);
+      var inp = row.k ? '<input type="number" min="0" step="' + row.st + '" inputmode="decimal" data-t="' + row.src + '" data-k="' + row.k + '" aria-label="' + esc(row.t) + '">' : '';
+      return '<tr' + (row.sub ? ' class="sub"' : '') + '><td>' + row.t + '<small>' + [row.u, row.s].filter(Boolean).join(' · ') + '</small></td><td class="in">' + inp + '</td><td class="v" id="cv' + i + '"></td></tr>';
+    }).join('');
+    var el = document.getElementById(id); if (el) el.innerHTML = '<tbody>' + html + '</tbody>';
+  });
+
   Array.prototype.forEach.call(document.querySelectorAll('input[data-k]'), function(el){
     el.addEventListener('input', function(){
       var x = parseFloat(String(el.value).replace(',', '.')); var c = bru(); if (!c) return;
       var v = isFinite(x) && x >= 0 ? x : 0;
-      if (['n','meetings','mGuests','lessons','musicians','tix'].indexOf(el.dataset.k) >= 0) v = Math.round(v);
-      (el.dataset.t === 'cc' ? state.concert : c)[el.dataset.k] = v; render();
+      if (INT_KEYS.indexOf(el.dataset.k) >= 0) v = Math.round(v);
+      (el.dataset.t === 'cc' ? state.concert : el.dataset.t === 'g' ? state.g : c)[el.dataset.k] = v; render();
     });
   });
   document.getElementById('resetTry').addEventListener('click', function(){ if (saved) state = JSON.parse(JSON.stringify(saved)); render(); });
 
   function norm(s){
     if (!(s && s.g && s.concert && Array.isArray(s.list))) return null;
-    s.g = Object.assign({}, G_DEF, s.g); s.concert = Object.assign({}, C_DEF, s.concert);
+    s.g = Object.assign({}, G_DEF, SC_DEF, s.g); s.concert = Object.assign({}, C_DEF, s.concert);
     s.list = s.list.filter(function(c){ return c && c.id && (c.type === 'share' || c.type === 'paid'); }).map(function(c){ return Object.assign({}, BASE, c); });
     return s;
   }
