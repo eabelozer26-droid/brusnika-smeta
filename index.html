@@ -448,7 +448,7 @@ button.ghost{padding:5px 10px;font-size:13px;color:var(--muted)}
   var G_DEF = {season:3, prep:1, tax:6, ipYear:57390, fee:3.5, contrib:30, injury:0.2, ndfl:13, netMode:'net',
     acct:10000, site:3000, bot:5000, otherServ:1000,
     myRate:1000, wSiteBuild:40, wSiteSup:4, wBotBuild:30, wBotSup:4, wAcct:12, wHire:10, wConcert:25, wPartners:4, gAds:8, gChat:8, gPrep:4,
-    mkSite:30000, mkBot:50000, mkSup:5000, mkSmm:20000, mkOffice:10000, mkAdminH:400, mkEvent:40000, wRef:8, mkRef:10000, mkTeachH:2500, mkSong:1000, mkSongHours:3, mkVer:3, songsVer:1};
+    mkSite:30000, mkBot:50000, mkSup:5000, mkSmm:20000, mkOffice:10000, mkAdminH:400, mkEvent:40000, wRef:8, mkRef:10000, mkTeachH:2500, mkSong:1000, mkSongHours:3, mkVer:3, songsVer:1, treatsVer:1};
   var MARKET_FIELDS = [
     ['mkSite','Сайты под ключ','₽ разово',1000,'лендинг у фрилансера: обычно 10–40 тыс. ₽'],
     ['mkBot','Бот с ИИ-ассистентом под ключ','₽ разово',1000,'готовый бот с настройкой: от 30–50 тыс. ₽'],
@@ -463,7 +463,7 @@ button.ghost{padding:5px 10px;font-size:13px;color:var(--muted)}
     ['mkSongHours','Часов на одну песню','ч',0.5,'аранжировка и запись разбора']
   ];
   var C_DEF = {tix:150, tixPrice:700, cHours:6, hall:40000, sound:10000, photo:10000, video:10000, instr:0, instrDel:0, ads:10000, rao:5};
-  var BASE = {n:0, price:18000, prepay:5000, meetings:4, mGuests:15, mPrice:500, mHours:2, mTreats:150,
+  var BASE = {n:0, price:18000, prepay:5000, meetings:4, mGuests:15, mPrice:500, mHours:2, mTreats:3000,
     kind:'other', partners:2, concertRate:2000, pieces:0, pieceRate:2000, teachers:1, lessonRate:2500, extra:0, lessons:12, lessonHours:2, rate:1000, mRate:1000,
     songs:0, songPrice:1000, musicians:0, musReh:0, musRehFee:2500, musConcertFee:5000,
     instrTimes:0, instrPrice:3000, instrDel:1000, ads:20000, startup:5000, licence:0,
@@ -527,7 +527,7 @@ button.ghost{padding:5px 10px;font-size:13px;color:var(--muted)}
         ['mPrice','Билет на встречу','₽',50],
         ['mHours','Длительность встречи','ч',0.5],
         ['mRate','Аренда зала на встречах','₽ в час',100],
-        ['mTreats','Чай и печенье','₽ на гостя',10]
+        ['mTreats','Чай и печенье','₽ за встречу',100,'сумма на одну встречу целиком']
       ]}
     ];
     if (type === 'share') s.push({t:'Руководители-партнёры, срочный договор, сдельно', f:[
@@ -581,7 +581,7 @@ button.ghost{padding:5px 10px;font-size:13px;color:var(--muted)}
   function mk(type, name, o){ return Object.assign({id:newId(), type:type, name:name}, BASE, o || {}); }
   function defaults(){
     return {g:Object.assign({}, G_DEF), concert:Object.assign({}, C_DEF), list:[
-      mk('share','Брусника',{refShare:20, n:30, price:18000, prepay:5000, meetings:4, mGuests:20, mPrice:500, mHours:2, mTreats:150, partners:2, lessonRate:800, concertRate:2000, lessons:12, lessonHours:2, rate:1000, songs:15, songPrice:1000, musicians:2, musReh:4, musRehFee:2500, musConcertFee:5000, instrTimes:0, instrPrice:3000, instrDel:1000, ads:30000, startup:10000, licence:0, wAds:8, wChat:8, wPrep:4, wInstr:1}),
+      mk('share','Брусника',{refShare:20, n:30, price:18000, prepay:5000, meetings:4, mGuests:20, mPrice:500, mHours:2, mTreats:3000, partners:2, lessonRate:800, concertRate:2000, lessons:12, lessonHours:2, rate:1000, songs:15, songPrice:1000, musicians:2, musReh:4, musRehFee:2500, musConcertFee:5000, instrTimes:0, instrPrice:3000, instrDel:1000, ads:30000, startup:10000, licence:0, wAds:8, wChat:8, wPrep:4, wInstr:1}),
       mk('paid','Танцевальный коллектив',{kind:'dance', n:0, price:18000, prepay:5000, meetings:4, mGuests:15, teachers:1, lessonRate:2500, pieces:5, pieceRate:2000, extra:0, lessons:12, lessonHours:2, rate:1000, ads:20000, startup:5000, licence:2000, wAds:6, wChat:6, wPrep:2, wInstr:0}),
       mk('paid','Инструментальный ансамбль',{kind:'ensemble', n:0, price:18000, prepay:5000, meetings:4, mGuests:12, teachers:1, lessonRate:3000, extra:0, lessons:12, lessonHours:2, rate:1000, instrTimes:0, instrPrice:3000, instrDel:1000, ads:15000, startup:5000, wAds:6, wChat:6, wPrep:2, wInstr:2})
     ]};
@@ -590,12 +590,13 @@ button.ghost{padding:5px 10px;font-size:13px;color:var(--muted)}
     try {
       var s = JSON.parse(localStorage.getItem(KEY) || 'null');
       if (s && s.g && s.concert && Array.isArray(s.list)){
-        var oldMk = s.g.mkVer, oldSongs = s.g.songsVer;
+        var oldMk = s.g.mkVer, oldSongs = s.g.songsVer, oldTreats = s.g.treatsVer;
         s.g = Object.assign({}, G_DEF, s.g); s.concert = Object.assign({}, C_DEF, s.concert);
         s.list = s.list.filter(function(c){ return c && c.id && (c.type === 'share' || c.type === 'paid'); }).map(function(c){ return Object.assign({}, BASE, c); });
         s.list.forEach(function(c){ if (c.type === 'share' && c.name === 'Хор') c.name = 'Брусника'; if (c.type === 'paid' && (!c.kind || c.kind === 'other')){ if (/^Танцевальн/.test(c.name || '')) c.kind = 'dance'; else if (/^Инструментальн/.test(c.name || '')) c.kind = 'ensemble'; } });
         s.ui = s.ui && typeof s.ui === 'object' ? s.ui : {};
         if (s.concert.photo === 8000 && s.concert.video === 15000){ s.concert.photo = 10000; s.concert.video = 10000; }
+        if (!(oldTreats >= 1)) s.list.forEach(function(c){ c.mTreats = Math.round(c.mTreats * (c.mGuests || 0)); });
         if (!(oldSongs >= 1)) s.list.forEach(function(c){ if (c.type === 'share' || c.kind === 'choir') c.songs = 15; });
         if (!(oldMk >= 3)) ['mkSite','mkBot','mkSup','mkSmm','mkOffice','mkAdminH','mkRef','mkEvent','mkTeachH','mkSong','mkSongHours','mkVer'].forEach(function(k){ s.g[k] = G_DEF[k]; });
         return s;
@@ -764,7 +765,7 @@ button.ghost{padding:5px 10px;font-size:13px;color:var(--muted)}
       var I = sales + meetInc + boxShare;
       var fee = (sales + meetInc) * g.fee / 100;
       var rent = lessonHrs * c.rate + meetHrs * c.mRate;
-      var treats = guests * c.mTreats;
+      var treats = c.meetings * c.mTreats;
       var lic = c.licence * M;
       var mus = emp(c.musicians * (c.musReh * c.musRehFee + c.musConcertFee), g);
       var instr = c.instrTimes * (c.instrPrice + c.instrDel);
@@ -891,13 +892,13 @@ button.ghost{padding:5px 10px;font-size:13px;color:var(--muted)}
     var common = [
       {group:'Доходы'},
       {t:'Абонементы', s: ppl(r.n) + ' × ' + rub(c.price) + ', из них предоплата ' + rub(c.prepay) + ' при записи', v: rub(r.sales)},
-      isS ? null : {t:'Встречи набора', s: c.meetings + ' встреч × ' + c.mGuests + ' гостей × ' + rub(c.mPrice) + '; записываются ' + pct(r.guests > 0 ? r.n / r.guests * 100 : 0) + '% гостей', v: rub(r.meetInc)},
+      isS ? null : {t:'Встречи набора', s: c.meetings + ' ' + plural(c.meetings, ['встреча','встречи','встреч']) + ' × ' + c.mGuests + ' гостей × ' + rub(c.mPrice) + '; записываются ' + pct(r.guests > 0 ? r.n / r.guests * 100 : 0) + '% гостей', v: rub(r.meetInc)},
       {t:'Доля билетов концерта', s: pct(r.w * 100) + '% по числу участников', v: rub(r.boxShare)},
       {t:'Всего доходов', v: rub(isS ? r.Is : r.I), sub:true},
       {group:'Объективные расходы'},
       isS ? {t:'Аренда зала на занятиях', s: hrs(r.lessonHrs) + ' × ' + rub(c.rate), v: rub(r.lessonHrs * c.rate)}
           : {t:'Аренда зала', s: hrs(r.lessonHrs) + ' занятий × ' + rub(c.rate) + ' + ' + hrs(r.meetHrs) + ' встреч × ' + rub(c.mRate), v: rub(r.rent)},
-      isS ? null : {t:'Чай и печенье на встречах', s: r.guests + ' гостей × ' + rub(c.mTreats), v: rub(r.treats)},
+      isS ? null : {t:'Чай и печенье на встречах', s: c.meetings + ' ' + plural(c.meetings, ['встреча','встречи','встреч']) + ' × ' + rub(c.mTreats), v: rub(r.treats)},
       (isS || c.songs > 0) ? {t:'Аранжировка и запись разбора', s: num(c.songs) + ' песен × ' + rub(c.songPrice) + (isS ? ', делают партнёры: вклад в 33%, не расход' : ', ' + specS), v: rub(isS ? 0 : r.arr.cost)} : null,
       c.musicians > 0 ? {t:'Музыканты', s: c.musicians + ' × (' + c.musReh + ' репет. × ' + rub(c.musRehFee) + ' + концерт ' + rub(c.musConcertFee) + '), ' + specS, v: rub(r.mus.cost)} : null,
       c.instrTimes > 0 ? {t:'Аренда и доставка инструментов', s: c.instrTimes + ' раз × (' + rub(c.instrPrice) + ' + ' + rub(c.instrDel) + ')', v: rub(r.instr)} : null,
@@ -925,9 +926,9 @@ button.ghost{padding:5px 10px;font-size:13px;color:var(--muted)}
       ]);
       if (!r.equal) pool.push({t:'33% меньше сдельной оплаты по актам', s:'сдельная оплата по договору платится всё равно, поэтому вам остаётся меньше', v: rub(r.shareYou)});
       pool.push({group:'Платные встречи набора: отдельное распределение'},
-        {t:'Билеты на встречи', s: c.meetings + ' встреч × ' + c.mGuests + ' гостей × ' + rub(c.mPrice) + '; записываются ' + pct(r.guests > 0 ? r.n / r.guests * 100 : 0) + '% гостей', v: rub(r.meetInc)},
+        {t:'Билеты на встречи', s: c.meetings + ' ' + plural(c.meetings, ['встреча','встречи','встреч']) + ' × ' + c.mGuests + ' гостей × ' + rub(c.mPrice) + '; записываются ' + pct(r.guests > 0 ? r.n / r.guests * 100 : 0) + '% гостей', v: rub(r.meetInc)},
         {t:'Аренда зала на встречах', s: hrs(r.meetHrs) + ' × ' + rub(c.mRate), v: '−' + rub(r.mRent)},
-        {t:'Чай и печенье', s: r.guests + ' гостей × ' + rub(c.mTreats), v: '−' + rub(r.treats)},
+        {t:'Чай и печенье', s: c.meetings + ' ' + plural(c.meetings, ['встреча','встречи','встреч']) + ' × ' + rub(c.mTreats), v: '−' + rub(r.treats)},
         {t:'Комиссия Продамуса', v: '−' + rub(r.mFee)},
         {t:'УСН с билетов', v: '−' + rub(r.mUsn)},
         {t:'Взносы и НДФЛ партнёров с их доли', v: '−' + rub(r.mContribNdfl)},
@@ -946,7 +947,7 @@ button.ghost{padding:5px 10px;font-size:13px;color:var(--muted)}
       html += '<span class="status ' + (r.you >= 0 ? 'ok' : 'no') + '">' + (r.you >= 0 ? 'Прибыль ваша: ' + rub(r.you / S) + ' в месяц' : 'Убыток ' + rub(-r.you) + ' за сезон') + '</span>';
       var tbl = common.concat([
         {group:'Руководители'},
-        {t:'Занятия и встречи', s: c.teachers + ' × ' + rub(c.lessonRate) + ' × (' + Math.round(r.lessons) + ' занятий + ' + c.meetings + ' встреч)', v: rub(c.teachers * c.lessonRate * (r.lessons + c.meetings))},
+        {t:'Занятия и встречи', s: c.teachers + ' × ' + rub(c.lessonRate) + ' × (' + Math.round(r.lessons) + ' занятий + ' + c.meetings + ' ' + plural(c.meetings, ['встреча','встречи','встреч']) + ')', v: rub(c.teachers * c.lessonRate * (r.lessons + c.meetings))},
         c.pieces > 0 ? {t:'Постановки, номера', s: c.pieces + ' × ' + rub(c.pieceRate), v: rub(c.pieces * c.pieceRate)} : null,
         c.extra > 0 ? {t:'Прочие доп. работы', v: rub(c.extra)} : null,
         {t:'Налоги работодателя, отпуск' + (g.netMode === 'net' ? ', НДФЛ сверх ставки' : ''), v: rub(r.team.cost - c.teachers * c.lessonRate * (r.lessons + c.meetings) - c.pieces * c.pieceRate - c.extra)},
@@ -972,7 +973,7 @@ button.ghost{padding:5px 10px;font-size:13px;color:var(--muted)}
     var genH = Math.max(0, m.meGeneral - concDay - g.wConcert - tasksAll) * r.s;
     var meItems = [
       ['Занятия: оплаты, отметки, атмосфера', Math.round(r.lessons) + ' занятий', r.lessonHrs],
-      ['Встречи набора: проведение, запись, оплаты', c.meetings + ' встреч', r.meetHrs],
+      ['Встречи набора: проведение, запись, оплаты', c.meetings + ' ' + plural(c.meetings, ['встреча','встречи','встреч']) + '', r.meetHrs],
       ['Концерт: организация', 'площадка, билеты, РАО, подрядчики; доля коллектива ' + pct(r.w * 100) + '%', g.wConcert * r.w],
       ['Концерт: концертный день', 'доля коллектива ' + pct(r.w * 100) + '%', concDay * r.w],
       ['Реклама: площадки, создание, размещение', 'и соцсети; доля коллектива ' + pct(r.s * 100) + '% по доходам', g.gAds * S * r.s],
