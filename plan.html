@@ -252,7 +252,7 @@ td.r,th.r{text-align:right}
   var G_DEF = {scS1:30, scS2:45, scS3:60, scConv:27, scShow:72, scCpl:450, scMMin:4, scMMax:6, scGuests:25, scGMax:30, scTpp:5, scTMin:100, scTMax:250, scAdsMin:20000, scAdsMax:50000, season:3, prep:1, tax:6, ipYear:57390, fee:3.5, contrib:30, injury:0.2, ndfl:13, netMode:'net',
     acct:10000, site:3000, bot:5000, otherServ:2000,
     myRate:1000, wSiteBuild:40, wSiteSup:4, wBotBuild:30, wBotSup:4, wAcct:12, wHire:10, wConcert:25, wPartners:4, gAds:14, gChat:14, gPrep:5,
-    mkSite:30000, mkBot:50000, mkSup:5000, mkSmm:20000, mkOffice:10000, mkAdminH:400, mkEvent:40000, wRef:8, mkRef:10000, mkTeachH:2500, mkSong:1000, mkSongHours:3, mkVer:3, songsVer:1, treatsVer:1, baseVer:5};
+    mkSite:30000, mkBot:50000, mkSup:5000, mkSmm:20000, mkOffice:10000, mkAdminH:400, mkEvent:40000, wRef:8, mkRef:10000, mkTeachH:2500, mkSong:1000, mkSongHours:3, mkVer:3, songsVer:1, treatsVer:1, baseVer:6};
   var MARKET_FIELDS = [
     ['mkSite','Сайты под ключ','₽ разово',1000,'лендинг у фрилансера: обычно 10–40 тыс. ₽'],
     ['mkBot','Бот с ИИ-ассистентом под ключ','₽ разово',1000,'готовый бот с настройкой: от 30–50 тыс. ₽'],
@@ -270,7 +270,7 @@ td.r,th.r{text-align:right}
   var BASE = {n:0, price:18000, prepay:5000, meetings:4, mGuests:15, mPrice:500, mHours:2, mTreats:3000,
     kind:'other', partners:2, concertRate:2000, pieces:0, pieceRate:2000, teachers:1, lessonRate:2500, extra:0, lessons:12, lessonHours:2, rate:1000, mRate:1000,
     songs:0, songPrice:1000, musicians:0, musReh:0, musRehFee:2500, musConcertFee:5000,
-    instrTimes:0, instrPrice:3000, instrDel:1000, ads:20000, startup:5000, licence:0, earlyDisc:0, earlyShare:0, friendDisc:0, friendShare:0, openEv:0, mCredit:0,
+    instrTimes:0, instrPrice:3000, instrDel:1000, ads:20000, startup:5000, licence:0, earlyDisc:0, earlyShare:0, friendDisc:0, friendShare:0, openEv:0, mCredit:0, photoS:0,
     wAds:6, wChat:6, wPrep:2, wInstr:0, refShare:0, refPct:10};
 
 
@@ -281,7 +281,7 @@ td.r,th.r{text-align:right}
   function mk(type, name, o){ return Object.assign({id:newId(), type:type, name:name}, BASE, o || {}); }
   function defaults(){
     return {g:Object.assign({}, G_DEF), concert:Object.assign({}, C_DEF), list:[
-      mk('share','Малина',{mPrice:1000, mCredit:60, earlyDisc:1500, earlyShare:40, friendDisc:1000, friendShare:25, openEv:8000, refShare:20, n:30, price:18000, prepay:5000, meetings:5, mGuests:25, mHours:2, mTreats:3000, partners:2, lessonRate:800, concertRate:2000, lessons:12, lessonHours:2, rate:1000, songs:15, songPrice:1000, musicians:2, musReh:4, musRehFee:2500, musConcertFee:5000, instrTimes:0, instrPrice:3000, instrDel:1000, ads:50000, startup:10000, licence:0, wAds:8, wChat:8, wPrep:4, wInstr:1}),
+      mk('share','Малина',{mPrice:1000, mCredit:60, photoS:10000, earlyDisc:1500, earlyShare:40, friendDisc:1000, friendShare:25, openEv:8000, refShare:20, n:30, price:18000, prepay:5000, meetings:5, mGuests:25, mHours:2, mTreats:3000, partners:2, lessonRate:800, concertRate:2000, lessons:12, lessonHours:2, rate:1000, songs:15, songPrice:1000, musicians:2, musReh:4, musRehFee:2500, musConcertFee:5000, instrTimes:0, instrPrice:3000, instrDel:1000, ads:50000, startup:10000, licence:0, wAds:8, wChat:8, wPrep:4, wInstr:1}),
       mk('paid','Танцевальный коллектив',{kind:'dance', n:0, price:18000, prepay:5000, meetings:4, mGuests:15, teachers:1, lessonRate:2500, pieces:5, pieceRate:2000, extra:0, lessons:12, lessonHours:2, rate:1000, ads:20000, startup:5000, licence:2000, wAds:6, wChat:6, wPrep:2, wInstr:0}),
       mk('paid','Инструментальный ансамбль',{kind:'ensemble', n:0, price:18000, prepay:5000, meetings:4, mGuests:12, teachers:1, lessonRate:3000, extra:0, lessons:12, lessonHours:2, rate:1000, instrTimes:0, instrPrice:3000, instrDel:1000, ads:20000, startup:5000, wAds:6, wChat:6, wPrep:2, wInstr:2})
     ]};
@@ -304,6 +304,7 @@ td.r,th.r{text-align:right}
           if (s.g.gAds === 8) s.g.gAds = 14; if (s.g.gChat === 8) s.g.gChat = 14; if (s.g.gPrep === 4) s.g.gPrep = 5; if (s.g.otherServ === 1000) s.g.otherServ = 2000;
         }
         if (!(oldBase >= 5)) s.list.forEach(function(c){ if (c.type === 'share' && !c.mCredit) c.mCredit = 60; });
+        if (!(oldBase >= 6)) s.list.forEach(function(c){ if (c.type === 'share' && !c.photoS) c.photoS = 10000; });
         s.g.baseVer = G_DEF.baseVer;
         if (!(oldSongs >= 1)) s.list.forEach(function(c){ if (c.type === 'share' || c.kind === 'choir') c.songs = 15; });
         if (!(oldMk >= 3)) ['mkSite','mkBot','mkSup','mkSmm','mkOffice','mkAdminH','mkRef','mkEvent','mkTeachH','mkSong','mkSongHours','mkVer'].forEach(function(k){ s.g[k] = G_DEF[k]; });
@@ -366,7 +367,7 @@ td.r,th.r{text-align:right}
       var ipIn = c.type === 'share' ? 0 : ipS;
       // У «Малины» аранжировки делают партнёры: это их вклад в 33%, не расход коллектива
       var arrIn = c.type === 'share' ? emp(0, g) : arr;
-      var np = fee + rent + treats + lic + mus.cost + instr + arrIn.cost + c.ads + ref + c.startup + (c.openEv || 0) + cS + acctS + servS + ipIn;
+      var np = fee + rent + treats + lic + mus.cost + instr + arrIn.cost + c.ads + ref + c.startup + (c.openEv || 0) + (c.photoS || 0) + cS + acctS + servS + ipIn;
       var empC = mus.contrib + arrIn.contrib + cStaff.contrib * w;
       var contribO = empC + ipIn;
       var ndflO = mus.ndfl + arrIn.ndfl + cStaff.ndfl * w;
