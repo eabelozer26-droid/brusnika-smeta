@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Брусника: план проекта</title>
+<meta name="description" content="Музыкальные коллективы и хор «Брусника»: этапы, цифры, продвижение и контрольные точки.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Unbounded:wght@500;600&display=swap">
+<style>
+/* Layout: one reading column; key numbers first, then a stage timeline, funnel, workstreams, control points and risks */
+:root{
+  --bg:#F5F3F7; --surface:#FFFFFF; --line:#E2DCE6; --fg:#1E1A24; --muted:#625A6C;
+  --berry:#9B2448; --berry-soft:#F6E3EA; --ink:#2C4A8A; --ink-soft:#E4EAF6; --leaf:#2B7A55; --leaf-soft:#DFF0E7; --amber:#A86F12; --amber-soft:#F6ECD9;
+  --f-display:"Unbounded","Manrope",system-ui,sans-serif;
+  --f-body:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  color-scheme:light;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#141118; --surface:#1D1922; --line:#2F2936; --fg:#ECE7F1; --muted:#A79EB2;
+    --berry:#E5708F; --berry-soft:#3A1E28; --ink:#86A3E6; --ink-soft:#1F2B44; --leaf:#5DBB8C; --leaf-soft:#1A3328; --amber:#E0A84A; --amber-soft:#3A2E18;
+    color-scheme:dark;
+  }
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:15px;line-height:1.55}
+.wrap{max-width:1000px;margin:0 auto;padding-block:32px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:18px}
+.eyebrow{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--berry);font-weight:700}
+h1{font-family:var(--f-display);font-weight:600;font-size:clamp(26px,4vw,40px);line-height:1.1;margin:6px 0 10px;text-wrap:balance}
+h2{font-family:var(--f-display);font-weight:500;font-size:17px;margin:0}
+h3{font-size:15px;margin:0 0 6px}
+header p{margin:0;color:var(--muted);max-width:72ch}
+.links{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.links a{font-size:13px;font-weight:600;color:var(--ink);text-decoration:none;border:1px solid var(--line);background:var(--surface);padding:6px 11px;border-radius:999px}
+.links a:hover{border-color:var(--ink)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px;min-width:0}
+.chead{display:flex;align-items:center;gap:8px;margin:0 0 14px}
+.fold-btn{font:inherit;font-weight:600;font-size:14px;line-height:1;padding:3px 9px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;transition:transform .15s}
+.card.folded .fold-btn{transform:rotate(-90deg)}
+.card.folded > :not(.chead){display:none!important}
+.card.folded .chead{margin:0}
+.fold-all{display:flex;gap:8px;flex-wrap:wrap}
+.fold-all button{font:inherit;font-weight:600;font-size:13px;padding:7px 12px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--fg);cursor:pointer}
+button:focus-visible,a:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.nums{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+@media (max-width:760px){.nums{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.num{border:1px solid var(--line);border-radius:10px;padding:12px;display:grid;gap:2px;align-content:start}
+.num b{font-family:var(--f-display);font-weight:600;font-size:clamp(20px,3vw,28px);color:var(--berry);font-variant-numeric:tabular-nums;line-height:1.15}
+.num span{font-size:13px;font-weight:600}
+.num em{font-style:normal;font-size:12px;color:var(--muted)}
+.stages{list-style:none;margin:0;padding:0;display:grid}
+.stage{display:grid;grid-template-columns:150px minmax(0,1fr);gap:16px;padding:14px 0;border-top:1px solid var(--line)}
+.stage:first-child{border-top:none;padding-top:0}
+@media (max-width:620px){.stage{grid-template-columns:minmax(0,1fr);gap:6px}}
+.when{display:grid;gap:4px;align-content:start}
+.badge{display:inline-block;justify-self:start;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:3px 8px;border-radius:999px}
+.b1{background:var(--amber-soft);color:var(--amber)} .b2{background:var(--berry-soft);color:var(--berry)} .b3{background:var(--ink-soft);color:var(--ink)} .b4{background:var(--leaf-soft);color:var(--leaf)}
+.when b{font-variant-numeric:tabular-nums;font-size:14px}
+.stage ul{margin:4px 0 0;padding-left:18px;display:grid;gap:3px;font-size:14px}
+.result{margin-top:8px;font-size:13px;font-weight:600;color:var(--leaf)}
+.funnel{display:grid;gap:10px}
+.fstep{display:grid;grid-template-columns:200px minmax(0,1fr);gap:12px;align-items:center}
+@media (max-width:560px){.fstep{grid-template-columns:minmax(0,1fr)}}
+.fbar{height:30px;border-radius:6px;background:var(--berry);display:flex;align-items:center;padding:0 10px;color:#fff;font-weight:700;font-size:13px;font-variant-numeric:tabular-nums;min-width:fit-content}
+.fbar.s2{background:var(--ink)} .fbar.s3{background:var(--leaf)}
+.fstep span{font-size:14px}
+.note{font-size:12px;color:var(--muted);margin:10px 0 0}
+.streams{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+@media (max-width:820px){.streams{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:540px){.streams{grid-template-columns:minmax(0,1fr)}}
+.stream{border:1px solid var(--line);border-radius:10px;padding:12px;min-width:0}
+.stream ul{margin:0;padding-left:18px;font-size:13px;display:grid;gap:3px}
+.tbl{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:14px;font-variant-numeric:tabular-nums}
+th,td{padding:7px 8px 7px 0;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-size:12px;color:var(--muted);font-weight:600}
+td.r,th.r{text-align:right}
+.risks{margin:0;padding-left:18px;display:grid;gap:5px;font-size:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Екатеринбург · музыкальные коллективы · план на 2026–2027</div>
+    <h1>Брусника: план проекта</h1>
+    <p>Любительские творческие коллективы для взрослых: хоры, танцы, инструментальный ансамбль. Участники репетируют раз в неделю и через три месяца выступают на общем концерте с живой музыкой. Первый коллектив — хор «Брусника».</p>
+    <div class="links">
+      <a href="https://eabelozer26-droid.github.io/brusnika-smeta/partners.html">Расчёт сезона «Брусники»</a>
+      <a href="https://eabelozer26-droid.github.io/brusnika-smeta/">Полная смета</a>
+    </div>
+  </header>
+
+  <div class="fold-all"><button type="button" id="foldAll">Свернуть все блоки</button><button type="button" id="unfoldAll">Развернуть все</button></div>
+
+  <section class="card">
+    <h2>Главные цифры первого сезона</h2>
+    <div class="nums">
+      <div class="num"><span>Участников «Брусники»</span><b>30</b><em>цель набора к 16 января</em></div>
+      <div class="num"><span>Абонемент на сезон</span><b>18 000 ₽</b><em>от 6 000 ₽ в месяц, оплата частями</em></div>
+      <div class="num"><span>Окупаемость</span><b>15–23</b><em>участника, в зависимости от расходов</em></div>
+      <div class="num"><span>Каждому из троих</span><b>≈ 84 тыс. ₽</b><em>за сезон при 30 участниках</em></div>
+      <div class="num"><span>Встреч набора</span><b>5–6</b><em>по 2 часа, билет 500 ₽</em></div>
+      <div class="num"><span>Гостей на встречах</span><b>100–120</b><em>запись в хор 25–30%</em></div>
+      <div class="num"><span>Реклама на набор</span><b>60–90 тыс. ₽</b><em>50–60 тыс. возвращают билеты встреч</em></div>
+      <div class="num"><span>Отчётный концерт</span><b>150</b><em>билетов по 700 ₽, 17 апреля</em></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Этапы</h2>
+    <ol class="stages">
+      <li class="stage"><div class="when"><span class="badge b1">Этап 1</span><b>23.11 – 10.12.2026</b><span>Подготовка</span></div><div>
+        <ul>
+          <li>Регистрация ИП, УСН 6%, расчётный счёт, Продамус на ИП с чеками и оплатой частями</li>
+          <li>Уведомление в Роскомнадзор, оферта, политика данных</li>
+          <li>Сайт записи, сообщество VK, Telegram-канал, бот с ИИ-ассистентом</li>
+          <li>Демо-видео: руководители поют припев на три голоса</li>
+          <li>Карточки в 2ГИС и Яндекс Картах, события в Яндекс Афише и Timepad</li>
+          <li>Встреча в фонде поддержки предпринимательства, письма караоке-барам, площадкам и клубам</li>
+          <li>11.12: срочные трудовые договоры с партнёрами «Брусники»</li>
+        </ul>
+        <div class="result">Итог: всё готово к приёму заявок и оплат</div>
+      </div></li>
+      <li class="stage"><div class="when"><span class="badge b2">Этап 2</span><b>1.12.2026 – 16.01.2027</b><span>Набор первого сезона</span></div><div>
+        <ul>
+          <li>Таргет VK и посты в городских Telegram-каналах, тест и масштаб лучших объявлений</li>
+          <li>Платные встречи набора: 19.12, 26.12, 9.01, 16.01 и при необходимости ещё 1–2</li>
+          <li>Новогодний караоке-баттл в партнёрском баре, сертификаты на сезон к Новому году</li>
+          <li>Мастер-классы и хоровые вечера в деловых и женских клубах</li>
+        </ul>
+        <div class="result">Итог: 100–120 гостей, 30 оплативших абонемент</div>
+      </div></li>
+      <li class="stage"><div class="when"><span class="badge b3">Этап 3</span><b>18.01 – 17.04.2027</b><span>Первый сезон</span></div><div>
+        <ul>
+          <li>12 занятий раз в неделю по 2 часа, 15 новых песен</li>
+          <li>1–2 дополнительных мероприятия в месяц: квиз, квартирник, мастер-классы, театр</li>
+          <li>С 17.03 набор в следующий сезон: продление со скидкой, «приди с другом»</li>
+          <li>17.04: общий отчётный концерт, видео для рекламы</li>
+        </ul>
+        <div class="result">Итог: концерт, 150 проданных билетов, база для продления</div>
+      </div></li>
+      <li class="stage"><div class="when"><span class="badge b4">Этап 4</span><b>18.04 – 31.05.2027</b><span>Итоги и второй сезон</span></div><div>
+        <ul>
+          <li>18–20.04: подсчёт прибыли и распределение по 33%</li>
+          <li>Решение по договорам: продление на новый сезон</li>
+          <li>Старт второго сезона «Брусники», цель продления 70% и больше</li>
+          <li>Загородный тур на майские праздники вместе с туроператором</li>
+        </ul>
+        <div class="result">Итог: второй сезон с меньшими затратами на набор</div>
+      </div></li>
+      <li class="stage"><div class="when"><span class="badge b2">Этап 5</span><b>Июнь – декабрь 2027</b><span>Рост</span></div><div>
+        <ul>
+          <li>Второй хор «Брусники», танцевальный коллектив, инструментальный ансамбль</li>
+          <li>Корпоративные хоровые программы и мастер-классы для компаний</li>
+          <li>Собственная CRM и дашборд «Рука на пульсе», личные кабинеты участников и руководителей</li>
+          <li>Креативные индустрии и статус социального предприятия: по итогам консультаций в фонде</li>
+        </ul>
+        <div class="result">Итог: несколько коллективов на общей инфраструктуре. Второй хор «Брусники» с такими же цифрами примерно удваивает доход каждого из троих</div>
+      </div></li>
+    </ol>
+  </section>
+
+  <section class="card">
+    <h2>Воронка набора из холодной аудитории</h2>
+    <div class="funnel">
+      <div class="fstep"><span>Записались на встречи</span><div class="fbar" style="width:100%">140–160</div></div>
+      <div class="fstep"><span>Пришли на встречи</span><div class="fbar s2" style="width:75%">100–120</div></div>
+      <div class="fstep"><span>Оплатили абонемент</span><div class="fbar s3" style="width:20%">30</div></div>
+    </div>
+    <p class="note">Ориентиры: 25–30% записавшихся не приходят, 25–30% пришедших оплачивают абонемент. Стоимость записи 300–600 ₽, привлечение участника 2–3 тыс. ₽. Реальные цифры уточняются по первой неделе рекламы.</p>
+  </section>
+
+  <section class="card">
+    <h2>Направления работы</h2>
+    <div class="streams">
+      <div class="stream"><h3>Продвижение</h3><ul><li>Таргет VK и ретаргет</li><li>Telegram-каналы с афишей: E1 Афиша, Hello Ekb, Road to екб</li><li>Бесплатные афиши, 2ГИС, Яндекс Карты</li><li>Видео со встреч и концертов</li></ul></div>
+      <div class="stream"><h3>Партнёрства</h3><ul><li>Караоке-бары: вечера «спой хором»</li><li>Креативный кластер «Домна»</li><li>Деловые и женские клубы, фонд поддержки предпринимательства</li><li>Реферальная программа: 10% с абонемента</li></ul></div>
+      <div class="stream"><h3>Мероприятия</h3><ul><li>Квартирники, квизы, караоке-баттлы</li><li>Мастер-классы руководителей</li><li>Театр, кино, загородные туры</li><li>Доход распределяют организаторы каждого мероприятия</li></ul></div>
+      <div class="stream"><h3>Финансы и право</h3><ul><li>ИП на УСН 6%, Продамус с чеками</li><li>Срочные договоры со сдельной оплатой и актами</li><li>Самозанятые специалисты на концертах</li><li>РАО и ВОИС, маркировка рекламы</li></ul></div>
+      <div class="stream"><h3>Команда</h3><ul><li>Организатор: маркетинг, продажи, администрирование, юридические и финансовые вопросы</li><li>Два руководителя-партнёра: занятия, встречи, аранжировки, концерт</li><li>Музыканты, звукорежиссёр, фото и видео</li></ul></div>
+      <div class="stream"><h3>Системы</h3><ul><li>Сайт и бот с ИИ-ассистентом</li><li>Таблицы на первый сезон</li><li>CRM с личными кабинетами</li><li>Дашборд «Рука на пульсе»</li></ul></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Контрольные точки</h2>
+    <div class="tbl"><table>
+      <thead><tr><th>Дата</th><th>Что должно быть</th><th class="r">Гостей</th><th class="r">Оплат</th></tr></thead>
+      <tbody>
+        <tr><td>30.11.2026</td><td>ИП, оплаты, сайт, бот, демо-видео готовы</td><td class="r">—</td><td class="r">—</td></tr>
+        <tr><td>26.12.2026</td><td>Две встречи прошли, сертификаты в продаже</td><td class="r">40</td><td class="r">12</td></tr>
+        <tr><td>09.01.2027</td><td>Третья встреча</td><td class="r">60</td><td class="r">20</td></tr>
+        <tr><td>16.01.2027</td><td>Набор закрыт</td><td class="r">100–120</td><td class="r">30</td></tr>
+        <tr><td>17.04.2027</td><td>Отчётный концерт</td><td class="r">150 зрителей</td><td class="r">—</td></tr>
+        <tr><td>31.05.2027</td><td>Второй сезон стартовал</td><td class="r">—</td><td class="r">продление 70%+</td></tr>
+      </tbody>
+    </table></div>
+    <p class="note">Если к 26.12 оплат меньше 8: усиливаем партнёрские каналы и добавляем встречу набора. Если запись стоит дороже 700 ₽: отключаем объявление или канал.</p>
+  </section>
+
+  <section class="card">
+    <h2>Риски и что с ними делаем</h2>
+    <ul class="risks">
+      <li><b>Набор ниже плана.</b> Запас между окупаемостью и целью небольшой. Еженедельный контроль воронки, дополнительные встречи, мероприятия как второй вход.</li>
+      <li><b>Отток и возвраты.</b> Оплата сезона целиком или частями, понятные условия возврата в оферте, сообщество и мероприятия для удержания.</li>
+      <li><b>Продажи билетов на концерт.</b> Безубыточность около 126 билетов. Ранняя продажа участникам и их близким, совместный концерт двух коллективов.</li>
+      <li><b>Юридические вопросы.</b> Формат без обучения, срочные договоры, тариф на травматизм, туры: проверка у юриста и бухгалтера в фонде.</li>
+      <li><b>Договорённости партнёров.</b> Соглашение о распределении прибыли, общих расходах, правах на аранжировки и выходе из проекта.</li>
+    </ul>
+  </section>
+
+  <p class="note">План основан на расчёте сезона и стратегии продвижения от 22 ноября 2026 года. Цифры — ориентиры, их уточняют по фактическим результатам.</p>
+</div>
+<script>
+(function(){
+  var FKEY = 'brusnika-plan-folds', folds = {};
+  try { folds = JSON.parse(localStorage.getItem(FKEY) || '{}') || {}; } catch(e){}
+  function save(){ try { localStorage.setItem(FKEY, JSON.stringify(folds)); } catch(e){} }
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.card'));
+  cards.forEach(function(card, i){
+    var h = card.querySelector(':scope > h2'); if (!h) return;
+    var head = document.createElement('div'); head.className = 'chead';
+    var b = document.createElement('button'); b.type = 'button'; b.className = 'fold-btn'; b.textContent = '▾'; b.title = 'Свернуть или развернуть';
+    card.insertBefore(head, h); head.appendChild(b); head.appendChild(h);
+    var key = 'c' + i;
+    card._apply = function(){ card.classList.toggle('folded', !!folds[key]); b.setAttribute('aria-expanded', String(!folds[key])); };
+    card._key = key;
+    b.addEventListener('click', function(){ folds[key] = !folds[key]; save(); card._apply(); });
+    card._apply();
+  });
+  function setAll(v){ cards.forEach(function(c){ if (c._key){ folds[c._key] = v; c._apply(); } }); save(); }
+  document.getElementById('foldAll').addEventListener('click', function(){ setAll(true); });
+  document.getElementById('unfoldAll').addEventListener('click', function(){ setAll(false); });
+})();
+</script>
+</body>
+</html>
