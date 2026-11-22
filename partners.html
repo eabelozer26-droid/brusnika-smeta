@@ -89,7 +89,7 @@ tr.group td{padding-top:14px;font-size:12px;letter-spacing:.06em;text-transform:
   <header>
     <div class="eyebrow">Хор «Брусника» · сезон 18 января – 17 апреля 2027</div>
     <h1>Брусника: расчёт сезона</h1>
-    <p>Прибыль хора делится на троих по 33%: организатор и два руководителя-партнёра. Из доходов вычитаются только объективные расходы и налоги. Ниже деньги сезона, платные встречи набора и кто что делает.</p>
+    <p>Прибыль хора распределяется на троих по 33%: организатор и два руководителя-партнёра. Из доходов вычитаются только объективные расходы и налоги. Ниже деньги сезона, платные встречи набора и кто что делает.</p>
   </header>
 
   <div class="card hero">
@@ -128,7 +128,7 @@ tr.group td{padding-top:14px;font-size:12px;letter-spacing:.06em;text-transform:
     </div>
     <div class="card">
       <h2>Платные встречи набора</h2>
-      <p class="note" style="margin:-6px 0 10px">Считаются отдельно и делятся на троих сразу после встреч. Реклама из этих денег не вычитается.</p>
+      <p class="note" style="margin:-6px 0 10px">Считаются отдельно и распределяются на троих сразу после встреч. Реклама из этих денег не вычитается.</p>
       <div class="tbl"><table id="meet"></table></div>
     </div>
   </div>
@@ -271,7 +271,7 @@ tr.group td{padding-top:14px;font-size:12px;letter-spacing:.06em;text-transform:
         ipS:ipS, acctS:acctS, servS:servS, cS:cS, np:np, base:base, contribO:contribO, ndflO:ndflO};
       if (c.type === 'share'){
         var k = Math.round(c.partners);
-        // 1) Платные встречи набора: свой котёл. Билеты минус аренда, чай с печеньем, комиссия и УСН, делится поровну сразу после встреч. Реклама сюда не входит.
+        // 1) Платные встречи набора: свой котёл. Билеты минус аренда, чай с печеньем, комиссия и УСН, распределяется поровну сразу после встреч. Реклама сюда не входит.
         var mRent = meetHrs * c.mRate, mFee = meetInc * g.fee / 100, mCost = mRent + treats + mFee, baseM = meetInc * g.tax / 100;
         function usnM(x){ return Math.max(0, baseM - Math.min(baseM * 0.5, k * x * er)); }
         var Gm = 0;
