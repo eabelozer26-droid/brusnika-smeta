@@ -1,0 +1,996 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Смета сезона музыкальных коллективов: хор «Брусника», хоры и студии, общий концерт, налоги ИП и оформление.">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font-size:14px}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Смета любительского хора</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Unbounded:wght@500;600&display=swap">
+<style>
+/* Layout: two views (smeta / oformlenie). Smeta: inputs left (general, concert, one box per collective), sticky results right; phones put results first */
+:root{
+  --bg:#F3F5F9; --surface:#FFFFFF; --line:#DCE1EA; --fg:#18202F; --muted:#5B6577;
+  --brass:#A86F12; --brass-soft:#F6ECD9; --ink:#2C4A8A; --ink-soft:#E4EAF6;
+  --good:#2B7A55; --bad:#B4432F; --bad-soft:#F7E3DE; --good-soft:#DFF0E7;
+  --f-display:"Unbounded","Manrope",system-ui,sans-serif;
+  --f-body:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#11161F; --surface:#18202C; --line:#2A3445; --fg:#E7EAF1; --muted:#9AA4B5;
+    --brass:#E0A84A; --brass-soft:#3A2E18; --ink:#86A3E6; --ink-soft:#1F2B44;
+    --good:#5DBB8C; --bad:#E57B66; --bad-soft:#3A221D; --good-soft:#1A3328;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#11161F; --surface:#18202C; --line:#2A3445; --fg:#E7EAF1; --muted:#9AA4B5;
+  --brass:#E0A84A; --brass-soft:#3A2E18; --ink:#86A3E6; --ink-soft:#1F2B44;
+  --good:#5DBB8C; --bad:#E57B66; --bad-soft:#3A221D; --good-soft:#1A3328;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:15px;line-height:1.5}
+.wrap{max-width:1240px;margin:0 auto;padding-block:28px 56px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header{display:grid;gap:8px}
+.eyebrow{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--brass);font-weight:700}
+h1{font-family:var(--f-display);font-weight:600;font-size:clamp(22px,3.2vw,32px);line-height:1.15;margin:0;text-wrap:balance}
+header p{color:var(--muted);max-width:80ch;margin:0}
+.tabs{display:flex;gap:4px;margin-top:18px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.tabs a{padding:10px 14px;text-decoration:none;color:var(--muted);font-weight:600;border-bottom:2px solid transparent;margin-bottom:-1px}
+.tabs a[aria-current="page"]{color:var(--fg);border-bottom-color:var(--brass)}
+.tabs a:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+
+.grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:24px;margin-top:24px;align-items:start}
+.inputs,.results{display:grid;gap:16px;min-width:0}
+.results{position:sticky;top:calc(env(safe-area-inset-top,0px) + 16px);max-height:calc(100vh - 32px);overflow:auto;padding-right:4px}
+@media (max-width:900px){.grid{grid-template-columns:minmax(0,1fr)}.results{position:static;order:-1;max-height:none;overflow:visible;padding-right:0}}
+
+.part{font-family:var(--f-display);font-size:15px;font-weight:600;margin:10px 0 -4px;display:flex;align-items:center;gap:10px}
+.part::after{content:"";flex:1;height:1px;background:var(--line)}
+.box{border:1px solid var(--line);border-radius:10px;background:var(--surface);padding:12px 16px 14px;min-width:0}
+.box h3{font-family:var(--f-display);font-size:13px;font-weight:500;margin:0 0 4px}
+.box .hint{font-size:12px;color:var(--muted);margin:0 0 4px}
+.box.coll{border-color:var(--ink)}
+.coll-head{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:6px}
+.coll-head input[type=text]{flex:1;min-width:160px;font:inherit;font-family:var(--f-display);font-size:15px;font-weight:500;padding:6px 8px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg)}
+.tog{padding:4px 9px;font-size:14px;line-height:1;color:var(--ink);transition:transform .15s}
+.coll.folded .tog{transform:rotate(-90deg)}
+.coll.folded .coll-head{margin-bottom:0}
+.sum{flex-basis:100%;font-size:12px;color:var(--muted);padding-left:40px}
+.coll:not(.folded) .sum{display:none}
+.chip{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:3px 8px;border-radius:999px;background:var(--ink-soft);color:var(--ink);white-space:nowrap}
+.chip.share{background:var(--brass-soft);color:var(--brass)}
+.subh{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:12px 0 0}
+.row{display:grid;grid-template-columns:minmax(0,1fr) 156px;gap:12px;align-items:center;padding:6px 0}
+.row + .row{border-top:1px dashed var(--line)}
+.row label{font-size:14px;line-height:1.3}
+.row label small{display:block;color:var(--muted);font-size:12px;margin-top:2px}
+.field{display:flex;align-items:center;gap:6px}
+.field input,.field select{flex:1}
+input[type=number],select{width:100%;min-width:0;font:inherit;font-variant-numeric:tabular-nums;text-align:right;padding:6px 8px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg)}
+select{text-align:left}
+.unit{color:var(--muted);font-size:12px;width:60px;line-height:1.15}
+input:focus-visible,button:focus-visible,select:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.add{display:flex;gap:8px;flex-wrap:wrap}
+
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px;min-width:0}
+.card.total{border-color:var(--brass);background:linear-gradient(0deg,var(--brass-soft),var(--surface) 70%)}
+.card-h{display:flex;gap:8px;align-items:baseline;justify-content:space-between;flex-wrap:wrap;margin-bottom:10px}
+.card-h h2{margin:0}
+.split{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.split.four{grid-template-columns:repeat(4,minmax(0,1fr))}
+.person{display:grid;gap:2px;align-content:start;min-width:0}
+.person span{font-size:12px;color:var(--muted)}
+.person b{font-family:var(--f-display);font-weight:600;font-size:clamp(17px,2.2vw,22px);font-variant-numeric:tabular-nums;line-height:1.2}
+.person em{font-style:normal;font-size:12px;color:var(--muted)}
+.person.you b{color:var(--brass)} .person.t b{color:var(--ink)}
+b.neg{color:var(--bad)!important}
+@media (max-width:620px){.split,.split.four{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.status{display:inline-block;margin-top:12px;padding:4px 10px;border-radius:999px;font-size:13px;font-weight:600}
+.status.ok{background:var(--good-soft);color:var(--good)}
+.status.no{background:var(--bad-soft);color:var(--bad)}
+.status.off{background:var(--bg);color:var(--muted)}
+
+h2{font-family:var(--f-display);font-size:14px;font-weight:500;margin:0 0 10px}
+.tbl{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:14px;font-variant-numeric:tabular-nums}
+td,th{padding:6px 0;border-bottom:1px solid var(--line);vertical-align:top;text-align:left}
+th{font-size:12px;color:var(--muted);font-weight:600}
+td.r,th.r{text-align:right;white-space:nowrap;padding-left:12px}
+td small{color:var(--muted);display:block;font-size:12px}
+tr.sub td{font-weight:700;border-bottom:2px solid var(--line)}
+tr.group td{padding-top:14px;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);border-bottom:none}
+details.more{margin-top:12px;border-top:1px solid var(--line);padding-top:10px}
+details.more summary{cursor:pointer;font-weight:600;font-size:14px;color:var(--ink)}
+details.more .tbl{margin-top:8px}
+.actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+button{font:inherit;font-weight:600;font-size:14px;padding:8px 14px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--fg);cursor:pointer}
+button:hover{border-color:var(--ink)}
+button.ghost{padding:5px 10px;font-size:13px;color:var(--muted)}
+.notes{color:var(--muted);font-size:13px;max-width:76ch;margin:0;padding-left:18px;display:grid;gap:4px}
+
+/* Оформление */
+.plan{display:grid;gap:22px;margin-top:24px;max-width:920px}
+.warn{background:var(--brass-soft);border:1px solid var(--line);border-radius:10px;padding:14px 16px;font-size:14px;display:grid;gap:6px}
+.warn b{font-weight:700}
+.phase{display:grid;gap:10px}
+.phase h3{font-family:var(--f-display);font-weight:500;font-size:17px;margin:0;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.phase h3 span{font-family:var(--f-body);font-size:13px;color:var(--muted);font-weight:600}
+.steps{list-style:none;margin:0;padding:0;display:grid;background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.steps li{display:grid;grid-template-columns:118px minmax(0,1fr);gap:14px;padding:12px 16px;border-top:1px solid var(--line)}
+.steps li:first-child{border-top:none}
+.date{font-weight:700;font-variant-numeric:tabular-nums;font-size:14px;color:var(--ink)}
+.date small{display:block;font-weight:500;color:var(--muted);font-size:12px}
+.what{display:grid;gap:4px;min-width:0}
+.what b{font-weight:700}
+.what p{margin:0;font-size:14px}
+.what .where{font-size:13px;color:var(--muted)}
+.tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:2px 7px;border-radius:999px;margin-right:6px;vertical-align:1px}
+.tag.ip{background:var(--brass-soft);color:var(--brass)}
+.tag.emp{background:var(--ink-soft);color:var(--ink)}
+@media (max-width:560px){.steps li{grid-template-columns:minmax(0,1fr);gap:4px}}
+.reg td{padding-right:12px}
+.docs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media (max-width:700px){.docs{grid-template-columns:minmax(0,1fr)}}
+.docs ul{margin:0;padding-left:18px;font-size:14px;display:grid;gap:3px}
+[hidden]{display:none!important}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Екатеринбург · ваши музыкальные коллективы · подготовка в декабре, сезоны по 3 месяца</div>
+    <h1>Смета любительского хора</h1>
+    <p>Каждый коллектив считается отдельно: свои участники, руководители, музыканты, зал, песни, инструменты, реклама и набор через платные встречи. Отчётный концерт общий, его итог делится между коллективами по числу участников. Все специалисты работают по срочным трудовым договорам, со всеми налогами и компенсацией отпуска. Ваша работа посчитана в часах отдельно и в расходы не входит. Цифры по умолчанию — допущения, меняйте их в полях.</p>
+    <nav class="tabs" aria-label="Разделы">
+      <a href="#smeta" id="tab-smeta">Смета сезона</a>
+      <a href="#oformlenie" id="tab-oformlenie">Оформление и налоги</a>
+    </nav>
+  </header>
+
+  <!-- ===== СМЕТА ===== -->
+  <div id="view-smeta">
+  <div class="grid">
+    <section class="inputs" id="inputs" aria-label="Исходные данные"></section>
+
+    <section class="results" id="results" aria-live="polite">
+      <div class="card total">
+        <h2>Итого вам за сезон со всех коллективов</h2>
+        <div class="split four">
+          <div class="person you"><span>Ваша часть прибыли</span><b id="totYou"></b><em id="totParts"></em></div>
+          <div class="person you"><span>В месяц, с подготовкой</span><b id="totYouM"></b></div>
+          <div class="person"><span>Налоги и взносы, всего</span><b id="totTax"></b></div>
+          <div class="person"><span>Деньги до первых оплат</span><b id="totStart"></b><em>реклама, расходники, первый месяц сервисов</em></div>
+        </div>
+      </div>
+
+      <div class="card" id="meCard"></div>
+      <div id="colls" class="results-list" style="display:grid;gap:16px"></div>
+      <div class="card" id="concertCard"></div>
+      <div class="card">
+        <h2>Налоги и взносы за сезон</h2>
+        <div class="tbl"><table id="taxes"></table></div>
+      </div>
+
+      <div class="card">
+        <h2>Как устроен расчёт</h2>
+        <ul class="notes">
+          <li>Хоры «Брусники» (их может быть несколько) делят прибыль: из доходов каждого хора вычитаются только объективные расходы и налоги, остаток делится по 33% между вами и двумя партнёрами. Каждый вкладывается полностью за свою долю.</li>
+          <li>Занятия, встречи, концерт и аранжировки партнёров «Брусники» из прибыли заранее не вычитаются. Они показаны как трудозатраты каждого. По закону партнёры получают сдельную оплату по ежемесячным актам (занятия, встречи, концерт, песни) как аванс в счёт 33%, остаток бонусом после концерта.</li>
+          <li>Ваши взносы ИП за себя в расходы «Брусники» не входят: они вычитаются из вашей доли вместе с экономией на УСН, которую они дают. В остальных коллективах прибыль ваша, поэтому взносы считаются там как расход.</li>
+          <li>Реферальные выплаты партнёрам — процент с абонементов участников, которые пришли по их ссылкам. Это расход коллектива.</li>
+          <li>Остальные хоры и коллективы, как в частной творческой студии: руководителям платится сдельно за каждое занятие, встречу набора и постановку. Прибыль ваша. Репертуар (аранжировки) есть только у хоров: танцы работают на общем репертуаре с вокалистами.</li>
+          <li>Все специалисты (руководители, музыканты, аранжировщик, звукорежиссёр, фото, видео) по срочным трудовым договорам. К их оплате добавляются взносы 30,2% и компенсация за неиспользованный отпуск, около 8%. Переключатель вверху задаёт, указаны ставки на руки или до НДФЛ.</li>
+          <li>Компенсация отпуска посчитана для всех. У разового договора на один концертный день её может не быть: это зависит от срока, уточните у бухгалтера.</li>
+          <li>Встречи набора платные, их доход входит в доход коллектива. Предоплата при записи засчитывается в абонемент и в доход отдельно не добавляется.</li>
+          <li>Общие расходы ИП (взносы за себя, бухгалтерия, сервисы для сайта и бота) делятся между коллективами по их доходам. Общий концерт делится по числу участников.</li>
+          <li>Ваша работа (маркетинг, продажи, администрирование, сайты, бот, партнёры, учёт) посчитана в часах и по рыночным ценам для демонстрации партнёрам. В расходы ни одного коллектива она не входит.</li>
+          <li>Налог УСН 6% уменьшается на взносы, но не больше чем наполовину (правило для ИП с работниками). Взнос 1% считается приблизительно.</li>
+        </ul>
+      </div>
+
+      <div class="actions">
+        <button type="button" id="reset">Вернуть исходные цифры</button>
+      </div>
+    </section>
+  </div>
+  </div>
+
+  <!-- ===== ОФОРМЛЕНИЕ ===== -->
+  <div id="view-oformlenie" hidden>
+  <div class="plan">
+    <div class="warn">
+      <b>Перед подачей сверьте всё с бухгалтером.</b>
+      <span>Сроки и ставки по правилам на ноябрь 2026 года. Правила о взносах для малого бизнеса менялись в 2025–2026 годах. Даты, выпадающие на выходной, уже перенесены на следующий рабочий день.</span>
+    </div>
+
+    <div class="warn">
+      <b>Формат: творческие досуговые занятия и выступления.</b>
+      <span>Вы организуете любительские творческие коллективы: участники репетируют и выступают на концертах. Обучения нет, поэтому образовательная лицензия не нужна. Чтобы так это читалось везде, держите одни и те же слова в оферте, договорах, на сайте, в боте и рекламе.</span>
+      <span><b>Пишите:</b> участник коллектива, репетиция, занятие коллектива, абонемент на сезон, руководитель коллектива, хормейстер, концертмейстер, хореограф, выступление, концерт, репертуар.</span>
+      <span><b>Не пишите:</b> курс, обучение, научим, уроки, ученики, педагог, программа обучения, выпускной, сертификат, диплом.</span>
+      <span>Должности в трудовых договорах: хормейстер, концертмейстер, руководитель любительского творческого коллектива, хореограф-постановщик, артист-музыкант, аранжировщик, звукорежиссёр. Цель занятий в оферте: подготовка выступлений коллектива и совместный творческий досуг.</span>
+    </div>
+
+    <section class="phase">
+      <h3>1. Регистрация ИП <span>23–27 ноября 2026</span></h3>
+      <ol class="steps">
+        <li><div class="date">23.11 <small>понедельник</small></div><div class="what">
+          <p><span class="tag ip">вы</span><b>Заявление о регистрации ИП (форма Р21001) и уведомление о переходе на УСН (форма 26.2-1) вместе.</b></p>
+          <p>УСН «доходы», ставка 6%. ОКВЭД: основной 90.01 (деятельность в области исполнительских искусств), дополнительные 90.02 (вспомогательная деятельность для исполнительских искусств), 93.29 (организация отдыха и развлечений), 47.91 (продажа мерча онлайн). Кода образования нет. Коды подходят для хора, танцев и ансамбля.</p>
+          <p class="where">Где: Госуслуги, сайт ФНС, МФЦ или банк, в котором откроете счёт. В электронном виде госпошлины нет.</p>
+          <p class="where">Если вы сейчас самозанятая: с работниками на НПД оставаться нельзя. Снимитесь с учёта НПД в приложении «Мой налог» и в течение 20 дней подайте уведомление об УСН. Порядок уточните с бухгалтером, чтобы не попасть на общую систему.</p>
+        </div></li>
+        <li><div class="date">26.11 <small>четверг</small></div><div class="what">
+          <p><span class="tag ip">вы</span><b>Получаете лист записи ЕГРИП.</b> ФНС регистрирует за 3 рабочих дня.</p>
+          <p class="where">Если уведомление об УСН не подали сразу: крайний срок 30 дней с даты регистрации. Без него вы окажетесь на общей системе с НДС.</p>
+        </div></li>
+        <li><div class="date">26–27.11</div><div class="what">
+          <p><span class="tag ip">вы</span><b>Расчётный счёт ИП, электронная подпись (УКЭП), бухгалтер или сервис.</b></p>
+          <p>Подпись для ИП выдаёт ФНС бесплатно. Попросите вести учёт по каждому коллективу отдельно и общие расходы отдельной строкой. Так прибыль «Брусники» для делёжа видна без споров.</p>
+        </div></li>
+        <li><div class="date">27.11 <small>до первой оплаты</small></div><div class="what">
+          <p><span class="tag ip">вы</span><b>Продамус: перевести на ИП.</b></p>
+          <p>Обновите в Продамусе реквизиты на ИП и новый счёт. Проверьте, что по каждой оплате выдаётся чек от вашего ИП: облачная касса в тарифе или своя онлайн-касса (регистрация в личном кабинете ИП на сайте ФНС и договор с оператором фискальных данных). Без чека принимать деньги нельзя. Наличные и переводы на карту не принимайте.</p>
+          <p>Заведите отдельные продукты для каждого коллектива: билет на встречу набора, предоплата при записи, оплата остатка абонемента, билет на концерт.</p>
+        </div></li>
+        <li><div class="date">27.11 <small>до сбора анкет</small></div><div class="what">
+          <p><span class="tag ip">вы</span><b>Уведомление в Роскомнадзор об обработке персональных данных.</b> Сайт, бот и форма записи собирают имена и телефоны. Нужны политика обработки данных и согласие в форме записи и в боте.</p>
+          <p class="where">Где: pd.rkn.gov.ru или Госуслуги.</p>
+        </div></li>
+      </ol>
+    </section>
+
+    <section class="phase">
+      <h3>2. Команда по срочным трудовым договорам <span>с 11 декабря 2026</span></h3>
+      <ol class="steps">
+        <li><div class="date">до 10.12</div><div class="what">
+          <p><span class="tag emp">руководители</span><b>Собрать документы</b> (список ниже).</p>
+        </div></li>
+        <li><div class="date">11.12 <small>пятница</small></div><div class="what">
+          <p><span class="tag ip">вы</span><span class="tag emp">руководители</span><b>Срочные трудовые договоры с руководителями «Брусники», с 11.12.2026 по 20.04.2027.</b></p>
+          <p>Первый договор длиннее сезона: в него входит подготовительный декабрь со встречами набора, сам сезон 18.01–17.04 с концертом и три дня после концерта на расчёт бонуса. Дальше договор продлевается на каждый следующий сезон по 3 месяца.</p>
+          <p>Основание: ИП — малое предприятие до 35 работников, срочный договор по соглашению сторон (статья 59 ТК). Срок и причину срочности впишите в договор, иначе он считается бессрочным.</p>
+          <p>Можно взять типовую форму для микропредприятий (постановление Правительства № 858) и не писать внутренние положения. В договор: сдельная оплата с расценками за конкретные действия (занятие, встреча набора, концерт, аранжировка и запись разбора песни), уральский коэффициент 15% сверху, бонус по итогам сезона до 33% чистой прибыли «Брусники» после расходов и налогов, выплата зарплаты дважды в месяц.</p>
+          <p>Каждый месяц: акт или табель выполненных работ с количеством действий, под подпись работника. По нему начисляется сдельная оплата. Храните акты: это основание для начислений и защита при проверке.</p>
+          <p>В тот же день: приказ о приёме и вводный инструктаж по охране труда под подпись. Инструктаж — это короткий рассказ о правилах безопасности и запись в журнале, 10–15 минут.</p>
+        </div></li>
+        <li><div class="date">14.12 <small>понедельник</small></div><div class="what">
+          <p><span class="tag ip">вы</span><b>Сведения о приёме в Социальный фонд (ЕФС-1, подраздел 1.1).</b> Не позже следующего рабочего дня после приказа. По ним фонд сам поставит вас на учёт как работодателя.</p>
+        </div></li>
+        <li><div class="date">к первой работе</div><div class="what">
+          <p><span class="tag ip">вы</span><span class="tag emp">специалисты</span><b>Музыканты, аранжировщик, руководители других хоров и коллективов: так же, срочный договор со сдельной оплатой.</b></p>
+          <p>Расценки за конкретные действия (занятие, репетиция, постановка, песня, концерт) прописываются в договоре. Каждый месяц акт выполненных работ под подпись. Выплата дважды в месяц, НДФЛ удерживаете, взносы 30,2% сверху, ЕФС-1 о приёме на следующий рабочий день.</p>
+          <p class="where">Продление: если следующий сезон идёт сразу, заключите дополнительное соглашение о новом сроке до окончания текущего. Много срочных договоров подряд на ту же работу суд может признать бессрочными. Обсудите это с юристом.</p>
+        </div></li>
+        <li><div class="date">к концерту</div><div class="what">
+          <p><span class="tag ip">вы</span><span class="tag emp">специалисты</span><b>Звукорежиссёр, фотограф, видеограф: срочный договор на день концерта.</b></p>
+          <p>Приём, ЕФС-1 на следующий рабочий день, расчёт в последний день договора, ЕФС-1 об увольнении. Это много бумаг на один день.</p>
+          <p class="where">Если захотите упростить: разовую услугу без графика и подчинения можно законно купить у ИП или самозанятого по договору услуг. Руководителей это не касается.</p>
+        </div></li>
+      </ol>
+    </section>
+
+    <section class="phase">
+      <h3>3. Набор через платные встречи <span>декабрь 2026 – январь 2027</span></h3>
+      <ol class="steps">
+        <li><div class="date">до рекламы</div><div class="what">
+          <p><span class="tag ip">вы</span><b>Маркировка рекламы.</b> Платная реклама и посты в пабликах получают метку erid через оператора рекламных данных. В VK Рекламе маркировка встроена.</p>
+        </div></li>
+        <li><div class="date">до рекламы у партнёров</div><div class="what">
+          <p><span class="tag ip">вы</span><b>Договоры с партнёрами по рефералке и рекламе.</b></p>
+          <p>Агентский договор или договор оказания услуг: процент с оплаты по ссылке партнёра, как считаются продажи (метка или промокод в Продамусе), когда платите. Если партнёр компания, ИП или самозанятый, платите по счёту или чеку. Если обычный человек без статуса, вы удерживаете НДФЛ 13% и платите взносы 30%: таким лучше предложить стать самозанятыми.</p>
+          <p class="where">Реклама у партнёров тоже маркируется: метку erid получает тот, кто размещает, договоритесь об этом в договоре.</p>
+        </div></li>
+        <li><div class="date">до продаж</div><div class="what">
+          <p><span class="tag ip">вы</span><b>Оферта для участников.</b> Что входит в сезон, расписание, предоплата 5 000 ₽ при записи засчитывается в стоимость, условия возврата (возвращаете деньги за вычетом уже понесённых расходов), согласие на фото и видео.</p>
+        </div></li>
+        <li><div class="date">12.12 и 19.12 <small>субботы</small></div><div class="what">
+          <p><span class="tag ip">вы</span><span class="tag emp">руководители</span><b>Платные встречи на 2 часа:</b> разбор двух песен из будущего репертуара, чай с печеньем, запись в хор с предоплатой. Билеты и предоплаты через Продамус с чеками.</p>
+          <p class="where">Деньги, полученные в декабре, — доход 2026 года для УСН.</p>
+        </div></li>
+        <li><div class="date">28.12 <small>понедельник</small></div><div class="what">
+          <p><span class="tag ip">вы</span><b>Взносы ИП за себя за 2026 год.</b> Пропорционально дням с регистрации: с 26.11 по 31.12 это около 5 660 ₽.</p>
+        </div></li>
+        <li><div class="date">до конца года</div><div class="what">
+          <p><span class="tag ip">вы</span><b>НДФЛ с декабрьской зарплаты.</b> За 23–31 декабря уведомление и оплата не позже последнего рабочего дня года.</p>
+        </div></li>
+        <li><div class="date">16.01 <small>суббота</small></div><div class="what">
+          <p><span class="tag ip">вы</span><span class="tag emp">руководители</span><b>Последняя встреча-донабор после каникул.</b></p>
+        </div></li>
+      </ol>
+    </section>
+
+    <section class="phase">
+      <h3>4. Сезон и концерт <span>18 января – 20 апреля 2027</span></h3>
+      <ol class="steps">
+        <li><div class="date">18.01 <small>понедельник</small></div><div class="what"><p><b>Старт сезона.</b> Блок 3 месяца: занятия до середины апреля, концерт 17 апреля.</p></div></li>
+        <li><div class="date">25.01 <small>понедельник</small></div><div class="what">
+          <p><span class="tag ip">вы</span><b>Отчёты за 2026 год:</b> расчёт по страховым взносам (РСВ), ЕФС-1 подраздел 1.2 (взносы на травматизм), персонифицированные сведения за декабрь, уведомление о взносах за декабрь.</p>
+          <p class="where">28.01: оплата взносов за декабрь единым налоговым платежом.</p>
+        </div></li>
+        <li><div class="date">25.02 <small>четверг</small></div><div class="what"><p><span class="tag ip">вы</span><b>6-НДФЛ за 2026 год.</b></p></div></li>
+        <li><div class="date">март</div><div class="what">
+          <p><span class="tag ip">вы</span><b>Концерт: зал, договор с РАО, аренда инструментов с доставкой, договоры со звукорежиссёром, фотографом и видеографом.</b></p>
+          <p>Если у площадки нет своего договора с РАО, его заключаете вы. ВОИС нужен, только если звучат фонограммы. Инструменты берите по договору проката у компании, с актом приёма и возврата.</p>
+        </div></li>
+        <li><div class="date">с 17.03 <small>за месяц до конца</small></div><div class="what">
+          <p><span class="tag ip">вы</span><span class="tag emp">руководители</span><b>Набор в следующий сезон.</b> Реклама, партнёры, платные встречи и предоплаты. Встречи проходят в рамках текущих договоров.</p>
+        </div></li>
+        <li><div class="date">до 17.04</div><div class="what">
+          <p><span class="tag ip">вы</span><b>Решить по каждому договору: продлеваем или заканчиваем.</b></p>
+          <p>Продолжаете в следующем сезоне: подпишите дополнительное соглашение о новом сроке до 20.04. Тогда нет увольнения и компенсации отпуска, отпуск копится дальше. Заканчиваете: письменно предупредите не позже 17.04, за 3 календарных дня до окончания. Без предупреждения договор становится бессрочным.</p>
+        </div></li>
+        <li><div class="date">17.04 <small>суббота</small></div><div class="what">
+          <p><b>Общий отчётный концерт всех коллективов.</b> После него отчёт в РАО со списком произведений и оплата.</p>
+        </div></li>
+        <li><div class="date">18–19.04</div><div class="what">
+          <p><span class="tag ip">вы</span><span class="tag emp">руководители</span><b>Подсчёт прибыли «Брусники» и приказ о бонусе руководителям-партнёрам</b> до равной доли.</p>
+        </div></li>
+        <li><div class="date">20.04 <small>вторник</small></div><div class="what">
+          <p><span class="tag ip">вы</span><span class="tag emp">руководители</span><b>Бонус и, если договор заканчивается, полный расчёт в этот же день:</b> зарплата за апрель, бонус, компенсация за неиспользованный отпуск. Приказ об увольнении по окончании срока, сведения о трудовой деятельности (СТД-Р), справка о заработке для пособий и справка о доходах.</p>
+          <p class="where">21.04: ЕФС-1 подраздел 1.1 «увольнение» для тех, кто ушёл.</p>
+        </div></li>
+        <li><div class="date">26.04 <small>понедельник</small></div><div class="what">
+          <p><span class="tag ip">вы</span><b>Отчёты за I квартал 2027:</b> РСВ, 6-НДФЛ, ЕФС-1 подраздел 1.2, уведомление об авансе УСН. <b>Декларация УСН за 2026 год.</b></p>
+          <p class="where">28.04: оплата аванса УСН за I квартал и налога УСН за 2026 год.</p>
+        </div></li>
+        <li><div class="date">01.07.2027</div><div class="what"><p><span class="tag ip">вы</span><b>Взнос 1% с дохода за 2026 год свыше 300 тыс. ₽,</b> если он был.</p></div></li>
+        <li><div class="date">до 01.12.2027</div><div class="what">
+          <p><span class="tag ip">вы</span><b>Специальная оценка условий труда (СОУТ).</b></p>
+          <p>Это обязательная проверка рабочих мест, которую проводит аккредитованная компания. Для работодателя с сотрудниками она обязательна в течение года с появления рабочих мест. Стоит обычно несколько тысяч рублей за место, делается раз в 5 лет. Если её не сделать, ИП грозит штраф 5–10 тыс. ₽. В смету она не включена по вашему решению, но обязанность остаётся.</p>
+        </div></li>
+      </ol>
+    </section>
+
+    <section class="phase reg">
+      <h3>Каждый месяц, пока есть работники</h3>
+      <div class="card tbl">
+        <table>
+          <thead><tr><th>Срок</th><th>Что</th></tr></thead>
+          <tbody>
+            <tr><td>по договору, 2 раза</td><td>Зарплата работникам: аванс и расчёт. НДФЛ удерживаете при каждой выплате.</td></tr>
+            <tr><td>до 25-го</td><td>Уведомление об НДФЛ (за период с 23-го прошлого месяца по 22-е текущего) и о взносах за прошлый месяц. Персонифицированные сведения о работниках в ФНС.</td></tr>
+            <tr><td>до 28-го</td><td>Оплата НДФЛ и взносов единым налоговым платежом.</td></tr>
+            <tr><td>при приёме или увольнении</td><td>ЕФС-1 подраздел 1.1, на следующий рабочий день.</td></tr>
+            <tr><td>раз в квартал, до 25-го</td><td>РСВ, 6-НДФЛ, ЕФС-1 подраздел 1.2, уведомление об авансе УСН. Оплата аванса до 28-го.</td></tr>
+            <tr><td>раз в год</td><td>Декларация УСН до 25 апреля, взносы ИП за себя до 28 декабря, 1% до 1 июля.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="phase">
+      <h3>Какие документы от кого</h3>
+      <div class="docs">
+        <div class="card"><h2>Вы (ИП)</h2><ul>
+          <li>Паспорт, ИНН, СНИЛС</li>
+          <li>Р21001 и 26.2-1 при регистрации</li>
+          <li>Уведомление в Роскомнадзор</li>
+          <li>Срочные трудовые договоры, приказы о приёме, премии, увольнении</li>
+          <li>Журнал вводного инструктажа</li>
+          <li>Оферта для участников, политика данных</li>
+          <li>Договоры аренды залов и проката инструментов, договор с РАО</li>
+        </ul></div>
+        <div class="card"><h2>Каждый работник</h2><ul>
+          <li>Паспорт, СНИЛС, ИНН</li>
+          <li>Диплом или документ о квалификации, если нужен для работы</li>
+          <li>Реквизиты карты для зарплаты</li>
+          <li>Согласие на обработку персональных данных</li>
+          <li>Заявление на детский вычет по НДФЛ, если есть дети</li>
+          <li>Трудовая книжка не нужна при совместительстве</li>
+          <li>Справка о несудимости, только если в коллективе будут несовершеннолетние</li>
+        </ul></div>
+        <div class="card"><h2>Участники</h2><ul>
+          <li>Принятие оферты при оплате</li>
+          <li>Согласие на обработку данных</li>
+          <li>Согласие на фото и видео</li>
+        </ul></div>
+        <div class="card"><h2>Арендодатели</h2><ul>
+          <li>Договор аренды зала или проката инструментов</li>
+          <li>Счёт, акт или чек на каждую оплату</li>
+          <li>Если арендодатель обычный человек без статуса ИП или самозанятого, вы удерживаете с оплаты НДФЛ 13%</li>
+        </ul></div>
+      </div>
+    </section>
+
+    <section class="phase">
+      <h3>5. Новые коллективы <span>танцы, ансамбль и другие</span></h3>
+      <ol class="steps">
+        <li><div class="date">до набора</div><div class="what">
+          <p><span class="tag ip">вы</span><b>Тот же ИП, коды ОКВЭД уже подходят.</b> Каждый коллектив — отдельный блок в смете и отдельная строка в учёте. Руководители по срочным трудовым договорам с оплатой за занятие и доп. работы.</p>
+        </div></li>
+        <li><div class="date">до первого занятия</div><div class="what">
+          <p><span class="tag ip">вы</span><b>Зал по почасовой аренде</b> и, если занятия под записи, договоры с РАО и ВОИС: ВОИС берёт плату за фонограммы, РАО за произведения.</p>
+        </div></li>
+      </ol>
+    </section>
+  </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var VAC = 28 / 12 / 29.3, WK = 4.33, KEY = 'choir-budget-v8';
+  var G_DEF = {season:3, prep:1, tax:6, ipYear:57390, fee:3.5, contrib:30, injury:0.2, ndfl:13, netMode:'net',
+    acct:10000, site:3000, bot:5000, otherServ:1000,
+    myRate:1000, wSiteBuild:40, wSiteSup:4, wBotBuild:30, wBotSup:4, wAcct:12, wHire:10, wConcert:25, wPartners:4,
+    mkSite:80000, mkBot:100000, mkSup:15000, mkSmm:30000, mkOffice:10000, mkAdminH:400, mkEvent:40000, wRef:8, mkRef:15000};
+  var MARKET_FIELDS = [
+    ['mkSite','Сайты под ключ','₽ разово',1000],
+    ['mkBot','Бот с ИИ-ассистентом под ключ','₽ разово',1000],
+    ['mkSup','Поддержка сайтов и бота','₽ в месяц',500],
+    ['mkSmm','Таргет и соцсети для всех коллективов','₽ в месяц',1000],
+    ['mkOffice','Кадры, документы, договоры','₽ в месяц',500,'бухгалтерия на аутсорсе уже в расходах'],
+    ['mkAdminH','Администратор','₽ в час',50,'занятия, встречи, переписка, закупки, концерт'],
+    ['mkRef','Партнёрский маркетинг и реферальная программа','₽ в месяц',1000],
+    ['mkEvent','Организация концерта','₽ за концерт',1000]
+  ];
+  var C_DEF = {tix:150, tixPrice:700, cHours:6, hall:40000, sound:10000, photo:8000, video:15000, instr:5000, instrDel:2000, ads:10000, rao:5};
+  var BASE = {n:0, price:15000, prepay:5000, meetings:2, mGuests:15, mPrice:500, mHours:2, mTreats:150,
+    kind:'other', partners:2, concertRate:2000, pieces:0, pieceRate:2000, teachers:1, lessonRate:2500, extra:0, lessons:12, lessonHours:2, rate:1000, mRate:1000,
+    songs:0, songPrice:1000, musicians:0, musReh:0, musRehFee:2500, musConcertFee:5000,
+    instrTimes:0, instrPrice:3000, instrDel:1000, ads:20000, startup:5000, licence:0,
+    wAds:6, wChat:6, wPrep:2, wInstr:0, refShare:0, refPct:10};
+
+  var G_FIELDS = [
+    ['season','Сезон','мес',1,'блок занятий; по нему считаются песни и РАО/ВОИС'],
+    ['prep','Подготовительный период','мес',0.5,'декабрь: набор; общие расходы и ваша работа идут и в нём'],
+    ['tax','УСН «доходы»','%',0.5],
+    ['ipYear','Взносы ИП за себя','₽ в год',10,'57 390 ₽ на 2026 год'],
+    ['fee','Комиссия Продамуса','%',0.1,'сверьте со своим тарифом'],
+    ['contrib','Страховые взносы за работников','%',0.1],
+    ['injury','Взносы на травматизм','%',0.1],
+    ['ndfl','НДФЛ работников','%',1]
+  ];
+  var SERV_FIELDS = [
+    ['acct','Бухгалтер на аутсорсе','₽ в месяц',500],
+    ['site','Сайты: подписки и хостинг','₽ в месяц',100,'только оплата сервисов, создание — ваша работа ниже'],
+    ['bot','Бот: платформа, ИИ-модель, рассылки','₽ в месяц',100,'впишите свои тарифы'],
+    ['otherServ','Прочие сервисы','₽ в месяц',100,'таблицы, связь, CRM']
+  ];
+  var ME_FIELDS = [
+    ['myRate','Оценка вашего часа','₽',100,'только для подсчёта, в расходы не идёт'],
+    ['wSiteBuild','Сайты: создание','часов разово',1],
+    ['wSiteSup','Сайты: поддержка и обновления','ч в месяц',1],
+    ['wBotBuild','Бот с ИИ-ассистентом: создание','часов разово',1],
+    ['wBotSup','Бот: поддержка и настройка ответов','ч в месяц',1],
+    ['wAcct','Учёт, кадры, договоры, отчёты','ч в месяц',1],
+    ['wHire','Поиск специалистов и залов','ч за сезон',1],
+    ['wConcert','Организация концерта','ч за сезон',1,'площадка, билеты, РАО, подрядчики'],
+    ['wRef','Партнёры: поиск, рефералка, реклама у них','ч в месяц',1,'договоры с партнёрами, ссылки, отчёты по выплатам'],
+    ['wPartners','Расчёт и отчёт для партнёров «Брусники»','ч за сезон',1,'делёж прибыли']
+  ];
+  var CONCERT_FIELDS = [
+    ['tix','Продано билетов','шт',10],
+    ['tixPrice','Цена билета','₽',50],
+    ['cHours','Длительность концертного дня','ч',0.5,'с саундчеком; для учёта работы'],
+    ['hall','Аренда зала','₽',1000],
+    ['sound','Звукорежиссёр','₽',500,'свет отдельно не оплачивается'],
+    ['photo','Фотограф','₽',500],
+    ['video','Видеограф','₽',500],
+    ['instr','Аренда инструментов','₽',500,'арендуете вы'],
+    ['instrDel','Доставка инструментов','₽',500],
+    ['ads','Доп. реклама концерта','₽',500],
+    ['rao','Отчисления РАО','% билетов',0.5]
+  ];
+  function collSections(c){
+    var type = c.type, isChoir = type === 'share' || c.kind === 'choir';
+    var s = [
+      {t:'Участники и цена', f:[
+        ['n','Участников','чел',1,'0, пока коллектив не запущен'],
+        ['price','Абонемент на сезон','₽ с человека',500],
+        ['prepay','Предоплата при записи','₽',500,'входит в абонемент']
+      ]},
+      {t:'Набор через платные встречи', f:[
+        ['meetings','Встреч','шт',1,'за месяц до старта сезона'],
+        ['mGuests','Гостей на встрече','чел',1],
+        ['mPrice','Билет на встречу','₽',50],
+        ['mHours','Длительность встречи','ч',0.5],
+        ['mRate','Аренда зала на встречах','₽ в час',100],
+        ['mTreats','Чай и печенье','₽ на гостя',10]
+      ]}
+    ];
+    if (type === 'share') s.push({t:'Руководители-партнёры, срочный договор, сдельно', f:[
+      ['partners','Руководителей-партнёров','чел',1,'каждому 33% чистой прибыли, как и вам'],
+      ['lessonRate','Расценка за занятие и встречу','₽ одному',100,'аванс в счёт 33%, по ежемесячному акту'],
+      ['concertRate','Расценка за концерт','₽ одному',100,'аванс в счёт 33%']
+    ]});
+    else s.push({t:'Руководители, срочный договор, сдельно', f:[
+      ['teachers','Руководителей на занятии','чел',1],
+      ['lessonRate','Оплата за занятие','₽ одному',100,'и за каждую встречу набора'],
+      ['pieces','Постановок, номеров за сезон','шт',1,'например, 5 танцев'],
+      ['pieceRate','Оплата за постановку','₽',500],
+      ['extra','Прочие доп. работы','₽ за сезон',1000]
+    ]});
+    s.push({t:'Занятия и зал', f:[
+      ['lessons','Занятий за сезон','шт',1],
+      ['lessonHours','Длительность занятия','ч',0.25],
+      ['rate','Аренда зала на занятиях','₽ в час',100]
+    ]});
+    if (isChoir) s.push({t:'Репертуар', f:[
+      ['songs','Аранжировка и запись разбора','песен в месяц',1, type === 'share' ? 'делают партнёры: это их вклад, не расход' : ''],
+      ['songPrice','Цена одной песни','₽',100, type === 'share' ? 'для подсчёта вклада и сдельного аванса' : 'аранжировщику по договору']
+    ]});
+    s.push(
+      {t:'Музыканты коллектива, срочный договор', f:[
+        ['musicians','Музыкантов','чел',1],
+        ['musReh','Репетиций с музыкантами','за сезон',1],
+        ['musRehFee','Оплата за репетицию','₽ одному',500],
+        ['musConcertFee','Оплата за концерт','₽ одному',500]
+      ]},
+      {t:'Инструменты, которые арендуете вы', f:[
+        ['instrTimes','Сколько раз за сезон','раз',1,'для занятий и репетиций'],
+        ['instrPrice','Аренда за раз','₽',100,'барабанная установка и т. п.'],
+        ['instrDel','Доставка за раз','₽',100]
+      ]},
+      {t:'Реклама и расходники', f:[
+        ['ads','Реклама набора','₽ за сезон',1000,'ваши площадки и реклама у партнёров'],
+        ['refShare','Участников через партнёров','%',5,'по реферальным ссылкам'],
+        ['refPct','Вознаграждение партнёру','% с абонемента',1],
+        ['startup','Расходники на старте','₽',500],
+        ['licence','Музыка в записи: РАО и ВОИС','₽ в месяц',500,'0, если музыка живая']
+      ]},
+      {t:'Ваша работа в коллективе, в расходы не идёт', f:[
+        ['wAds','Реклама: площадки, создание, размещение','ч в месяц',1,'и соцсети'],
+        ['wChat','Переписка, запись, напоминания','ч в месяц',1],
+        ['wPrep','Закупки, подготовка встреч и занятий','ч в месяц',1],
+        ['wInstr','Аренда и доставка инструментов','ч в месяц',0.5]
+      ]}
+    );
+    return s;
+  }
+
+  var seq = 0;
+  function newId(){ seq++; return 'k' + Date.now().toString(36) + seq; }
+  function mk(type, name, o){ return Object.assign({id:newId(), type:type, name:name}, BASE, o || {}); }
+  function defaults(){
+    return {g:Object.assign({}, G_DEF), concert:Object.assign({}, C_DEF), list:[
+      mk('share','Брусника',{refShare:20, n:30, price:15000, prepay:5000, meetings:3, mGuests:20, mPrice:500, mHours:2, mTreats:150, partners:2, lessonRate:800, concertRate:2000, lessons:12, lessonHours:2, rate:1000, songs:15, songPrice:1000, musicians:2, musReh:4, musRehFee:2500, musConcertFee:5000, instrTimes:4, instrPrice:3000, instrDel:1000, ads:30000, startup:10000, licence:0, wAds:8, wChat:8, wPrep:4, wInstr:1}),
+      mk('paid','Танцевальный коллектив',{n:0, price:12000, prepay:3000, meetings:2, mGuests:15, teachers:1, lessonRate:2500, pieces:5, pieceRate:2000, extra:0, lessons:24, lessonHours:1.5, rate:1000, ads:20000, startup:5000, licence:2000, wAds:6, wChat:6, wPrep:2, wInstr:0}),
+      mk('paid','Инструментальный ансамбль',{n:0, price:15000, prepay:5000, meetings:2, mGuests:12, teachers:1, lessonRate:3000, extra:0, lessons:12, lessonHours:2, rate:1000, instrTimes:6, instrPrice:3000, instrDel:1000, ads:15000, startup:5000, wAds:6, wChat:6, wPrep:2, wInstr:2})
+    ]};
+  }
+  function load(){
+    try {
+      var s = JSON.parse(localStorage.getItem(KEY) || 'null');
+      if (s && s.g && s.concert && Array.isArray(s.list)){
+        s.g = Object.assign({}, G_DEF, s.g); s.concert = Object.assign({}, C_DEF, s.concert);
+        s.list = s.list.filter(function(c){ return c && c.id && (c.type === 'share' || c.type === 'paid'); }).map(function(c){ return Object.assign({}, BASE, c); });
+        s.list.forEach(function(c){ if (c.type === 'share' && c.name === 'Хор') c.name = 'Брусника'; });
+        return s;
+      }
+    } catch(e){}
+    return defaults();
+  }
+  var state = load();
+  function save(){ try { localStorage.setItem(KEY, JSON.stringify(state)); } catch(e){} }
+
+  function esc(s){ return String(s).replace(/[&<>"]/g, function(ch){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch]; }); }
+  function rowHtml(id, f, val){
+    return '<div class="row"><label for="' + id + '">' + f[1] + (f[4] ? '<small>' + f[4] + '</small>' : '') + '</label><div class="field"><input type="number" id="' + id + '" min="0" step="' + f[3] + '" inputmode="decimal" value="' + esc(val) + '" data-k="' + f[0] + '"><span class="unit">' + f[2] + '</span></div></div>';
+  }
+  function boxHtml(title, scope, fields, src, hint, extra){
+    return '<div class="box" data-scope="' + scope + '"><h3>' + title + '</h3>' + (hint ? '<p class="hint">' + hint + '</p>' : '') + (extra || '') + fields.map(function(f){ return rowHtml(scope + '_' + f[0], f, src[f[0]]); }).join('') + '</div>';
+  }
+
+  var inputsEl = document.getElementById('inputs');
+  function collSummary(c){
+    return c.n > 0 ? ppl(c.n) + ' · ' + rub(c.price) + ' · ' + c.lessons + ' занятий' : 'не запущен';
+  }
+  function renderInputs(){
+    var g = state.g;
+    var sel = '<div class="row"><label for="g_netMode">Ставки специалистов указаны<small>звукорежиссёр, музыканты, руководители за занятие, песни</small></label><div class="field"><select id="g_netMode" data-k="netMode"><option value="net"' + (g.netMode === 'net' ? ' selected' : '') + '>на руки</option><option value="gross"' + (g.netMode === 'gross' ? ' selected' : '') + '>до НДФЛ</option></select></div></div>';
+    var html = '<div class="part">Общее</div>'
+      + boxHtml('Сезон и налоги', 'g', G_FIELDS, g, '', sel)
+      + boxHtml('Общие расходы ИП', 'g', SERV_FIELDS, g, 'Делятся между коллективами по их доходам.')
+      + boxHtml('Ваша общая работа', 'g', ME_FIELDS, g, 'Считается в часах, в расходы не идёт.')
+      + boxHtml('Ваша работа по рыночным ценам', 'g', MARKET_FIELDS, g, 'Сколько стоило бы заказать это на стороне. Это ориентиры, впишите цены, которые знаете. В расходы не идёт.')
+      + boxHtml('Общий отчётный концерт', 'concert', CONCERT_FIELDS, state.concert, 'Итог концерта делится между коллективами по числу участников. Специалисты по срочному договору на день концерта.')
+      + '<div class="part">Коллективы</div>'
+      + '<div class="add"><button type="button" class="ghost" data-fold="1">Свернуть все</button><button type="button" class="ghost" data-fold="0">Развернуть все</button></div>';
+    state.list.forEach(function(c){
+      var folded = !!c.collapsed;
+      html += '<div class="box coll' + (folded ? ' folded' : '') + '" data-scope="c" data-cid="' + c.id + '"><div class="coll-head">'
+        + '<button type="button" class="tog" data-toggle="' + c.id + '" aria-expanded="' + (!folded) + '" aria-controls="' + c.id + '_body" title="Свернуть или развернуть">▾</button>'
+        + '<input type="text" id="' + c.id + '_name" value="' + esc(c.name) + '" data-k="name" aria-label="Название коллектива"><span class="chip' + (c.type === 'share' ? ' share' : '') + '">' + (c.type === 'share' ? 'делёж прибыли' : 'оплата за занятия') + '</span><button type="button" class="ghost" data-remove="' + c.id + '">Убрать</button>'
+        + '<span class="sum" id="' + c.id + '_sum">' + collSummary(c) + '</span></div>'
+        + '<div class="coll-body" id="' + c.id + '_body"' + (folded ? ' hidden' : '') + '>';
+      collSections(c).forEach(function(sec){
+        html += '<div class="subh">' + sec.t + '</div>' + sec.f.map(function(f){ return rowHtml(c.id + '_' + f[0], f, c[f[0]]); }).join('');
+      });
+      html += '</div></div>';
+    });
+    html += '<div class="add"><button type="button" data-add="share">+ Хор «Брусники»</button><button type="button" data-add="choir">+ Хор с оплатой за занятия</button><button type="button" data-add="paid">+ Другой коллектив</button></div><p class="hint" style="font-size:12px;color:var(--muted);margin:0">Хоры «Брусники» делят прибыль по 33% с теми же партнёрами, каждый хор считается отдельно и разучивает свои новые песни, чтобы на общих концертах репертуар был вдвое больше. Остальные хоры и коллективы работают с оплатой руководителям за занятия.</p>';
+    inputsEl.innerHTML = html;
+  }
+  function onInput(e){
+    var t = e.target, k = t.dataset ? t.dataset.k : null;
+    if (!k) return;
+    var holder = t.closest('[data-scope]'); if (!holder) return;
+    var val;
+    if (t.type === 'text' || t.tagName === 'SELECT') val = t.value;
+    else { var x = parseFloat(String(t.value).replace(',', '.')); val = isFinite(x) && x >= 0 ? x : 0; }
+    var sc = holder.dataset.scope;
+    if (sc === 'g') state.g[k] = val;
+    else if (sc === 'concert') state.concert[k] = val;
+    else {
+      var c = state.list.filter(function(x){ return x.id === holder.dataset.cid; })[0];
+      if (c){ c[k] = val; var sm = document.getElementById(c.id + '_sum'); if (sm) sm.textContent = collSummary(c); }
+    }
+    save(); renderResults();
+  }
+  inputsEl.addEventListener('input', onInput);
+  inputsEl.addEventListener('change', function(e){ if (e.target.tagName === 'SELECT') onInput(e); });
+  inputsEl.addEventListener('click', function(e){
+    var t = e.target.closest('button') || e.target;
+    if (t.dataset.toggle){
+      var c = state.list.filter(function(x){ return x.id === t.dataset.toggle; })[0]; if (!c) return;
+      c.collapsed = !c.collapsed; save();
+      var box = t.closest('.coll'), body = document.getElementById(c.id + '_body');
+      if (box) box.classList.toggle('folded', c.collapsed);
+      if (body) body.hidden = c.collapsed;
+      t.setAttribute('aria-expanded', String(!c.collapsed));
+      return;
+    }
+    if (t.dataset.fold){
+      var f = t.dataset.fold === '1';
+      state.list.forEach(function(x){ x.collapsed = f; });
+      save(); renderInputs(); return;
+    }
+    if (t.dataset.remove){ state.list = state.list.filter(function(c){ return c.id !== t.dataset.remove; }); }
+    else if (t.dataset.add){
+      var nCount = state.list.filter(function(c){ return /^Хор/.test(c.name || ''); }).length + 2;
+      var bCount = state.list.filter(function(c){ return c.type === 'share'; }).length + 1;
+      if (t.dataset.add === 'share') state.list.splice(bCount - 1, 0, mk('share', 'Брусника ' + bCount, {n:20, price:15000, prepay:5000, meetings:2, mGuests:15, partners:2, lessonRate:800, concertRate:2000, lessons:12, lessonHours:2, rate:1000, songs:15, songPrice:1000, musicians:2, musReh:4, instrTimes:4, ads:20000, startup:5000, refShare:20, wAds:6, wChat:6, wPrep:3, wInstr:1}));
+      else state.list.push(t.dataset.add === 'choir'
+        ? mk('paid', 'Хор ' + nCount, {kind:'choir', n:20, price:15000, meetings:2, mGuests:15, teachers:2, lessonRate:2500, extra:0, lessons:12, lessonHours:2, songs:15, musicians:2, musReh:4, instrTimes:4, ads:20000, startup:10000, wAds:6, wChat:6, wPrep:3, wInstr:1})
+        : mk('paid', 'Новый коллектив', {n:15}));
+    } else return;
+    save(); renderInputs(); renderResults();
+  });
+
+  // ===== Расчёт =====
+  function emp(A, g){
+    var nd = Math.min(g.ndfl, 99) / 100, er = (g.contrib + g.injury) / 100;
+    var gross = g.netMode === 'net' ? A / (1 - nd) : A;
+    var base = gross * (1 + VAC);
+    return {gross:gross, vac:gross * VAC, base:base, contrib:base * er, ndfl:base * nd, net:base * (1 - nd), cost:base * (1 + er)};
+  }
+  function sumEmp(list){ var o = {gross:0, vac:0, base:0, contrib:0, ndfl:0, net:0, cost:0}; list.forEach(function(e){ for (var k in o) o[k] += e[k]; }); return o; }
+  function revOf(c, n){ return n * c.price + c.meetings * c.mGuests * c.mPrice; }
+
+  function model(st, oid, on){
+    var g = st.g, cc = st.concert;
+    var M = Math.max(1, g.season), S = M + Math.max(0, g.prep);
+    var nd = Math.min(g.ndfl, 99) / 100, er = (g.contrib + g.injury) / 100;
+    var items = st.list.map(function(c){ var n = c.id === oid ? on : c.n; return {c:c, n:Math.max(0, Math.round(n || 0))}; });
+    var totalN = 0, totalRev = 0;
+    items.forEach(function(x){ if (x.n > 0){ totalN += x.n; totalRev += revOf(x.c, x.n); } });
+    var box = cc.tix * cc.tixPrice;
+    var cSound = emp(cc.sound, g), cPhoto = emp(cc.photo, g), cVideo = emp(cc.video, g);
+    var cStaff = sumEmp([cSound, cPhoto, cVideo]);
+    var cRao = box * cc.rao / 100, cFee = box * g.fee / 100;
+    var cCost = cc.hall + cc.instr + cc.instrDel + cc.ads + cRao + cFee + cStaff.cost;
+    var concert = {box:box, sound:cSound, photo:cPhoto, video:cVideo, staff:cStaff, rao:cRao, fee:cFee, cost:cCost, net:box - cCost, on:totalN > 0};
+    var Itot = totalRev + (totalN > 0 ? box : 0);
+    var ipAll = g.ipYear * S / 12 + 0.01 * Math.max(0, Itot - 300000 * S / 12);
+    var acctAll = g.acct * S, servAll = (g.site + g.bot + g.otherServ) * S;
+
+    function calcOne(c, n){
+      if (n <= 0) return {c:c, n:0, active:false, you:0, taxes:0, I:0, meTotal:0};
+      var w = n / totalN, s = totalRev > 0 ? revOf(c, n) / totalRev : 0;
+      var lessons = c.lessons, lessonHrs = lessons * c.lessonHours, meetHrs = c.meetings * c.mHours;
+      var guests = c.meetings * c.mGuests;
+      var sales = n * c.price, meetInc = guests * c.mPrice, boxShare = box * w;
+      var I = sales + meetInc + boxShare;
+      var fee = (sales + meetInc) * g.fee / 100;
+      var rent = lessonHrs * c.rate + meetHrs * c.mRate;
+      var treats = guests * c.mTreats;
+      var lic = c.licence * M;
+      var mus = emp(c.musicians * (c.musReh * c.musRehFee + c.musConcertFee), g);
+      var instr = c.instrTimes * (c.instrPrice + c.instrDel);
+      var arr = emp(c.songs * M * c.songPrice, g);
+      var ipS = ipAll * s, acctS = acctAll * s, servS = servAll * s, cS = cCost * w;
+      var ref = sales * c.refShare / 100 * c.refPct / 100;
+      // У «Брусники» взносы ИП за себя не входят в расходы коллектива: они лично ваши
+      var ipIn = c.type === 'share' ? 0 : ipS;
+      // У «Брусники» аранжировки делают партнёры: это их вклад в 33%, не расход коллектива
+      var arrIn = c.type === 'share' ? emp(0, g) : arr;
+      var np = fee + rent + treats + lic + mus.cost + instr + arrIn.cost + c.ads + ref + c.startup + cS + acctS + servS + ipIn;
+      var empC = mus.contrib + arrIn.contrib + cStaff.contrib * w;
+      var contribO = empC + ipIn;
+      var ndflO = mus.ndfl + arrIn.ndfl + cStaff.ndfl * w;
+      var base = I * g.tax / 100;
+      function usnOf(x){ var d = Math.min(base * 0.5, contribO + x); return {tax:Math.max(0, base - d), ded:Math.min(base, d)}; }
+      var r = {c:c, n:n, active:true, w:w, s:s, lessons:lessons, lessonHrs:lessonHrs, meetHrs:meetHrs, guests:guests,
+        sales:sales, meetInc:meetInc, boxShare:boxShare, I:I, fee:fee, ref:ref, rent:rent, treats:treats, lic:lic, mus:mus, instr:instr, arr:arr,
+        ipS:ipS, acctS:acctS, servS:servS, cS:cS, np:np, base:base, contribO:contribO, ndflO:ndflO};
+      if (c.type === 'share'){
+        var k = Math.round(c.partners), G = 0, eq = true, adv = emp(0, g);
+        if (k > 0){
+          for (var i = 0; i < 40; i++){ var a = I - np - usnOf(k * G * er).tax; G = a / (k * (1 + er) + (1 - nd)); }
+          // Сдельный аванс по ежемесячным актам: занятия, встречи, концерт и песни (поровну между партнёрами); остаток до 33% бонусом
+          adv = emp((lessons + c.meetings) * c.lessonRate + c.concertRate + c.songs * M * c.songPrice / k, g);
+          if (!(G >= adv.base)) { G = adv.base; eq = false; }
+        }
+        var u = usnOf(k * G * er);
+        r.k = k; r.G = G; r.adv = adv; r.equal = eq; r.bonus = Math.max(0, G - adv.base);
+        r.songsValue = c.songs * M * c.songPrice;
+        r.teamCost = k * G * (1 + er); r.teamContrib = k * G * er; r.teamNdfl = k * G * nd; r.teamNet = k * G * (1 - nd);
+        // УСН фактически ещё уменьшается на ваши взносы ИП; эта экономия тоже лично ваша
+        var usnFull = Math.max(0, base - Math.min(base * 0.5, contribO + k * G * er + ipS));
+        r.usnPool = u.tax; r.usnBenefit = u.tax - usnFull; r.usn = usnFull; r.usnDed = base - usnFull;
+        r.shareYou = I - np - u.tax - r.teamCost; r.tNet = G * (1 - nd);
+        r.you = r.shareYou - ipS + r.usnBenefit;
+        r.pool = I - np - u.tax - r.teamContrib - r.teamNdfl;
+        r.teachHrs = k * (lessonHrs + meetHrs + cc.cHours);
+      } else {
+        var team = emp(c.teachers * c.lessonRate * (lessons + c.meetings) + c.pieces * c.pieceRate + c.extra, g);
+        var u2 = usnOf(team.contrib);
+        r.team = team; r.teamCost = team.cost; r.teamContrib = team.contrib; r.teamNdfl = team.ndfl; r.teamNet = team.net;
+        r.usn = u2.tax; r.usnDed = u2.ded; r.you = I - np - team.cost - u2.tax;
+        r.teachHrs = c.teachers * (lessonHrs + meetHrs + cc.cHours);
+      }
+      r.musHrs = c.musicians * (c.musReh * c.lessonHours + cc.cHours);
+      r.meTasks = (c.wAds + c.wChat + c.wPrep + c.wInstr) * S;
+      r.meTotal = lessonHrs + meetHrs + r.meTasks;
+      r.empContrib = empC + r.teamContrib;
+      r.taxes = r.usn + empC + r.teamContrib + ndflO + r.teamNdfl + ipS;
+      r.costs = np + r.usn + r.teamCost;
+      return r;
+    }
+    var res = items.map(function(x){ return calcOne(x.c, x.n); });
+    var you = 0, taxes = 0, meColl = 0;
+    res.forEach(function(r){ you += r.you; taxes += r.taxes; meColl += r.meTotal; });
+    var meGeneral = g.wSiteBuild + g.wBotBuild + (g.wSiteSup + g.wBotSup + g.wAcct + g.wRef) * S + g.wHire + g.wConcert + g.wPartners + (totalN > 0 ? cc.cHours : 0);
+    var start = g.acct + g.site + g.bot + g.otherServ;
+    items.forEach(function(x){ if (x.n > 0) start += x.c.ads + x.c.startup; });
+    return {res:res, concert:concert, you:you, taxes:taxes, meGeneral:meGeneral, meColl:meColl, meAll:meGeneral + meColl, start:start, S:S, totalN:totalN, ipAll:ipAll, acctAll:acctAll, servAll:servAll};
+  }
+  function beOf(id){
+    for (var n = 1; n <= 400; n++){
+      var m = model(state, id, n), r = m.res.filter(function(x){ return x.c.id === id; })[0];
+      if (r && (r.shareYou != null ? r.shareYou : r.you) >= 0) return n;
+    }
+    return Infinity;
+  }
+
+  // ===== Вывод =====
+  var nf = new Intl.NumberFormat('ru-RU', {maximumFractionDigits:0});
+  function num(x){ return nf.format(Math.round(x)).replace('-', '−'); }
+  function rub(x){ return num(x) + ' ₽'; }
+  function hrs(x){ return nf.format(Math.round(x * 10) / 10) + ' ч'; }
+  function pct(x){ return String(Math.round(x * 10) / 10).replace('.', ','); }
+  function plural(n, f){ n = Math.abs(n) % 100; var n1 = n % 10; if (n > 10 && n < 20) return f[2]; if (n1 > 1 && n1 < 5) return f[1]; if (n1 === 1) return f[0]; return f[2]; }
+  var PEOPLE = ['участник','участника','участников'];
+  function ppl(n){ return isFinite(n) ? n + ' ' + plural(n, PEOPLE) : 'больше 400'; }
+  function rows2(rows){
+    return rows.map(function(rw){
+      if (rw.group) return '<tr class="group"><td colspan="2">' + rw.group + '</td></tr>';
+      return '<tr' + (rw.sub ? ' class="sub"' : '') + '><td>' + rw.t + (rw.s ? '<small>' + rw.s + '</small>' : '') + '</td><td class="r">' + rw.v + '</td></tr>';
+    }).join('');
+  }
+  function rows4(rows){
+    return '<thead><tr><th>Кто и что</th><th class="r">Часов</th><th class="r">На руки</th><th class="r">₽ в час</th></tr></thead><tbody>' + rows.map(function(rw){
+      if (rw.group) return '<tr class="group"><td colspan="4">' + rw.group + '</td></tr>';
+      var perH = rw.h > 0 && rw.m != null ? rub(rw.m / rw.h) : '—';
+      return '<tr' + (rw.sub ? ' class="sub"' : '') + '><td>' + rw.t + (rw.s ? '<small>' + rw.s + '</small>' : '') + '</td><td class="r">' + (rw.h != null ? hrs(rw.h) : '—') + '</td><td class="r">' + (rw.m != null ? rub(rw.m) : (rw.mt || '—')) + '</td><td class="r">' + (rw.ph || perH) + '</td></tr>';
+    }).join('') + '</tbody>';
+  }
+  var openSet = {};
+  function det(key, title, inner){ return '<details class="more" data-key="' + key + '"' + (openSet[key] ? ' open' : '') + '><summary>' + title + '</summary>' + inner + '</details>'; }
+  document.getElementById('results').addEventListener('toggle', function(e){ if (e.target.tagName === 'DETAILS') openSet[e.target.dataset.key] = e.target.open; }, true);
+  function set(id, t){ document.getElementById(id).textContent = t; }
+  function negClass(id, x){ document.getElementById(id).classList.toggle('neg', x < 0); }
+
+  function collCard(r, g, m){
+    var c = r.c, name = esc(c.name || 'Без названия');
+    var chip = '<span class="chip' + (c.type === 'share' ? ' share' : '') + '">' + (c.type === 'share' ? 'делёж прибыли' : 'оплата за занятия') + '</span>';
+    if (!r.active) return '<div class="card"><div class="card-h"><h2>' + name + '</h2>' + chip + '</div><span class="status off">Не запущен: укажите число участников в его блоке</span></div>';
+    var be = beOf(c.id), S = m.S, nk = 1 - g.ndfl / 100;
+    var html = '<div class="card"><div class="card-h"><h2>' + name + '</h2>' + chip + '</div>';
+    var specS = 'с взносами 30,2% и компенсацией отпуска';
+    var common = [
+      {group:'Доходы'},
+      {t:'Абонементы', s: ppl(r.n) + ' × ' + rub(c.price) + ', из них предоплата ' + rub(c.prepay) + ' при записи', v: rub(r.sales)},
+      {t:'Встречи набора', s: c.meetings + ' встреч × ' + c.mGuests + ' гостей × ' + rub(c.mPrice) + '; в коллектив записываются ' + pct(r.guests > 0 ? r.n / r.guests * 100 : 0) + '% гостей', v: rub(r.meetInc)},
+      {t:'Доля билетов концерта', s: pct(r.w * 100) + '% по числу участников', v: rub(r.boxShare)},
+      {t:'Всего доходов', v: rub(r.I), sub:true},
+      {group:'Объективные расходы'},
+      {t:'Аренда зала', s: hrs(r.lessonHrs) + ' занятий × ' + rub(c.rate) + ' + ' + hrs(r.meetHrs) + ' встреч × ' + rub(c.mRate), v: rub(r.rent)},
+      {t:'Чай и печенье на встречах', s: r.guests + ' гостей × ' + rub(c.mTreats), v: rub(r.treats)},
+      {t:'Аранжировка и запись разбора', s: num(c.songs * g.season) + ' песен × ' + rub(c.songPrice) + (c.type === 'share' ? ', делают партнёры: вклад в 33%, не расход' : ', ' + specS), v: rub(c.type === 'share' ? 0 : r.arr.cost)},
+      {t:'Музыканты', s: c.musicians + ' × (' + c.musReh + ' репет. × ' + rub(c.musRehFee) + ' + концерт ' + rub(c.musConcertFee) + '), ' + specS, v: rub(r.mus.cost)},
+      {t:'Аренда и доставка инструментов', s: c.instrTimes + ' раз × (' + rub(c.instrPrice) + ' + ' + rub(c.instrDel) + ')', v: rub(r.instr)},
+      {t:'Музыка в записи: РАО и ВОИС', v: rub(r.lic)},
+      {t:'Реклама набора', s:'свои площадки и реклама у партнёров', v: rub(c.ads)},
+      {t:'Реферальные выплаты партнёрам', s: pct(c.refShare) + '% участников × ' + pct(c.refPct) + '% с абонемента', v: rub(r.ref)},
+      {t:'Расходники на старте', v: rub(c.startup)},
+      {t:'Доля общего концерта', s: pct(r.w * 100) + '% расходов концерта', v: rub(r.cS)},
+      {t:'Комиссия Продамуса', v: rub(r.fee)},
+      {t:'Бухгалтерия и сервисы, доля', s: pct(r.s * 100) + '% по доходам', v: rub(r.acctS + r.servS)}
+    ];
+    var work = [
+      {group:'Вы'},
+      {t:'На занятиях: оплаты, отметки, атмосфера', h:r.lessonHrs},
+      {t:'Встречи набора', h:r.meetHrs},
+      {t:'Реклама: площадки, создание, размещение', h:c.wAds * S},
+      {t:'Переписка, запись, напоминания', h:c.wChat * S},
+      {t:'Закупки, подготовка', h:c.wPrep * S},
+      {t:'Аренда и доставка инструментов', h:c.wInstr * S},
+      {t:'Ваши часы в этом коллективе', s:'в деньгах по оценке ' + rub(g.myRate) + ' в час, в расходы не идёт', h:r.meTotal, mt:rub(r.meTotal * g.myRate), ph:'оценка', sub:true}
+    ];
+    if (c.type === 'share'){
+      var k = r.k;
+      html += '<div class="split"><div class="person you"><span>Вам</span><b class="' + (r.you < 0 ? 'neg' : '') + '">' + rub(r.you) + '</b><em>' + rub(r.you / S) + ' в месяц</em></div>'
+        + (k > 0 ? '<div class="person t"><span>Каждому руководителю-партнёру</span><b>' + rub(r.tNet) + '</b><em>сдельно по актам ' + rub(r.adv.net) + ', бонус после концерта ' + rub(r.bonus * nk) + '</em></div>' : '<div class="person"></div>')
+        + '<div class="person"><span>Окупается с</span><b>' + ppl(be) + '</b></div></div>';
+      html += '<span class="status ' + (r.equal && r.shareYou >= 0 ? 'ok' : 'no') + '">' + (r.equal ? 'По 33% чистой прибыли: ' + rub(r.tNet / S) + ' в месяц каждому' : (r.shareYou >= 0 ? 'Сдельные авансы партнёров больше их 33%: вам остаётся меньше' : 'Убыток: сдельную оплату партнёрам платите из своих, не хватает ' + rub(-r.shareYou))) + '</span>';
+      var pool = common.concat([
+        {group:'Налоги'},
+        {t:'УСН', s: rub(r.base) + ' минус взносы за работников', v: rub(r.usnPool)},
+        {t:'Взносы за руководителей-партнёров', v: rub(r.teamContrib)},
+        {t:'НДФЛ руководителей-партнёров', v: rub(r.teamNdfl)},
+        {t:'Чистая прибыль к делёжу', v: rub(r.pool), sub:true},
+        {t:'Каждому из ' + (k + 1), s: k > 0 ? '33% чистой прибыли: часть сдельно по ежемесячным актам, остальное бонусом после концерта' : '', v: rub(r.pool / (k + 1)), sub:true}
+      ]);
+      if (!r.equal) pool.push({t:'33% меньше сдельной оплаты по актам', s:'сдельная оплата по договору платится всё равно, поэтому вам остаётся меньше', v: rub(r.shareYou)});
+      pool.push({group:'Лично ваше, не из прибыли «Брусники»'},
+        {t:'Ваша доля', v: rub(r.shareYou)},
+        {t:'Ваши взносы ИП за себя', s:'часть по доходам «Брусники»', v: '−' + rub(r.ipS)},
+        {t:'Уменьшение УСН за счёт ваших взносов', v: '+' + rub(r.usnBenefit)},
+        {t:'Вам на руки', v: rub(r.you), sub:true});
+      html += det(c.id + '_pool', 'Делёж прибыли: все доходы и расходы', '<div class="tbl"><table>' + rows2(pool) + '</table></div>');
+      work = work.concat([
+        {group:'Руководители-партнёры'},
+        {t:k + ' × (занятия + встречи + концерт)', s:'по расценкам, аванс в счёт 33%', h:r.teachHrs, m:k * ((r.lessons + c.meetings) * c.lessonRate + c.concertRate)},
+        {t:'Аранжировка и запись разбора', s:num(c.songs * g.season) + ' песен, по ' + rub(c.songPrice), h:null, m:r.songsValue, ph:'за песню'},
+        {t:'Итого партнёрам на руки', s:'33% чистой прибыли каждому', h:null, m:r.teamNet, sub:true}
+      ]);
+    } else {
+      html += '<div class="split"><div class="person you"><span>Ваша прибыль</span><b class="' + (r.you < 0 ? 'neg' : '') + '">' + rub(r.you) + '</b><em>' + rub(r.you / S) + ' в месяц</em></div>'
+        + '<div class="person t"><span>Руководителям на руки</span><b>' + rub(r.team.net) + '</b><em>с налогами вам стоит ' + rub(r.team.cost) + '</em></div>'
+        + '<div class="person"><span>Окупается с</span><b>' + ppl(be) + '</b></div></div>';
+      html += '<span class="status ' + (r.you >= 0 ? 'ok' : 'no') + '">' + (r.you >= 0 ? 'Прибыль ваша: ' + rub(r.you / S) + ' в месяц' : 'Убыток ' + rub(-r.you) + ' за сезон') + '</span>';
+      var tbl = common.concat([
+        {group:'Руководители'},
+        {t:'Занятия и встречи', s: c.teachers + ' × ' + rub(c.lessonRate) + ' × (' + Math.round(r.lessons) + ' занятий + ' + c.meetings + ' встреч)', v: rub(c.teachers * c.lessonRate * (r.lessons + c.meetings))},
+        {t:'Постановки, номера', s: c.pieces + ' × ' + rub(c.pieceRate), v: rub(c.pieces * c.pieceRate)},
+        {t:'Прочие доп. работы', v: rub(c.extra)},
+        {t:'Налоги работодателя, отпуск' + (g.netMode === 'net' ? ', НДФЛ сверх ставки' : ''), v: rub(r.team.cost - c.teachers * c.lessonRate * (r.lessons + c.meetings) - c.pieces * c.pieceRate - c.extra)},
+        {group:'Налоги ИП'},
+        {t:'УСН', s: rub(r.base) + ' минус взносы ' + rub(r.usnDed), v: rub(r.usn)},
+        {t:'Взносы ИП за себя, доля', v: rub(r.ipS)},
+        {t:'Всего расходов', v: rub(r.costs), sub:true},
+        {t:'Ваша прибыль', v: rub(r.you), sub:true}
+      ]);
+      html += det(c.id + '_tbl', 'Все доходы и расходы', '<div class="tbl"><table>' + rows2(tbl) + '</table></div>');
+      work = work.concat([
+        {group:'Руководители'},
+        {t:c.teachers + ' × (занятия + встречи + концерт)', s:'плюс доп. работы, оплата на руки', h:r.teachHrs, m:r.team.net}
+      ]);
+    }
+    if (c.musicians > 0) work.push({group:'Музыканты'}, {t:c.musicians + ' × (репетиции + концерт)', h:r.musHrs, m:r.mus.net});
+    if (c.songs > 0 && c.type !== 'share') work.push({group:'Аранжировщик'}, {t:num(c.songs * g.season) + ' песен: аранжировка и запись разбора', s:'сдельно, за песню', h:null, m:r.arr.net, ph:rub(r.arr.net / Math.max(1, c.songs * g.season)) + ' за песню'});
+    html += det(c.id + '_work', 'Кто сколько работает за сезон', '<div class="tbl"><table>' + rows4(work) + '</table></div>');
+    return html + '</div>';
+  }
+
+  function renderResults(){
+    var g = state.g, cc = state.concert, m = model(state), S = m.S;
+    set('totYou', rub(m.you)); negClass('totYou', m.you);
+    set('totYouM', rub(m.you / S)); negClass('totYouM', m.you);
+    set('totParts', m.res.filter(function(r){ return r.active; }).map(function(r){ return (r.c.name || 'без названия') + ' ' + rub(r.you); }).join(' · ') || 'нет запущенных коллективов');
+    set('totTax', rub(m.taxes));
+    set('totStart', rub(m.start));
+
+    // Ваша работа
+    var meRows = [
+      {group:'Общая работа ИП'},
+      {t:'Сайты: создание', h:g.wSiteBuild},
+      {t:'Сайты: поддержка', h:g.wSiteSup * S},
+      {t:'Бот с ИИ-ассистентом: создание', h:g.wBotBuild},
+      {t:'Бот: поддержка и настройка ответов', h:g.wBotSup * S},
+      {t:'Учёт, кадры, договоры, отчёты', h:g.wAcct * S},
+      {t:'Поиск специалистов и залов', h:g.wHire},
+      {t:'Организация концерта', h:g.wConcert},
+      {t:'Концертный день', h:m.totalN > 0 ? cc.cHours : 0},
+      {t:'Партнёры: поиск, рефералка, реклама у них', h:g.wRef * S},
+      {t:'Расчёт и отчёт для партнёров «Брусники»', h:g.wPartners},
+      {group:'По коллективам'}
+    ];
+    m.res.forEach(function(r){ if (r.active) meRows.push({t:esc(r.c.name || 'без названия'), s:'занятия, встречи, реклама, переписка, подготовка', h:r.meTotal}); });
+    meRows.push({t:'Всего ваших часов', h:m.meAll, sub:true, mt:rub(m.meAll * g.myRate), ph:'оценка'});
+    var adminHrs = (m.totalN > 0 ? cc.cHours : 0);
+    m.res.forEach(function(r){ if (r.active) adminHrs += r.lessonHrs + r.meetHrs + (r.c.wChat + r.c.wPrep + r.c.wInstr) * S; });
+    var mkRows = [
+      {t:'Сайты под ключ', v: rub(g.mkSite)},
+      {t:'Бот с ИИ-ассистентом под ключ', v: rub(g.mkBot)},
+      {t:'Поддержка сайтов и бота', s: rub(g.mkSup) + ' × ' + pct(S) + ' мес', v: rub(g.mkSup * S)},
+      {t:'Таргет и соцсети', s: rub(g.mkSmm) + ' × ' + pct(S) + ' мес', v: rub(g.mkSmm * S)},
+      {t:'Партнёрский маркетинг и рефералка', s: rub(g.mkRef) + ' × ' + pct(S) + ' мес', v: rub(g.mkRef * S)},
+      {t:'Кадры, документы, договоры', s: rub(g.mkOffice) + ' × ' + pct(S) + ' мес', v: rub(g.mkOffice * S)},
+      {t:'Администратор', s: hrs(adminHrs) + ' × ' + rub(g.mkAdminH) + ': занятия, встречи, переписка, закупки, концерт', v: rub(adminHrs * g.mkAdminH)},
+      {t:'Организация концерта', v: rub(m.totalN > 0 ? g.mkEvent : 0)}
+    ];
+    var market = g.mkSite + g.mkBot + (g.mkSup + g.mkSmm + g.mkOffice + g.mkRef) * S + adminHrs * g.mkAdminH + (m.totalN > 0 ? g.mkEvent : 0);
+    mkRows.push({t:'Всего на стороне', v: rub(market), sub:true});
+    document.getElementById('meCard').innerHTML = '<h2>Ваша работа за сезон</h2>'
+      + '<div class="split four">'
+      + '<div class="person you"><span>Часов за сезон</span><b>' + hrs(m.meAll) + '</b><em>в среднем ' + hrs(m.meAll / (S * WK)) + ' в неделю</em></div>'
+      + '<div class="person"><span>По вашей оценке часа</span><b>' + rub(m.meAll * g.myRate) + '</b><em>' + rub(g.myRate) + ' в час</em></div>'
+      + '<div class="person"><span>Если заказать на стороне</span><b>' + rub(market) + '</b><em>по рыночным ценам из полей</em></div>'
+      + '<div class="person you"><span>Фактически выходит</span><b class="' + (m.you < 0 ? 'neg' : '') + '">' + (m.meAll > 0 ? rub(m.you / m.meAll) : '—') + '</b><em>ваша прибыль за час работы</em></div>'
+      + '</div>'
+      + '<p class="hint" style="margin:10px 0 0;font-size:13px;color:var(--muted)">В расходы ваша работа не входит. Эти цифры нужны, чтобы решить, как учитывать её при делёже.</p>'
+      + det('me_work', 'Из чего складываются часы', '<div class="tbl"><table>' + rows4(meRows) + '</table></div>')
+      + det('me_market', 'Сколько стоило бы на стороне', '<div class="tbl"><table>' + rows2(mkRows) + '</table></div>');
+
+    document.getElementById('colls').innerHTML = m.res.map(function(r){ return collCard(r, g, m); }).join('');
+
+    // Концерт
+    var co = m.concert, act = m.res.filter(function(r){ return r.active; });
+    var cRows = [
+      {t:'Билеты', s: cc.tix + ' × ' + rub(cc.tixPrice), v: rub(co.box)},
+      {group:'Расходы'},
+      {t:'Аренда зала', v: rub(cc.hall)},
+      {t:'Звукорежиссёр', s:'на руки ' + rub(co.sound.net) + ', с налогами и отпуском', v: rub(co.sound.cost)},
+      {t:'Фотограф', s:'на руки ' + rub(co.photo.net), v: rub(co.photo.cost)},
+      {t:'Видеограф', s:'на руки ' + rub(co.video.net), v: rub(co.video.cost)},
+      {t:'Аренда и доставка инструментов', v: rub(cc.instr + cc.instrDel)},
+      {t:'Доп. реклама концерта', v: rub(cc.ads)},
+      {t:'РАО ' + pct(cc.rao) + '% билетов', v: rub(co.rao)},
+      {t:'Комиссия Продамуса', v: rub(co.fee)},
+      {t:'Итог концерта', v: rub(co.net), sub:true}
+    ];
+    if (act.length){
+      cRows.push({group:'Делится по участникам'});
+      act.forEach(function(r){ cRows.push({t:esc(r.c.name || 'без названия'), s: ppl(r.n) + ', ' + pct(r.w * 100) + '%', v: rub(r.boxShare - r.cS)}); });
+    }
+    document.getElementById('concertCard').innerHTML = '<div class="card-h"><h2>Общий отчётный концерт</h2><span class="chip">' + rub(co.net) + '</span></div>'
+      + (co.on ? '' : '<span class="status off">Пока нет запущенных коллективов, итог концерта не распределён</span>')
+      + '<div class="tbl"><table>' + rows2(cRows) + '</table></div>'
+      + det('concert_work', 'Кто сколько работает на концерте', '<div class="tbl"><table>' + rows4([
+          {t:'Звукорежиссёр', h:cc.cHours, m:co.sound.net},
+          {t:'Фотограф', h:cc.cHours, m:co.photo.net},
+          {t:'Видеограф', h:cc.cHours, m:co.video.net},
+          {t:'Вы', s:'плюс подготовка, она в вашей общей работе', h:cc.cHours, m:null, mt:'—'}
+        ]) + '</table></div>');
+
+    // Налоги
+    var tRows = [];
+    act.forEach(function(r){
+      tRows.push({group:esc(r.c.name || 'без названия')},
+        {t:'УСН', s: rub(r.base) + ' минус взносы ' + rub(r.usnDed), v: rub(r.usn)},
+        {t:'Взносы за работников', s:'руководители, музыканты, аранжировщик, доля концерта', v: rub(r.empContrib)},
+        {t:'НДФЛ работников', s:'удерживаете из их оплаты и перечисляете', v: rub(r.ndflO + r.teamNdfl)},
+        {t:'Взносы ИП за себя, доля', v: rub(r.ipS)},
+        {t:'Итого', v: rub(r.taxes), sub:true});
+    });
+    tRows.push({t:'Всего уходит в бюджет за сезон', v: rub(m.taxes), sub:true});
+    document.getElementById('taxes').innerHTML = rows2(tRows);
+  }
+
+  function route(){
+    var h = (location.hash || '#smeta').slice(1);
+    if (h !== 'oformlenie') h = 'smeta';
+    document.getElementById('view-smeta').hidden = h !== 'smeta';
+    document.getElementById('view-oformlenie').hidden = h !== 'oformlenie';
+    document.getElementById('tab-smeta').setAttribute('aria-current', h === 'smeta' ? 'page' : 'false');
+    document.getElementById('tab-oformlenie').setAttribute('aria-current', h === 'oformlenie' ? 'page' : 'false');
+  }
+  window.addEventListener('hashchange', route);
+  document.getElementById('reset').addEventListener('click', function(){ state = defaults(); save(); renderInputs(); renderResults(); });
+
+  route();
+  renderInputs();
+  renderResults();
+  window.__choirModel = function(){ return model(state); };
+})();
+</script>
+</html>
