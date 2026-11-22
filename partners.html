@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Брусника: расчёт сезона</title>
-<meta name="description" content="Хор «Брусника»: деньги сезона, делёж на троих и кто что делает.">
+<meta name="description" content="Хор «Брусника»: деньги сезона, распределение на троих и кто что делает.">
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -401,7 +401,7 @@ tr.group td{padding-top:14px;font-size:12px;letter-spacing:.06em;text-transform:
       '<span>окупается с <b>' + ppl(beOf(c.id)) + '</b></span>';
     var pill = document.getElementById('pill');
     pill.className = 'pill' + (r.equal ? '' : ' no');
-    pill.textContent = r.equal ? ppl(r.n) + ' по ' + rub(c.price) + ': делёж поровну, по 33%' : 'Прибыли не хватает на равный делёж: сдельная оплата партнёров больше 33%';
+    pill.textContent = r.equal ? ppl(r.n) + ' по ' + rub(c.price) + ': распределение поровну, по 33%' : 'Прибыли не хватает на равное распределение: сдельная оплата партнёров больше 33%';
 
     // Кто что делает
     var me = [
@@ -409,8 +409,8 @@ tr.group td{padding-top:14px;font-size:12px;letter-spacing:.06em;text-transform:
       ['Продажи и набор', 'встречи набора, переписка, запись участников, напоминания, приём оплат', r.meetHrs + g.gChat * S * s, (r.meetHrs + g.gChat * S * s) * g.mkAdminH],
       ['Администрирование занятий', 'присутствие на каждом занятии: оплаты, отметки, закупки, атмосфера', r.lessonHrs + g.gPrep * S * s, (r.lessonHrs + g.gPrep * S * s) * g.mkAdminH],
       ['Сайт и бот с ИИ-ассистентом', 'создание и поддержка', (g.wSiteBuild + g.wBotBuild) * s + (g.wSiteSup + g.wBotSup) * S * s, (g.mkSite + g.mkBot) * s + g.mkSup * S * s],
-      ['Партнёрства и рефералка', 'поиск партнёров, реклама у них, реферальные выплаты', g.wRef * S * s, g.mkRef * S * s],
-      ['Юридические и финансовые вопросы', 'ИП, договоры, кадры, налоги, отчёты, касса, бухгалтер, расчёт делёжа', (g.wAcct * S + g.wHire) * s + g.wPartners, g.mkOffice * S * s],
+      ['Партнёрства и реферальная программа', 'поиск партнёров, реклама у них, реферальные выплаты', g.wRef * S * s, g.mkRef * S * s],
+      ['Юридические и финансовые вопросы', 'ИП, договоры, кадры, налоги, отчёты, касса, бухгалтер, расчёт распределения', (g.wAcct * S + g.wHire) * s + g.wPartners, g.mkOffice * S * s],
       ['Организация концерта', 'площадка, билеты, РАО, подрядчики, концертный день', (g.wConcert + cc.cHours * nC) * w, g.mkEvent * nC * w]
     ];
     var songsTotal = Math.round(c.songs);

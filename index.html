@@ -161,7 +161,7 @@ button.ghost{padding:5px 10px;font-size:13px;color:var(--muted)}
 
   <div class="warn" id="linkBanner" hidden style="margin-top:16px">
     <b id="linkTitle">Вы смотрите цифры, присланные по ссылке.</b>
-    <span id="linkText">Можно менять поля и смотреть, как меняется расчёт. Ваши собственные цифры при этом не затираются.</span>
+    <span id="linkText">Можно менять поля и смотреть, как меняется расчёт. Ваши собственные цифры при этом не изменяются.</span>
     <div class="actions" id="linkActions">
       <button type="button" id="keepLink">Сохранить эти цифры себе</button>
       <button type="button" id="backMine">Вернуть мои цифры</button>
@@ -259,7 +259,7 @@ button.ghost{padding:5px 10px;font-size:13px;color:var(--muted)}
         </div></li>
         <li><div class="date">26–27.11</div><div class="what">
           <p><span class="tag ip">вы</span><b>Расчётный счёт ИП, электронная подпись (УКЭП), бухгалтер или сервис.</b></p>
-          <p>Подпись для ИП выдаёт ФНС бесплатно. Попросите вести учёт по каждому коллективу отдельно и общие расходы отдельной строкой. Так прибыль «Брусники» для делёжа видна без споров.</p>
+          <p>Подпись для ИП выдаёт ФНС бесплатно. Попросите вести учёт по каждому коллективу отдельно и общие расходы отдельной строкой. Так прибыль «Брусники» для распределения видна без споров.</p>
         </div></li>
         <li><div class="date">27.11 <small>до первой оплаты</small></div><div class="what">
           <p><span class="tag ip">вы</span><b>Продамус: перевести на ИП.</b></p>
@@ -310,7 +310,7 @@ button.ghost{padding:5px 10px;font-size:13px;color:var(--muted)}
           <p><span class="tag ip">вы</span><b>Маркировка рекламы.</b> Платная реклама и посты в пабликах получают метку erid через оператора рекламных данных. В VK Рекламе маркировка встроена.</p>
         </div></li>
         <li><div class="date">до рекламы у партнёров</div><div class="what">
-          <p><span class="tag ip">вы</span><b>Договоры с партнёрами по рефералке и рекламе.</b></p>
+          <p><span class="tag ip">вы</span><b>Договоры с партнёрами по реферальной программе и рекламе.</b></p>
           <p>Агентский договор или договор оказания услуг: процент с оплаты по ссылке партнёра, как считаются продажи (метка или промокод в Продамусе), когда платите. Если партнёр компания, ИП или самозанятый, платите по счёту или чеку. Если обычный человек без статуса, вы удерживаете НДФЛ 13% и платите взносы 30%: таким лучше предложить стать самозанятыми.</p>
           <p class="where">Реклама у партнёров тоже маркируется: метку erid получает тот, кто размещает, договоритесь об этом в договоре.</p>
         </div></li>
@@ -494,11 +494,11 @@ button.ghost{padding:5px 10px;font-size:13px;color:var(--muted)}
     ['wAcct','Юридические и финансовые вопросы','ч в месяц',1,'ИП, договоры, кадры, налоги, отчёты, касса, бухгалтер'],
     ['wHire','Поиск специалистов и залов','ч за сезон',1],
     ['wConcert','Организация концерта','ч за сезон',1,'площадка, билеты, РАО, подрядчики'],
-    ['wRef','Партнёры: поиск, рефералка, реклама у них','ч в месяц',1,'договоры с партнёрами, ссылки, отчёты по выплатам'],
+    ['wRef','Партнёры: поиск, реферальная программа, реклама у них','ч в месяц',1,'договоры с партнёрами, ссылки, отчёты по выплатам'],
     ['gAds','Реклама: площадки, создание, размещение','ч в месяц',1,'для всех коллективов, и соцсети'],
     ['gChat','Переписка, запись, напоминания','ч в месяц',1,'для всех коллективов'],
     ['gPrep','Закупки, подготовка встреч и занятий','ч в месяц',1,'для всех коллективов'],
-    ['wPartners','Расчёт и отчёт для партнёров «Брусники»','ч за сезон',1,'делёж прибыли']
+    ['wPartners','Расчёт и отчёт для партнёров «Брусники»','ч за сезон',1,'распределение прибыли']
   ];
   var CONCERT_FIELDS = [
     ['tix','Продано билетов','шт на концерт',10],
@@ -649,7 +649,7 @@ button.ghost{padding:5px 10px;font-size:13px;color:var(--muted)}
       var folded = !!c.collapsed;
       html += '<div class="box coll' + (folded ? ' folded' : '') + '" data-scope="c" data-cid="' + c.id + '"><div class="coll-head">'
         + '<button type="button" class="tog" data-toggle="' + c.id + '" aria-expanded="' + (!folded) + '" aria-controls="' + c.id + '_body" title="Свернуть или развернуть">▾</button>'
-        + '<input type="text" id="' + c.id + '_name" value="' + esc(c.name) + '" data-k="name" aria-label="Название коллектива"><span class="chip' + (c.type === 'share' ? ' share' : '') + '">' + (c.type === 'share' ? 'делёж прибыли' : 'оплата за занятия') + '</span><button type="button" class="ghost" data-remove="' + c.id + '">Убрать</button>'
+        + '<input type="text" id="' + c.id + '_name" value="' + esc(c.name) + '" data-k="name" aria-label="Название коллектива"><span class="chip' + (c.type === 'share' ? ' share' : '') + '">' + (c.type === 'share' ? 'распределение прибыли' : 'оплата за занятия') + '</span><button type="button" class="ghost" data-remove="' + c.id + '">Убрать</button>'
         + '<span class="sum" id="' + c.id + '_sum">' + collSummary(c) + '</span></div>'
         + '<div class="coll-body" id="' + c.id + '_body"' + (folded ? ' hidden' : '') + '>';
       collSections(c).forEach(function(sec){
@@ -880,7 +880,7 @@ button.ghost{padding:5px 10px;font-size:13px;color:var(--muted)}
 
   function collCard(r, g, m){
     var c = r.c, name = esc(c.name || 'Без названия');
-    var chip = '<span class="chip' + (c.type === 'share' ? ' share' : '') + '">' + (c.type === 'share' ? 'делёж прибыли' : 'оплата за занятия') + '</span>';
+    var chip = '<span class="chip' + (c.type === 'share' ? ' share' : '') + '">' + (c.type === 'share' ? 'распределение прибыли' : 'оплата за занятия') + '</span>';
     if (!r.active) return '<div class="card"><div class="card-h"><h2>' + name + '</h2>' + chip + '</div><span class="status off">Не запущен: укажите число участников в его блоке</span></div>';
     var be = beOf(c.id), S = m.S, nk = 1 - g.ndfl / 100;
     var fk = 'r_' + c.id;
@@ -913,17 +913,17 @@ button.ghost{padding:5px 10px;font-size:13px;color:var(--muted)}
       html += '<div class="split"><div class="person you"><span>Вам</span><b class="' + (r.you < 0 ? 'neg' : '') + '">' + rub(r.you) + '</b><em>сезон ' + rub(r.shareYou) + ' + встречи ' + rub(r.mYou) + ', минус ваши взносы ИП</em></div>'
         + (k > 0 ? '<div class="person t"><span>Каждому руководителю-партнёру</span><b>' + rub(r.tNet) + '</b><em>встречи ' + rub(r.mTNet) + ' сразу; сдельно по актам ' + rub(r.adv.net) + '; бонус после концерта ' + rub(r.bonus * nk) + '</em></div>' : '<div class="person"></div>')
         + '<div class="person"><span>Окупается с</span><b>' + ppl(be) + '</b></div></div>';
-      html += '<span class="status ' + (r.equal && r.shareYou >= 0 ? 'ok' : 'no') + '">' + (r.equal ? 'По 33%: ' + rub(r.tNet / S) + ' в месяц каждому' : (r.shareYou >= 0 ? 'Сдельные авансы партнёров больше их 33%: вам остаётся меньше' : 'Убыток сезона: сдельную оплату партнёрам платите из своих, не хватает ' + rub(-r.shareYou))) + '</span>';
+      html += '<span class="status ' + (r.equal && r.shareYou >= 0 ? 'ok' : 'no') + '">' + (r.equal ? 'По 33%: ' + rub(r.tNet / S) + ' в месяц каждому' : (r.shareYou >= 0 ? 'Сдельные авансы партнёров больше их 33%: вам остаётся меньше' : 'Убыток сезона: сдельная оплата партнёров покрывается из ваших средств, недостаёт ' + rub(-r.shareYou))) + '</span>';
       var pool = common.concat([
         {group:'Налоги'},
         {t:'УСН', s: rub(r.baseS) + ' минус взносы за работников', v: rub(r.usnPool)},
         {t:'Взносы за руководителей-партнёров', v: rub(r.sContrib)},
         {t:'НДФЛ руководителей-партнёров', v: rub(r.sNdfl)},
-        {t:'Чистая прибыль сезона к делёжу', v: rub(r.pool), sub:true},
+        {t:'Чистая прибыль сезона к распределению', v: rub(r.pool), sub:true},
         {t:'Каждому из ' + (k + 1), s: k > 0 ? '33%: часть сдельно по ежемесячным актам, остальное бонусом после концерта' : '', v: rub(r.pool / (k + 1)), sub:true}
       ]);
       if (!r.equal) pool.push({t:'33% меньше сдельной оплаты по актам', s:'сдельная оплата по договору платится всё равно, поэтому вам остаётся меньше', v: rub(r.shareYou)});
-      pool.push({group:'Платные встречи набора: отдельный делёж'},
+      pool.push({group:'Платные встречи набора: отдельное распределение'},
         {t:'Билеты на встречи', s: c.meetings + ' встреч × ' + c.mGuests + ' гостей × ' + rub(c.mPrice) + '; записываются ' + pct(r.guests > 0 ? r.n / r.guests * 100 : 0) + '% гостей', v: rub(r.meetInc)},
         {t:'Аренда зала на встречах', s: hrs(r.meetHrs) + ' × ' + rub(c.mRate), v: '−' + rub(r.mRent)},
         {t:'Чай и печенье', s: r.guests + ' гостей × ' + rub(c.mTreats), v: '−' + rub(r.treats)},
@@ -937,7 +937,7 @@ button.ghost{padding:5px 10px;font-size:13px;color:var(--muted)}
         {t:'Ваши взносы ИП за себя', s:'часть по доходам коллектива', v: '−' + rub(r.ipS)},
         {t:'Уменьшение УСН за счёт ваших взносов', v: '+' + rub(r.usnBenefit)},
         {t:'Вам на руки', v: rub(r.you), sub:true});
-      html += det(c.id + '_pool', 'Делёж прибыли: все доходы и расходы', '<div class="tbl"><table>' + rows2(pool) + '</table></div>');
+      html += det(c.id + '_pool', 'Распределение прибыли: все доходы и расходы', '<div class="tbl"><table>' + rows2(pool) + '</table></div>');
     } else {
       html += '<div class="split"><div class="person you"><span>Ваша прибыль</span><b class="' + (r.you < 0 ? 'neg' : '') + '">' + rub(r.you) + '</b><em>' + rub(r.you / S) + ' в месяц</em></div>'
         + '<div class="person t"><span>Руководителям на руки</span><b>' + rub(r.team.net) + '</b><em>с налогами вам стоит ' + rub(r.team.cost) + '</em></div>'
@@ -1040,7 +1040,7 @@ button.ghost{padding:5px 10px;font-size:13px;color:var(--muted)}
       {t:'Поиск специалистов и залов', h:g.wHire},
       {t:'Организация концерта', h:g.wConcert},
       {t:'Концертный день', h:m.totalN > 0 ? cc.cHours : 0},
-      {t:'Партнёры: поиск, рефералка, реклама у них', h:g.wRef * S},
+      {t:'Партнёры: поиск, реферальная программа, реклама у них', h:g.wRef * S},
       {t:'Расчёт и отчёт для партнёров «Брусники»', h:g.wPartners},
       {t:'Реклама: площадки, создание, размещение', h:g.gAds * S},
       {t:'Переписка, запись, напоминания', h:g.gChat * S},
@@ -1056,7 +1056,7 @@ button.ghost{padding:5px 10px;font-size:13px;color:var(--muted)}
       {t:'Бот с ИИ-ассистентом под ключ', v: rub(g.mkBot)},
       {t:'Поддержка сайтов и бота', s: rub(g.mkSup) + ' × ' + pct(S) + ' мес', v: rub(g.mkSup * S)},
       {t:'Таргет и соцсети', s: rub(g.mkSmm) + ' × ' + pct(S) + ' мес', v: rub(g.mkSmm * S)},
-      {t:'Партнёрский маркетинг и рефералка', s: rub(g.mkRef) + ' × ' + pct(S) + ' мес', v: rub(g.mkRef * S)},
+      {t:'Партнёрский маркетинг и реферальная программа', s: rub(g.mkRef) + ' × ' + pct(S) + ' мес', v: rub(g.mkRef * S)},
       {t:'Юридические и финансовые вопросы', s: rub(g.mkOffice) + ' × ' + pct(S) + ' мес', v: rub(g.mkOffice * S)},
       {t:'Администратор', s: hrs(adminHrs) + ' × ' + rub(g.mkAdminH) + ': занятия, встречи, переписка, закупки, концерт', v: rub(adminHrs * g.mkAdminH)},
       {t:'Организация концерта', v: rub(m.totalN > 0 ? g.mkEvent : 0)}
@@ -1070,7 +1070,7 @@ button.ghost{padding:5px 10px;font-size:13px;color:var(--muted)}
       + '<div class="person"><span>Если заказать на стороне</span><b>' + rub(market) + '</b><em>по рыночным ценам из полей</em></div>'
       + '<div class="person you"><span>Фактически выходит</span><b class="' + (m.you < 0 ? 'neg' : '') + '">' + (m.meAll > 0 ? rub(m.you / m.meAll) : '—') + '</b><em>ваша прибыль за час работы</em></div>'
       + '</div>'
-      + '<p class="hint" style="margin:10px 0 0;font-size:13px;color:var(--muted)">В расходы ваша работа не входит. Эти цифры нужны, чтобы решить, как учитывать её при делёже.</p>'
+      + '<p class="hint" style="margin:10px 0 0;font-size:13px;color:var(--muted)">В расходы ваша работа не входит. Эти цифры нужны, чтобы решить, как учитывать её при распределении.</p>'
       + det('me_work', 'Из чего складываются часы', '<div class="tbl"><table>' + rows4(meRows) + '</table></div>')
       + det('me_market', 'Сколько стоило бы на стороне', '<div class="tbl"><table>' + rows2(mkRows) + '</table></div>') + '</div>';
 
@@ -1174,7 +1174,7 @@ button.ghost{padding:5px 10px;font-size:13px;color:var(--muted)}
       if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(done, manual); else manual();
     });
   }
-  document.getElementById('shareBtn').addEventListener('click', function(){ shareLink('', 'Ссылка скопирована. По ней откроется полная смета ровно с этими цифрами, чужие цифры не затрутся.'); });
+  document.getElementById('shareBtn').addEventListener('click', function(){ shareLink('', 'Ссылка скопирована. По ней откроется полная смета ровно с этими цифрами, чужие цифры не изменятся.'); });
   document.getElementById('shareBtnP').addEventListener('click', function(){ shareLink('partners.html', 'Ссылка на страницу для партнёров скопирована. Там только «Брусника»: деньги сезона, встречи и кто что делает, с вашими цифрами.'); });
   (function(){
     var mm = /^#d=(.+)$/.exec(location.hash || '');
