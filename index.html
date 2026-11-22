@@ -666,7 +666,7 @@ button.ghost{padding:5px 10px;font-size:13px;color:var(--muted)}
     var holder = t.closest('[data-scope]'); if (!holder) return;
     var val;
     if (t.type === 'text' || t.tagName === 'SELECT') val = t.value;
-    else { var x = parseFloat(String(t.value).replace(',', '.')); val = isFinite(x) && x >= 0 ? x : 0; }
+    else { var x = parseFloat(String(t.value).replace(',', '.')); val = isFinite(x) && x >= 0 ? x : 0; if (k === 'songs' || k === 'n' || k === 'meetings' || k === 'lessons') val = Math.round(val); }
     var sc = holder.dataset.scope;
     if (sc === 'g') state.g[k] = val;
     else if (sc === 'concert') state.concert[k] = val;

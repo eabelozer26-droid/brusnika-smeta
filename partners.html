@@ -413,15 +413,16 @@ tr.group td{padding-top:14px;font-size:12px;letter-spacing:.06em;text-transform:
       ['Юридические и финансовые вопросы', 'ИП, договоры, кадры, налоги, отчёты, касса, бухгалтер, расчёт делёжа', (g.wAcct * S + g.wHire) * s + g.wPartners, g.mkOffice * S * s],
       ['Организация концерта', 'площадка, билеты, РАО, подрядчики, концертный день', (g.wConcert + cc.cHours * nC) * w, g.mkEvent * nC * w]
     ];
-    var songsEach = k > 0 ? c.songs / k : 0;
-    var par = [
+    var songsTotal = Math.round(c.songs);
+    function songsOf(i){ return k > 0 ? Math.floor(songsTotal / k) + (i <= songsTotal % k ? 1 : 0) : 0; }
+    function parItems(i){ var se = songsOf(i); return [
       ['Ведение занятий', Math.round(r.lessons) + ' занятий по ' + pct(c.lessonHours) + ' ч', r.lessonHrs, r.lessonHrs * g.mkTeachH],
       ['Встречи набора', c.meetings + ' встреч: разбор двух песен, знакомство с голосами', r.meetHrs, r.meetHrs * g.mkTeachH],
-      ['Аранжировка и запись разбора', pct(songsEach) + ' песен: половина репертуара сезона', songsEach * g.mkSongHours, songsEach * g.mkSong],
+      ['Аранжировка и запись разбора', se + ' ' + plural(se, ['песня','песни','песен']) + ' из ' + songsTotal + ' в репертуаре сезона', se * g.mkSongHours, se * g.mkSong],
       ['Концерт', 'подготовка и выступление', cc.cHours, cc.cHours * g.mkTeachH]
-    ];
+    ]; }
     function sum(a, i){ return a.reduce(function(t, x){ return t + x[i]; }, 0); }
-    var meH = sum(me, 2), meV = sum(me, 3), pH = sum(par, 2), pV = sum(par, 3);
+    var meH = sum(me, 2), meV = sum(me, 3);
     var meGets = r.shareYou + r.mYou, pGets = r.tNet;
     function personCard(cls, name, role, items, H, V, gets){
       return '<div class="person ' + cls + '"><div><h3>' + name + '</h3><div class="role">' + role + '</div></div>'
@@ -429,17 +430,18 @@ tr.group td{padding-top:14px;font-size:12px;letter-spacing:.06em;text-transform:
         + '<div class="tot"><span>часов<b>' + hrs(H) + '</b></span><span>в рынке<b>' + rub(V) + '</b></span><span>получает<b>' + rub(gets) + '</b></span></div></div>';
     }
     var cards = personCard('org', 'Организатор', 'ИП: маркетинг, продажи, администрирование, юридические и финансовые вопросы', me, meH, meV, meGets);
-    for (var i = 1; i <= k; i++) cards += personCard('par', 'Руководитель-партнёр ' + i, 'творческая часть: занятия, встречи, аранжировки, концерт', par, pH, pV, pGets);
+    var pVs = [];
+    for (var i = 1; i <= k; i++){ var pi = parItems(i), pv = sum(pi, 3); pVs.push(pv); cards += personCard('par', 'Руководитель-партнёр ' + i, 'творческая часть: занятия, встречи, аранжировки, концерт', pi, sum(pi, 2), pv, pGets); }
     document.getElementById('people').innerHTML = cards;
 
-    var max = Math.max(meV, pV, meGets, pGets, 1);
+    var max = Math.max.apply(null, [meV, meGets, pGets, 1].concat(pVs));
     function bar(name, cls, v, gets){
       return '<div class="bar-row"><div class="nm">' + name + '</div><div class="bar-track">'
         + '<div class="bar mk' + cls + '" style="width:' + (v / max * 100).toFixed(1) + '%"></div><div class="bar-lab">в рынке ' + rub(v) + '</div>'
         + '<div class="bar gt" style="width:' + (Math.max(0, gets) / max * 100).toFixed(1) + '%"></div><div class="bar-lab">получает ' + rub(gets) + '</div></div></div>';
     }
     var bars = bar('Организатор', '', meV, meGets);
-    for (var j = 1; j <= k; j++) bars += bar('Партнёр ' + j, ' p', pV, pGets);
+    for (var j = 1; j <= k; j++) bars += bar('Партнёр ' + j, ' p', pVs[j - 1], pGets);
     document.getElementById('bars').innerHTML = bars;
 
     // Деньги сезона
