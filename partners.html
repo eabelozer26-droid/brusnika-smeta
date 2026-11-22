@@ -156,7 +156,7 @@ tr.group td{padding-top:14px;font-size:12px;letter-spacing:.06em;text-transform:
   var G_DEF = {season:3, prep:1, tax:6, ipYear:57390, fee:3.5, contrib:30, injury:0.2, ndfl:13, netMode:'net',
     acct:10000, site:3000, bot:5000, otherServ:1000,
     myRate:1000, wSiteBuild:40, wSiteSup:4, wBotBuild:30, wBotSup:4, wAcct:12, wHire:10, wConcert:25, wPartners:4, gAds:8, gChat:8, gPrep:4,
-    mkSite:30000, mkBot:50000, mkSup:5000, mkSmm:20000, mkOffice:10000, mkAdminH:400, mkEvent:40000, wRef:8, mkRef:10000, mkTeachH:2500, mkSong:1000, mkSongHours:3, mkVer:3};
+    mkSite:30000, mkBot:50000, mkSup:5000, mkSmm:20000, mkOffice:10000, mkAdminH:400, mkEvent:40000, wRef:8, mkRef:10000, mkTeachH:2500, mkSong:1000, mkSongHours:3, mkVer:3, songsVer:1};
   var MARKET_FIELDS = [
     ['mkSite','Сайты под ключ','₽ разово',1000,'лендинг у фрилансера: обычно 10–40 тыс. ₽'],
     ['mkBot','Бот с ИИ-ассистентом под ключ','₽ разово',1000,'готовый бот с настройкой: от 30–50 тыс. ₽'],
@@ -194,12 +194,13 @@ tr.group td{padding-top:14px;font-size:12px;letter-spacing:.06em;text-transform:
     try {
       var s = JSON.parse(localStorage.getItem(KEY) || 'null');
       if (s && s.g && s.concert && Array.isArray(s.list)){
-        var oldMk = s.g.mkVer;
+        var oldMk = s.g.mkVer, oldSongs = s.g.songsVer;
         s.g = Object.assign({}, G_DEF, s.g); s.concert = Object.assign({}, C_DEF, s.concert);
         s.list = s.list.filter(function(c){ return c && c.id && (c.type === 'share' || c.type === 'paid'); }).map(function(c){ return Object.assign({}, BASE, c); });
         s.list.forEach(function(c){ if (c.type === 'share' && c.name === 'Хор') c.name = 'Брусника'; if (c.type === 'paid' && (!c.kind || c.kind === 'other')){ if (/^Танцевальн/.test(c.name || '')) c.kind = 'dance'; else if (/^Инструментальн/.test(c.name || '')) c.kind = 'ensemble'; } });
         s.ui = s.ui && typeof s.ui === 'object' ? s.ui : {};
         if (s.concert.photo === 8000 && s.concert.video === 15000){ s.concert.photo = 10000; s.concert.video = 10000; }
+        if (!(oldSongs >= 1)) s.list.forEach(function(c){ if (c.type === 'share' || c.kind === 'choir') c.songs = 15; });
         if (!(oldMk >= 3)) ['mkSite','mkBot','mkSup','mkSmm','mkOffice','mkAdminH','mkRef','mkEvent','mkTeachH','mkSong','mkSongHours','mkVer'].forEach(function(k){ s.g[k] = G_DEF[k]; });
         return s;
       }
