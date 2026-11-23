@@ -107,15 +107,23 @@ tr.hl td{font-weight:700;background:var(--berry-soft)}
 .card.folded .chead{margin:0}
 .fold-all{display:flex;gap:8px;flex-wrap:wrap}
 .fold-all button{margin:0}
+.share-actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:12px}
+.share-actions button{margin:0}
+.share-actions .primary{background:var(--berry);border-color:var(--berry);color:white}
+.share-actions .primary:disabled{opacity:.7}
+.share-result{margin-top:12px}
+.share-result label{display:block;font-weight:650}
+.share-result input{box-sizing:border-box;width:100%;margin:6px 0 0;padding:8px;border:1px solid var(--line);border-radius:6px;font:inherit}
+.share-result p,.share-status:not(:empty){margin:6px 0 0}
 [hidden]{display:none!important}
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
-    <div class="eyebrow">Хор «Малина» · сезон 18 января – 17 апреля 2027</div>
+    <div class="eyebrow">Хор «Малина» · сезон 17 января – 18 апреля 2027</div>
     <h1>Малина: расчёт сезона</h1>
-    <p>Прибыль хора распределяется <span data-x="on">на троих</span> по <span data-x="share">33%</span>: организатор и <span data-x="partners">два руководителя-партнёра</span>. Из доходов вычитаются только объективные расходы и налоги. Ниже деньги сезона, платные встречи набора и кто что делает.</p>
+    <p>Прибыль хора распределяется <span data-x="on">на троих</span> по <span data-x="share">33%</span>: организатор и <span data-x="partners">два художественных руководителя</span>. Из доходов вычитаются только объективные расходы и налоги. Ниже деньги сезона, платные встречи набора и кто что делает.</p>
   </header>
 
   <div class="fold-all"><button type="button" id="foldAll">Свернуть все блоки</button><button type="button" id="unfoldAll">Развернуть все</button></div>
@@ -127,15 +135,24 @@ tr.hl td{font-weight:700;background:var(--berry-soft)}
       <div class="side" id="eachSide"></div>
     </div>
     <span class="pill" id="pill"></span>
-    <p class="note" style="margin:10px 0 0">Цикл — <span data-x="Sm">4 месяца</span>: <span data-x="Pm">месяц</span> набора с платными встречами и <span data-x="Mm">3 месяца</span> занятий, которые заканчиваются общим концертом. Все суммы на странице считаются за весь цикл.</p>
+    <p class="note" style="margin:10px 0 0">Цикл — <span data-x="Sm">4 месяца</span>: <span data-x="Pm">месяц</span> набора с платными встречами и <span data-x="Mm">3 месяца</span> репетиций с концертом. Если сумма дана в месяц, это указано рядом с ней.</p>
   </div>
 
   <div class="card">
     <h2>Подробный расчёт хора</h2>
     <p class="note" style="margin:-6px 0 12px">Калькулятор: меняйте любую цифру в полях, и все суммы на странице пересчитываются сразу. Справа сумма строки за цикл, минус — расход.</p>
     <div class="tbl"><table class="calc" id="dCalc"></table></div>
-    <button type="button" id="resetTry" style="margin-top:12px">Вернуть цифры из расчёта</button>
-    <button type="button" id="toPlan" style="margin-top:12px">План проекта с этими цифрами</button>
+    <div class="share-actions">
+      <button type="button" class="primary" id="shareCalc">Зафиксировать значения и скопировать ссылку</button>
+      <button type="button" id="resetTry">Вернуть цифры из расчёта</button>
+      <button type="button" id="toPlan">План проекта с этими цифрами</button>
+    </div>
+    <p class="note share-status" id="shareStatus" role="status" aria-live="polite"></p>
+    <div class="share-result" id="shareResult" hidden>
+      <label for="shareUrl">Ссылка с выбранными значениями</label>
+      <input id="shareUrl" type="url" readonly spellcheck="false" aria-describedby="shareHint">
+      <p class="note" id="shareHint">При открытии ссылки подставятся значения, зафиксированные в момент её создания.</p>
+    </div>
   </div>
 
   <div class="card">
@@ -159,23 +176,37 @@ tr.hl td{font-weight:700;background:var(--berry-soft)}
     <h2>Перспективы проекта</h2>
     <p class="note" style="margin:-6px 0 12px">Как меняется результат при другом наборе и продажах билетов. Остальные цифры берутся из полей выше.</p>
     <div class="two-in">
-      <div><h3>Сколько участников</h3><div class="tbl"><table id="pN"></table></div></div>
-      <div><h3>Сколько билетов на концерт</h3><div class="tbl"><table id="pTix"></table></div></div>
+      <div>
+        <h3>Сколько участников</h3>
+        <p class="note">Доход и прибыль хора показаны за цикл. Средняя доля на человека — за месяц цикла.</p>
+        <div class="tbl"><table id="pN"></table></div>
+      </div>
+      <div>
+        <h3>Сколько билетов на концерт</h3>
+        <p class="note">Здесь только выручка от билетов и итог концерта после расходов.</p>
+        <div class="tbl"><table id="pTix"></table></div>
+      </div>
     </div>
     <h3 style="margin-top:18px">Два хора «Малины» на общей инфраструктуре</h3>
     <div class="tbl"><table id="pTwo"></table></div>
   </div>
 
-  <div class="two">
-    <div class="card">
-      <h2>Деньги сезона</h2>
-      <div class="tbl"><table id="season"></table></div>
-    </div>
-    <div class="card">
-      <h2>Платные встречи набора</h2>
-      <p class="note" style="margin:-6px 0 10px">Считаются отдельно и распределяются <span data-x="on">на троих</span> сразу после встреч. Реклама из этих денег не вычитается.</p>
-      <div class="tbl"><table id="meet"></table></div>
-    </div>
+  <div class="card">
+    <h2>Сверка доходов и расходов</h2>
+    <details class="more">
+      <summary>Показать сезон и встречи набора отдельно</summary>
+      <div class="two">
+        <div>
+          <h3>Деньги сезона</h3>
+          <div class="tbl"><table id="season"></table></div>
+        </div>
+        <div>
+          <h3>Платные встречи набора</h3>
+          <p class="note">Считаются отдельно и распределяются <span data-x="on">на троих</span> сразу после встреч. Реклама из этих денег не вычитается.</p>
+          <div class="tbl"><table id="meet"></table></div>
+        </div>
+      </div>
+    </details>
   </div>
 
   <div class="card">
@@ -446,7 +477,7 @@ tr.hl td{font-weight:700;background:var(--berry-soft)}
   function render(){
     var g = state.g, cc = state.concert, c = bru();
     if (!c){ document.getElementById('each').textContent = '—'; return; }
-    Array.prototype.forEach.call(document.querySelectorAll('input[data-k]'), function(el){ var src = el.dataset.t === 'cc' ? cc : el.dataset.t === 'g' ? g : c; if (document.activeElement !== el) el.value = +(+src[el.dataset.k] || 0).toFixed(2); });
+    Array.prototype.forEach.call(document.querySelectorAll('input[data-k]'), function(el){ var src = el.dataset.t === 'cc' ? cc : el.dataset.t === 'g' ? g : c; if (document.activeElement !== el) el.value = +src[el.dataset.k] || 0; });
     var m = model(state), r = m.res.filter(function(x){ return x.c.id === c.id; })[0];
     if (!r || !r.active){
       document.getElementById('each').textContent = '—';
@@ -498,7 +529,7 @@ tr.hl td{font-weight:700;background:var(--berry-soft)}
     }
     var cards = personCard('org', 'Организатор', 'ИП: маркетинг, продажи, администрирование, юридические и финансовые вопросы', me, meH, meV, meGets);
     var pVs = [];
-    for (var i = 1; i <= k; i++){ var pi = parItems(i), pv = sum(pi, 3); pVs.push(pv); cards += personCard('par', 'Руководитель-партнёр ' + i, 'творческая часть: занятия, встречи, аранжировки, концерт', pi, sum(pi, 2), pv, pGets); }
+    for (var i = 1; i <= k; i++){ var pi = parItems(i), pv = sum(pi, 3); pVs.push(pv); cards += personCard('par', 'Художественный руководитель ' + i, 'творческая часть: репетиции, встречи, аранжировки, концерт', pi, sum(pi, 2), pv, pGets); }
     document.getElementById('people').innerHTML = cards;
 
     var max = Math.max.apply(null, [meV, meGets, pGets, 1].concat(pVs));
@@ -508,7 +539,7 @@ tr.hl td{font-weight:700;background:var(--berry-soft)}
         + '<div class="bar gt" style="width:' + (Math.max(0, gets) / max * 100).toFixed(1) + '%"></div><div class="bar-lab">получает ' + rub(gets) + '</div></div></div>';
     }
     var bars = bar('Организатор', '', meV, meGets);
-    for (var j = 1; j <= k; j++) bars += bar('Партнёр ' + j, ' p', pVs[j - 1], pGets);
+    for (var j = 1; j <= k; j++) bars += bar('Художественный руководитель ' + j, ' p', pVs[j - 1], pGets);
     document.getElementById('bars').innerHTML = bars;
 
     // Деньги сезона
@@ -559,17 +590,18 @@ tr.hl td{font-weight:700;background:var(--berry-soft)}
     // Перспективы
     function each3(st){ var mm = model(st), rr = mm.res.filter(function(x){ return x.c.id === c.id; })[0]; if (!rr || !rr.active) return null; return {rr:rr, mm:mm, each:(rr.pool + rr.mPool) / (rr.k + 1)}; }
     function clone(){ return JSON.parse(JSON.stringify(state)); }
-    var head3 = '<thead><tr><th>Вариант</th><th class="r">Доход</th><th class="r">Прибыль к распределению</th><th class="r">Каждому</th></tr></thead>';
+    var head3 = '<thead><tr><th scope="col">Участников в хоре</th><th scope="col" class="r">Доход хора за цикл</th><th scope="col" class="r">Прибыль за цикл</th><th scope="col" class="r">Средняя доля на человека в месяц</th></tr></thead>';
     var rowsN = [Math.max(1, beOf(c.id)), Math.round(r.n / 2), g.scS1, g.scS2, g.scS3].concat([r.n]).filter(function(v){ return v > 0; }).filter(function(v, i, a){ return a.indexOf(v) === i; }).sort(function(a, b){ return a - b; });
     document.getElementById('pN').innerHTML = head3 + '<tbody>' + rowsN.map(function(nv){
       var st = clone(); st.list.forEach(function(x){ if (x.id === c.id){ x.n = nv; } });
       var e = each3(st); if (!e) return '';
-      return '<tr' + (nv === r.n ? ' class="hl"' : '') + '><td>' + ppl(nv) + '</td><td class="r">' + rub(e.rr.Is + e.rr.meetInc) + '</td><td class="r">' + rub(e.rr.pool + e.rr.mPool) + '</td><td class="r">' + rub(e.each) + '</td></tr>';
+      return '<tr' + (nv === r.n ? ' class="hl"' : '') + '><td>' + ppl(nv) + '</td><td class="r">' + rub(e.rr.Is + e.rr.meetInc) + '</td><td class="r">' + rub(e.rr.pool + e.rr.mPool) + '</td><td class="r">' + rub(e.each / e.mm.S) + '</td></tr>';
     }).join('') + '</tbody>';
     var tStep = (g.scTMax - g.scTMin) / 3, rowsT2 = [g.scTMin, g.scTMin + tStep, g.scTMin + 2 * tStep, g.scTMax].map(function(v){ return Math.round(v / 10) * 10; }).concat([cc.tix]).filter(function(v, i, a){ return a.indexOf(v) === i; }).sort(function(a, b){ return a - b; });
-    document.getElementById('pTix').innerHTML = '<thead><tr><th>Билетов</th><th class="r">Итог концерта</th><th class="r">Каждому ' + X.of + '</th></tr></thead><tbody>' + rowsT2.map(function(tv){
-      var st = clone(); st.concert.tix = tv; var e = each3(st); if (!e) return '';
-      return '<tr' + (tv === cc.tix ? ' class="hl"' : '') + '><td>' + tv + '</td><td class="r">' + rub(e.mm.concert.net) + '</td><td class="r">' + rub(e.each) + '</td></tr>';
+    var concertScope = nC > 1 ? ' всех концертов' : ' концерта';
+    document.getElementById('pTix').innerHTML = '<thead><tr><th scope="col">Билетов на концерт</th><th scope="col" class="r">Выручка' + concertScope + '</th><th scope="col" class="r">Итог' + concertScope + ' после расходов</th></tr></thead><tbody>' + rowsT2.map(function(tv){
+      var st = clone(); st.concert.tix = tv; var concert = model(st).concert;
+      return '<tr' + (tv === cc.tix ? ' class="hl"' : '') + '><td>' + tv + '</td><td class="r">' + rub(concert.box) + '</td><td class="r">' + rub(concert.net) + '</td></tr>';
     }).join('') + '</tbody>';
     var conv = Math.max(1, g.scConv) / 100, show = Math.max(1, g.scShow) / 100, mMin = Math.max(1, Math.min(g.scMMin, g.scMMax)), mMax = Math.max(mMin, g.scMMax);
     var scen = [g.scS1, g.scS2, g.scS3].map(function(nv){
@@ -582,16 +614,17 @@ tr.hl td{font-weight:700;background:var(--berry-soft)}
     function sRow(t, f, sub){ return '<tr' + (sub ? ' class="hl"' : '') + '><td>' + t + '</td>' + scen.map(function(x){ return '<td class="r">' + f(x) + '</td>'; }).join('') + '</tr>'; }
     document.getElementById('scNote').textContent = 'Три размера одного хора: ' + [g.scS1, g.scS2, g.scS3].join(', ') + ' участников. Встреч набора от ' + mMin + ' до ' + mMax + ', на встречу обычно ' + g.scGuests + ' гостей, не больше ' + g.scGMax + '. В хор записываются ' + pct(g.scConv) + '% пришедших, приходят ' + pct(g.scShow) + '% записавшихся, запись через рекламу стоит ' + rub(g.scCpl) + ', на рекламу от ' + rub(Math.min(g.scAdsMin, g.scAdsMax)) + ' до ' + rub(Math.max(g.scAdsMin, g.scAdsMax)) + ', остальные записи за счёт органического продвижения. На концерт ' + pct(g.scTpp) + ' ' + (g.scTpp % 1 ? 'билета' : plural(g.scTpp, ['билет','билета','билетов'])) + ' на участника, от ' + g.scTMin + ' до ' + g.scTMax + '. Остальные цифры из калькулятора. Для большого хора проверьте цену зала.';
     document.getElementById('pScen').innerHTML = '<thead><tr><th>За цикл (' + pct(S) + ' мес.)</th>' + scen.map(function(x){ return '<th class="r">' + x.n + ' участников</th>'; }).join('') + '</tr></thead><tbody>'
+      + sRow('Набрано в хор, человек', function(x){ return String(x.n); })
       + sRow('Записей на встречи', function(x){ return String(x.regs); })
       + sRow('Гостей на встречах', function(x){ return String(x.guests); })
       + sRow('Встреч набора', function(x){ return x.meetings + ' по ' + x.mGuests + ' гостей' + (x.mGuests > g.scGMax ? ' (больше ' + g.scGMax + ': нужен зал больше или встреча сверх ' + mMax + ')' : ''); })
       + sRow('Реклама на набор', function(x){ return rub(x.ads); })
       + sRow('Билетов на концерт', function(x){ return String(x.tix); })
-      + sRow('Доходы', function(x){ return rub(x.e.rr.Is + x.e.rr.meetInc); })
-      + sRow('Расходы и налоги', function(x){ return rub(x.e.rr.Is + x.e.rr.meetInc - x.e.rr.pool - x.e.rr.mPool); })
-      + sRow('Прибыль к распределению', function(x){ return rub(x.e.rr.pool + x.e.rr.mPool); })
-      + sRow('Каждому ' + X.of, function(x){ return rub(x.e.each); }, true)
-      + sRow('В среднем в месяц', function(x){ return rub(x.e.each / x.e.mm.S); })
+      + sRow('Доход хора за цикл', function(x){ return x.e ? rub(x.e.rr.Is + x.e.rr.meetInc) : '—'; })
+      + sRow('Расходы и налоги за цикл', function(x){ return x.e ? rub(x.e.rr.Is + x.e.rr.meetInc - x.e.rr.pool - x.e.rr.mPool) : '—'; })
+      + sRow('Прибыль к распределению за цикл', function(x){ return x.e ? rub(x.e.rr.pool + x.e.rr.mPool) : '—'; })
+      + sRow('Средняя доля на человека за цикл', function(x){ return x.e ? rub(x.e.each) : '—'; }, true)
+      + sRow('Средняя доля на человека в месяц', function(x){ return x.e ? rub(x.e.each / x.e.mm.S) : '—'; })
       + '</tbody>';
 
     var st2 = clone(); var c2 = JSON.parse(JSON.stringify(c)); c2.id = c.id + '_2'; c2.name = 'Малина 2'; st2.list.push(c2);
@@ -613,7 +646,7 @@ tr.hl td{font-weight:700;background:var(--berry-soft)}
   }
 
   function ofWord(n){ return {2:'двоих', 3:'троих', 4:'четверых', 5:'пятерых', 6:'шестерых'}[n] || (n + ' человек'); }
-  function partnersWord(k){ return {1:'один руководитель-партнёр', 2:'два руководителя-партнёра', 3:'три руководителя-партнёра', 4:'четыре руководителя-партнёра'}[k] || (k + ' руководителей-партнёров'); }
+  function partnersWord(k){ return {1:'один художественный руководитель', 2:'два художественных руководителя', 3:'три художественных руководителя', 4:'четыре художественных руководителя'}[k] || (k + ' художественных руководителей'); }
   var INT_KEYS = ['n','meetings','mGuests','lessons','musicians','tix','musReh','instrTimes','songs','partners','scS1','scS2','scS3','scMMin','scMMax','scGuests','scGMax','scTMin','scTMax','scAdsMin','scAdsMax'];
   function minus(x){ return (x > 0.5 ? '−' : '') + rub(x); }
   function cRow(t, k, u, st, hint){ return {t:t, src:'cc', k:k, u:u, st:st, s:hint, v: function(x){ return minus(x.cc[k] * x.nC); }}; }
@@ -640,10 +673,10 @@ tr.hl td{font-weight:700;background:var(--berry-soft)}
     {t:'Расходники на старте', src:'c', k:'startup', u:'₽', st:500, v: function(x){ return minus(x.c.startup); }},
     {t:'Открытые вечера и флешмобы', src:'c', k:'openEv', u:'₽', st:500, v: function(x){ return minus(x.c.openEv || 0); }},
     {t:'Фото- и видеосессия участников', src:'c', k:'photoS', u:'₽', st:500, s:'на 2–3-й репетиции', v: function(x){ return minus(x.c.photoS || 0); }},
-    {group:'Занятия'},
-    {t:'Занятий за сезон', src:'c', k:'lessons', u:'шт', st:1},
-    {t:'Длительность занятия', src:'c', k:'lessonHours', u:'ч', st:0.25},
-    {t:'Аренда зала на занятиях', src:'c', k:'rate', u:'₽ в час', st:100, v: function(x){ return minus(x.r.rent - x.r.mRent); }},
+    {group:'Репетиции сезона и музыканты'},
+    {t:'Репетиций за сезон', src:'c', k:'lessons', u:'шт', st:1},
+    {t:'Длительность репетиции', src:'c', k:'lessonHours', u:'ч', st:0.25},
+    {t:'Аренда зала на репетициях', src:'c', k:'rate', u:'₽ в час', st:100, v: function(x){ return minus(x.r.rent - x.r.mRent); }},
     {t:'Музыкантов', src:'c', k:'musicians', u:'чел', st:1},
     {t:'Репетиций с музыкантами', src:'c', k:'musReh', u:'шт', st:1},
     {t:'Оплата музыканту за репетицию', src:'c', k:'musRehFee', u:'₽', st:500},
@@ -651,8 +684,8 @@ tr.hl td{font-weight:700;background:var(--berry-soft)}
     {t:'Аренда инструментов, раз', src:'c', k:'instrTimes', u:'раз', st:1},
     {t:'Аренда инструментов за раз', src:'c', k:'instrPrice', u:'₽', st:100},
     {t:'Доставка инструментов за раз', src:'c', k:'instrDel', u:'₽', st:100, v: function(x){ return minus(x.r.instr); }},
-    {group:'Партнёры: сдельный аванс в счёт доли'},
-    {t:'Руководителей-партнёров', src:'c', k:'partners', u:'чел', st:1},
+    {group:'Художественные руководители: сдельный аванс в счёт доли'},
+    {t:'Художественных руководителей', src:'c', k:'partners', u:'чел', st:1},
     {t:'Расценка за занятие', src:'c', k:'lessonRate', u:'₽', st:100},
     {t:'Расценка за концерт', src:'c', k:'concertRate', u:'₽', st:100},
     {t:'Новых песен за сезон', src:'c', k:'songs', u:'шт', st:1},
@@ -761,17 +794,80 @@ tr.hl td{font-weight:700;background:var(--berry-soft)}
       var x = parseFloat(String(el.value).replace(',', '.')); var c = bru(); if (!c) return;
       var v = isFinite(x) && x >= 0 ? x : 0;
       if (INT_KEYS.indexOf(el.dataset.k) >= 0) v = Math.round(v);
-      (el.dataset.t === 'cc' ? state.concert : el.dataset.t === 'g' ? state.g : c)[el.dataset.k] = v; render();
+      (el.dataset.t === 'cc' ? state.concert : el.dataset.t === 'g' ? state.g : c)[el.dataset.k] = v;
+      if (!shareResult.hidden) {
+        shareResult.hidden = true;
+        shareStatus.textContent = 'Значения изменились. Зафиксируйте их снова, чтобы получить новую ссылку.';
+      }
+      render();
     });
   });
+  var shareButton = document.getElementById('shareCalc');
+  var shareStatus = document.getElementById('shareStatus');
+  var shareResult = document.getElementById('shareResult');
+  var shareUrl = document.getElementById('shareUrl');
+  var resetTry = document.getElementById('resetTry');
+  shareUrl.addEventListener('focus', function(){ shareUrl.select(); });
+  shareButton.addEventListener('click', function(){
+    var frozen = JSON.parse(JSON.stringify(state));
+    shareButton.disabled = true;
+    shareStatus.textContent = 'Готовим ссылку…';
+    Promise.resolve().then(function(){
+      return encodeState(frozen);
+    }).catch(function(){
+      var compatible = JSON.parse(JSON.stringify(frozen));
+      delete compatible.ui;
+      return 'j' + b64u(new TextEncoder().encode(JSON.stringify(compatible)));
+    }).then(function(code){
+      var hash = '#d=' + code;
+      var url = 'https://eabelozer26-droid.github.io/malina-smeta/partners.html' + hash;
+      saved = frozen;
+      resetTry.textContent = 'Вернуть зафиксированные значения';
+      try { history.replaceState(history.state, '', hash); } catch(e){}
+      shareUrl.value = url;
+      shareResult.hidden = false;
+      function manual(){
+        shareStatus.textContent = 'Значения зафиксированы. Скопируйте ссылку из поля ниже.';
+        shareUrl.focus();
+        shareUrl.select();
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText){
+        return navigator.clipboard.writeText(url).then(function(){
+          shareStatus.textContent = 'Значения зафиксированы. Ссылка скопирована — её можно отправить партнёрам.';
+        }, manual);
+      }
+      manual();
+    }).catch(function(){
+      shareStatus.textContent = 'Не получилось создать ссылку. Попробуйте ещё раз.';
+    }).then(function(){ shareButton.disabled = false; });
+  });
   document.getElementById('toPlan').addEventListener('click', function(){ encodeState(state).then(function(code){ location.href = 'plan.html#d=' + code; }).catch(function(){ location.href = 'plan.html'; }); });
-  document.getElementById('resetTry').addEventListener('click', function(){ if (saved) state = JSON.parse(JSON.stringify(saved)); render(); });
+  resetTry.addEventListener('click', function(){ if (saved) state = JSON.parse(JSON.stringify(saved)); render(); });
 
   function norm(s){
     if (!(s && s.g && s.concert && Array.isArray(s.list))) return null;
-    s.g = Object.assign({}, G_DEF, SC_DEF, s.g); s.concert = Object.assign({}, C_DEF, s.concert);
-    s.list = s.list.filter(function(c){ return c && c.id && (c.type === 'share' || c.type === 'paid'); }).map(function(c){ return Object.assign({}, BASE, c); });
-    return s;
+    function numericFields(defs, incoming){
+      var values = Object.assign({}, defs);
+      Object.keys(defs).forEach(function(key){
+        if (typeof defs[key] !== 'number' || !Object.prototype.hasOwnProperty.call(incoming, key)) return;
+        var raw = incoming[key];
+        var value = typeof raw === 'number' || (typeof raw === 'string' && raw.trim()) ? Number(raw) : NaN;
+        if (Number.isFinite(value) && value >= 0) values[key] = value;
+      });
+      return values;
+    }
+    var g = numericFields(Object.assign({}, G_DEF, SC_DEF), s.g);
+    if (s.g.netMode === 'net' || s.g.netMode === 'gross') g.netMode = s.g.netMode;
+    var list = s.list.filter(function(c){ return c && typeof c.id === 'string' && c.id && (c.type === 'share' || c.type === 'paid'); }).map(function(c){
+      var values = numericFields(BASE, c);
+      values.id = c.id;
+      values.type = c.type;
+      values.name = typeof c.name === 'string' ? c.name : '';
+      values.kind = typeof c.kind === 'string' ? c.kind : BASE.kind;
+      return values;
+    });
+    if (!list.some(function(c){ return c.type === 'share'; })) return null;
+    return {g:g, concert:numericFields(C_DEF, s.concert), list:list};
   }
   // Сворачивание любых блоков: кнопка у заголовка каждой карточки, состояние запоминается в браузере
   var FKEY = 'malina-partners-folds';
@@ -795,7 +891,20 @@ tr.hl td{font-weight:700;background:var(--berry-soft)}
   saved = JSON.parse(JSON.stringify(state));
   render();
   var mm = /^#d=(.+)$/.exec(location.hash || '');
-  if (mm) decodeState(mm[1]).then(function(s){ s = norm(s); if (s){ state = s; saved = JSON.parse(JSON.stringify(s)); render(); } }).catch(function(){});
+  if (mm){
+    shareButton.disabled = true;
+    Promise.resolve().then(function(){ return decodeState(mm[1]); }).then(function(s){
+      s = norm(s);
+      if (!s) throw new Error('Неверные данные расчёта');
+      state = s;
+      saved = JSON.parse(JSON.stringify(s));
+      resetTry.textContent = 'Вернуть зафиксированные значения';
+      render();
+      shareStatus.textContent = 'Загружены значения из ссылки.';
+    }).catch(function(){
+      shareStatus.textContent = 'Не удалось загрузить значения из ссылки. Показан исходный расчёт.';
+    }).then(function(){ shareButton.disabled = false; });
+  }
 })();
 </script>
 </body>
